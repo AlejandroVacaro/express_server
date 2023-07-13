@@ -53,12 +53,16 @@ export class ProductManager {
         }
 
         //se verifica que el código de cada nuevo producto sea único y no se repita
-        if (!this.products.some((elmnt) => elmnt.code == newProduct.code)) {
+        if (!this.products.some((elmnt) => {
+            return elmnt.code == newProduct.code;
+        })) {
             this.products.push(newProduct);
             await this.saveProductsInFile();
+            return true;
         } else {
             console.log('Repeated code, try again');
-        };
+            return false;
+        }
 
     };
 

@@ -17,7 +17,7 @@ class CartManager {
 
         const newCart = {
             id: newId,
-            items: []
+            products: []
         };
 
         carts.push(newCart);

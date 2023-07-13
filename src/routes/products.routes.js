@@ -40,11 +40,14 @@ router.get('/:pid', async (req, res) => {
 
 router.post('/', async (req, res) => {
     try {
-
         const { title, description, price, code, stock, category, thumbnails, status } = req.body;
-        await productManager.addProduct(title, description, price, code, stock, category, thumbnails, status);
-        res.send({ status: 'success', message: 'Product added successfully' });
+        const isAdded = await productManager.addProduct(title, description, price, code, stock, category, thumbnails, status);
 
+        if (isAdded) {
+            res.send({ status: 'success', message: 'Product added successfully' });
+        } else {
+            res.status(400).send({ status: 'error', message: 'Failed to add product, code is repeated' });
+        }
     } catch (error) {
         res.status(400).send({ status: 'error', error: 'Invalid request' });
     }
@@ -53,7 +56,7 @@ router.post('/', async (req, res) => {
 router.put('/:pid', async (req, res) => {
     try {
 
-        const id = parseInt(req.params.id);
+        const id = parseInt(req.params.pid);
         const productUpdates = req.body;
 
         await productManager.updateProduct(id, productUpdates);
@@ -67,7 +70,7 @@ router.put('/:pid', async (req, res) => {
 router.delete('/:pid', async (req, res) => {
     try {
 
-        const id = parseInt(req.params.id);
+        const id = parseInt(req.params.pid);
         await productManager.deleteProduct(id);
 
         res.send({ status: 'success', message: 'Product deleted successfully' })
