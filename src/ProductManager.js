@@ -24,7 +24,7 @@ export class ProductManager {
     }
 
     //método que agrega un producto nuevo
-    async addProduct(title, description, price, thumbnail, code, stock) {
+    async addProduct(title, description, price, code, stock, category, thumbnails = "", status = true) {
 
         //se crea un id autoincremental de forma automática
         let newId;
@@ -39,14 +39,16 @@ export class ProductManager {
             title: title.trim(),
             description: description.trim(),
             price: price,
-            thumbnail: thumbnail.trim(),
             code: code.trim(),
             stock: stock,
+            category: category.trim(),
+            thumbnails: thumbnails ? thumbnails.trim() : "",
+            status: status
         };
 
         //se verifica que ninguno de los campos esté vacío
-        if (!title || !description || !price || !thumbnail || !code || !stock) {
-            console.log('None of the properties can be empty')
+        if (!title || !description || !price || !code || !stock || !category) {
+            console.log('None of the mandatory properties can be empty');
             return;
         }
 
@@ -92,7 +94,7 @@ export class ProductManager {
     }
 
     //método para actualizar valores dentro de las propiedades de los productos
-    async updateProduct(id, newValues) {
+    async updateProduct(id, productUpdates) {
         const product = await this.getProductById(id);
 
         //se verifica que el id pasado exista dentro de los productos 
@@ -102,8 +104,8 @@ export class ProductManager {
         }
 
         //se pasan los nuevos valores al producto
-        Object.keys(newValues).forEach((key) => {
-            product[key] = newValues[key];
+        Object.keys(productUpdates).forEach((key) => {
+            product[key] = productUpdates[key];
         })
 
         try {
