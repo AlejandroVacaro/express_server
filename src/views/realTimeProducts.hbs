@@ -1,6 +1,7 @@
 <h1>Lista de productos (en tiempo real):</h1>
 
 <div class="forms">
+  {{! El primer formulario permite a los usuarios agregar un producto a la lista.  }}
   <div>
     <form id="addForm">
       <p>Agregar productos:</p>
@@ -25,6 +26,8 @@
       </div>
     </form>
   </div>
+
+  {{! El segundo formulario permite a los usuarios eliminar un producto de la lista proporcionando su ID. }}
   <div>
     <form id="deleteForm">
       <p>Eliminar producto:</p>
@@ -35,6 +38,7 @@
   </div>
 </div>
 
+{{! Cada producto se muestra con sus propiedades }}
 <ul id="productList">
   {{#each products}}
     <li>
@@ -51,5 +55,7 @@
   {{/each}}
 </ul>
 
+{{! "socket.io.js", permite la comunicación en tiempo real entre el servidor y el cliente.
+"realtimeproducts.js", proporciona la funcionalidad para actualizar la lista de productos en tiempo real . }}
 <script src="/socket.io/socket.io.js"></script>
 <script src="/js/realtimeproducts.js"></script>

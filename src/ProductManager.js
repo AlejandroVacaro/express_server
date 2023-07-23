@@ -1,40 +1,34 @@
 import fs from 'fs';
 
-
 export class ProductManager {
     constructor(path) {
         this.path = path;
-        this.init();
-    };
-
-    //se crea un método que espere la carga de los productos al archivo
-    async init() {
-        await this.loadProductsFromFile();
+        this.init();  // Inicializa la clase
     }
 
-    //método que trae los productos desde el archivo
+    async init() {
+        await this.loadProductsFromFile();  // Carga productos desde el archivo al iniciar
+    }
+
     async loadProductsFromFile() {
         try {
-            const data = await fs.promises.readFile(this.path, 'utf-8');
-            this.products = JSON.parse(data);
+            const data = await fs.promises.readFile(this.path, 'utf-8'); // Leer archivo
+            this.products = JSON.parse(data);  // Parsea la información del archivo a un objeto JSON y lo guarda en this.products
         } catch (error) {
-            this.products = [];
-            await fs.promises.writeFile(this.path, '[]');
+            this.products = [];  // En caso de error (archivo no encontrado o vacío), inicializa this.products como un array vacío
+            await fs.promises.writeFile(this.path, '[]');  // Crea el archivo con un array vacío
         }
     }
 
-    //método que agrega un producto nuevo
     async addProduct(title, description, price, code, stock, category, thumbnails = "", status = true) {
-
-        //se crea un id autoincremental de forma automática
-        let newId;
+        let newId;  // ID para el nuevo producto
         if (!this.products.length) {
             newId = 1;
         } else {
-            newId = this.products[this.products.length - 1].id + 1;
-        };
+            newId = this.products[this.products.length - 1].id + 1; // Si ya existen productos, el ID es el del último producto + 1
+        }
 
-        const newProduct = {
+        const newProduct = {  // Objeto del nuevo producto
             id: newId,
             title: title.trim(),
             description: description.trim(),
@@ -46,102 +40,96 @@ export class ProductManager {
             status: status
         };
 
-        //se verifica que ninguno de los campos esté vacío
+        // Validación de las propiedades requeridas del producto
         if (!title || !description || !price || !code || !stock || !category) {
             console.log('None of the mandatory properties can be empty');
             return;
         }
 
-        //se verifica que el código de cada nuevo producto sea único y no se repita
+        // Verifica que no exista un producto con el mismo código
         if (!this.products.some((elmnt) => {
             return elmnt.code == newProduct.code;
         })) {
-            this.products.push(newProduct);
-            await this.saveProductsInFile();
+            this.products.push(newProduct);  // Agrega el producto a la lista
+            await this.saveProductsInFile();  // Guarda la lista actualizada en el archivo
             return true;
         } else {
             console.log('Repeated code, try again');
             return false;
         }
 
-    };
+    }
 
-    //método para obtener el listado total de productos
     async getProducts() {
         try {
-            const data = await fs.promises.readFile(this.path, 'utf-8');
-            const array = JSON.parse(data);
+            const data = await fs.promises.readFile(this.path, 'utf-8');  // Lee los datos del archivo
+            const array = JSON.parse(data);  // Convierte los datos a JSON
             return array;
         } catch (error) {
-            return this.products;
+            return this.products;  // En caso de error, devuelve los productos en memoria
         }
-    };
+    }
 
-    //método para obtener un producto por su id
     async getProductById(id) {
-        const array = await this.getProducts();
+        const array = await this.getProducts();  // Obtiene la lista de productos
         this.products = array;
-        const result = this.products.find((elmnt) => elmnt.id === id);
+        const result = this.products.find((elmnt) => elmnt.id === id);  // Busca el producto por id
 
-        //se comprueba que el producto con el id buscado exista
+        // Si el producto existe, lo devuelve. Si no, muestra un mensaje de error
         if (result) {
             return result;
         } else {
             console.log('Not found');
         }
-    };
-
-    //método para guardar los productos en el archivo
-    async saveProductsInFile() {
-        const data = JSON.stringify(this.products);
-        await fs.promises.writeFile(this.path, data);
     }
 
-    //método para actualizar valores dentro de las propiedades de los productos
-    async updateProduct(id, productUpdates) {
-        const product = await this.getProductById(id);
+    async saveProductsInFile() {
+        const data = JSON.stringify(this.products);  // Convierte la lista de productos a formato JSON
+        await fs.promises.writeFile(this.path, data);  // Guarda la lista en el archivo
+    }
 
-        //se verifica que el id pasado exista dentro de los productos 
+    async updateProduct(id, productUpdates) {
+        const product = await this.getProductById(id);  // Obtiene el producto a actualizar
+
+        // Si el producto no existe, muestra un mensaje de error
         if (!product) {
             console.log('Not found');
             return;
         }
 
-        //se pasan los nuevos valores al producto
+        // Actualiza las propiedades del producto
         Object.keys(productUpdates).forEach((key) => {
             product[key] = productUpdates[key];
         })
 
+        // Guarda la lista actualizada de productos en el archivo
         try {
             this.saveProductsInFile();
         } catch (error) {
             console.log('Could not update file');
         }
 
-    };
+    }
 
-    //método para eliminar un producto según su id
     async deleteProduct(id) {
         try {
-            this.products = await this.getProducts();
-            const index = this.products.findIndex((prod) => prod.id === id);
+            this.products = await this.getProducts();  // Obtiene la lista de productos
+            const index = this.products.findIndex((prod) => prod.id === id);  // Encuentra el índice del producto a eliminar
 
-            //se verifica que el producto exista, en caso de que no el método no debe continuar
+            // Si el producto no existe, muestra un mensaje de error
             if (index === -1) {
                 console.log("Product not found")
                 return
             }
-            this.products.splice(index, 1);
-            this.saveProductsInFile();
+            this.products.splice(index, 1);  // Elimina el producto de la lista
+            this.saveProductsInFile();  // Guarda la lista actualizada en el archivo
             console.log('Product has been deleted')
         } catch (error) {
             console.log('Error deleting product');
         }
 
-    };
+    }
 };
-
-
 
 
 

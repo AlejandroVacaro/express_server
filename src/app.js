@@ -7,36 +7,39 @@ import path from 'path';
 import { router as viewsRouter } from './routes/views.routes.js';
 import { Server } from 'socket.io';
 
-
+// Inicialización de la aplicación express
 const app = express();
+// Definición del puerto en el que se ejecutará la aplicación
 const port = 8080;
 
+// Configuración de los archivos estáticos en el directorio 'public'
 app.use(express.static(path.join(__dirname, '/public')));
 
+// Middleware para el manejo de solicitudes con cuerpo en formato JSON
 app.use(express.json());
+// Middleware para el manejo de solicitudes con cuerpo en formato urlencoded
 app.use(express.urlencoded({ extended: true }));
 
+// Definición de las rutas para los productos y carritos
 app.use('/api/products', productRoutes);
 app.use('/api/carts', cartRoutes);
 
-//se levanta el servidor local 8080 y se guarda en una variable
+// Inicialización del servidor HTTP
 const httpServer = app.listen(port, () => console.log(`Server started on port ${port}`));
 
-//configuración de handlebars
-app.engine('.hbs', handlebars.engine({ extname: '.hbs' })); //inicia el motor de plantillas handlebars
-app.set('view engine', '.hbs'); //indica que motor vamos a utilizar
-app.set('views', path.join(__dirname, '/views')); //ruta de la carpeta de vistas
+// Configuración del motor de plantillas Handlebars
+app.engine('.hbs', handlebars.engine({ extname: '.hbs' }));
+app.set('view engine', '.hbs');
+// Definición del directorio de las vistas
+app.set('views', path.join(__dirname, '/views'));
 
-
-// se crea el servidor de websocket
+// Inicialización del servidor Socket.io para permitir la comunicación en tiempo real
 export const socketServer = new Server(httpServer);
 
-//crear el canal de comunicación, se detecta el handshake
+// Registro del evento de conexión para Socket.io
 socketServer.on('connection', (socketConnected) => {
     console.log(`Cliente conectado: ${socketConnected.id}`)
 })
 
-
-//routes
-
+// Definición de las rutas para las vistas
 app.use(viewsRouter);

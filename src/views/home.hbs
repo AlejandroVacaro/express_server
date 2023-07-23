@@ -1,7 +1,11 @@
 <h1>Lista de productos (estática):</h1>
+
+{{!-- {{#each products}} de Handlebars recorre cada producto en la lista de productos y genera un elemento de lista para cada uno. --}}
 <ul id="productList">
   {{#each products}}
     <li>
+      {{!-- Para cada producto, se muestran sus propiedades.
+      Los datos se insertan de manera dinámica en la plantilla usando las directivas de Handlebars ({{}}). --}}
       <h2>Producto:{{title}}</h2>
       <p>ID: {{id}}</p>
       <p>Descripción:{{description}}</p>
@@ -14,5 +18,3 @@
     </li>
   {{/each}}
 </ul>
-
-<script src="/js/home.js"></script>
