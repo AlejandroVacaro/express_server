@@ -1,0 +1,114 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    padding: 3rem 0 0 0;
+}
+
+header {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    height: 3rem;
+    background-color: rgb(218, 184, 139);
+}
+
+h1 {
+    text-align: center;
+    margin-bottom: 1rem;
+}
+
+.forms {
+    display: flex;
+    justify-content: space-between;
+    margin: 2rem 10rem;
+}
+
+
+form {
+    width: 90%;
+    padding: 20px;
+    border: 1px solid #000;
+    border-radius: 5px;
+    margin-bottom: 20px;
+    background-color: #f0f0f0;
+}
+
+form div {
+    display: flex;
+    flex-wrap: wrap;
+    align-content: center;
+}
+
+form p {
+    text-align: center;
+    font-weight: bold;
+    margin-bottom: 1rem;
+}
+
+form button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    display: block;
+    margin: 1rem auto 0 auto;
+}
+
+#addForm {
+    width: 60%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+#addForm p {
+    margin: auto;
+}
+
+#addForm label,
+#addForm input {
+    width: 48%;
+    margin-top: 0.3rem;
+}
+
+#addForm button {
+    background-color: blue;
+    color: white;
+}
+
+#deleteForm {
+    width: auto;
+}
+
+#deleteForm button {
+    background-color: red;
+    color: white;
+}
+
+ul {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    padding: 0;
+}
+
+li {
+    border: 1px solid black;
+    margin: 1rem;
+    list-style: none;
+    padding: 1rem;
+    flex: 0 0 calc(33.33% - 2rem);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    background-color: #f0f0f0;
+}
+
+footer {
+    width: 100%;
+    height: 5rem;
+    background-color: rgb(218, 184, 139);
+}
