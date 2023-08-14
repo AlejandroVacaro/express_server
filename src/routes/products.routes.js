@@ -1,11 +1,16 @@
 // Importamos los módulos necesarios
 import express from 'express';
-import { ProductManager } from '../ProductManager.js';
-import { socketServer } from '../app.js';
+import { ProductsMongo } from '../dao/managers/mongoDB/productsMongo.js';
+import { io } from '../app.js';
+
+
+// Configuramos el administrador de productos con el método de persistencia File System
+//import { ProductManager } from '../dao/managers/fileSistem/productManager.js';
+//const productManager = new ProductManager('./products.json');
 
 // Inicializamos el enrutador de Express y el administrador de productos
 const router = express.Router();
-const productManager = new ProductManager('./products.json');
+const productManager = new ProductsMongo();
 
 // Ruta para obtener todos los productos o un número limitado de ellos
 router.get('/', async (req, res) => {
@@ -18,9 +23,9 @@ router.get('/', async (req, res) => {
         } else {
             products = result;
         }
-        res.send(products);
+        res.json({ status: 'success', data: products });
     } catch (error) {
-        res.send({ error: error.message });
+        res.send({ status: 'error', message: error.message });
     }
 });
 
@@ -45,12 +50,12 @@ router.post('/', async (req, res) => {
     try {
         const { title, description, price, code, stock, category, thumbnails } = req.body;
         const status = (req.body.status === 'true');
-        const isAdded = await productManager.addProduct(title, description, price, code, stock, category, thumbnails, status);
+        const isAdded = await productManager.addProduct({ title, description, price, code, stock, category, thumbnails, status });
 
         if (isAdded) {
             res.send({ status: 'success', message: 'Product added successfully' });
             const updatedProducts = await productManager.getProducts();
-            socketServer.emit('productAdded', updatedProducts);
+            io.emit('productAdded', updatedProducts);
         } else {
             res.status(400).send({ status: 'error', message: 'Failed to add product, code is repeated' });
         }
@@ -85,7 +90,7 @@ router.delete('/:pid', async (req, res) => {
         }
         await productManager.deleteProduct(id);
         const updatedProducts = await productManager.getProducts();
-        socketServer.emit('productDeleted', { status: 'success', message: 'Product deleted successfully', updatedProducts });
+        io.emit('productDeleted', { status: 'success', message: 'Product deleted successfully', updatedProducts });
         res.send({ status: 'success', message: 'Product deleted successfully' })
     } catch (error) {
         res.status(400).send({ status: 'error', error: 'Invalid request' });

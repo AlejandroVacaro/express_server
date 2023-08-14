@@ -1,7 +1,7 @@
 // Importamos el paquete express para manejar las rutas y las peticiones HTTP
 import express from 'express';
 // Importamos la clase ProductManager que nos permitirá gestionar los productos
-import { ProductManager } from '../ProductManager.js';
+import { ProductManager } from '../dao/managers/fileSystem/productManager.js';
 
 // Creamos un nuevo enrutador de express
 export const router = express.Router();
@@ -34,3 +34,9 @@ router.get('/realtimeproducts', async (req, res) => {
         res.send({ error: error.message });
     }
 });
+
+// Creamos una ruta GET para '/chat'
+router.get("/chat", (req, res) => {
+    res.render("chat");
+});
+

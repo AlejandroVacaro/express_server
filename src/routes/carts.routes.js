@@ -1,6 +1,6 @@
 // Importamos los módulos necesarios
 import express from 'express';
-import CartManager from '../CartManager.js';
+import CartManager from '../dao/managers/fileSystem/cartManager.js';
 
 // Inicializamos el enrutador de Express y el administrador de carritos de compra
 const router = express.Router();

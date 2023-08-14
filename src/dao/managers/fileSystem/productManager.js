@@ -1,4 +1,6 @@
 import fs from 'fs';
+import { v4 as uuid4 } from 'uuid';
+
 
 export class ProductManager {
     constructor(path) {
@@ -21,12 +23,17 @@ export class ProductManager {
     }
 
     async addProduct(title, description, price, code, stock, category, thumbnails = "", status = true) {
-        let newId;  // ID para el nuevo producto
-        if (!this.products.length) {
-            newId = 1;
-        } else {
-            newId = this.products[this.products.length - 1].id + 1; // Si ya existen productos, el ID es el del último producto + 1
-        }
+
+        let newId = uuid4(); //Generación de un Id aleatorio utilizando la librería "uuid"
+
+
+        // CÓDIGO ANTERIOR
+        // let newId;  // ID para el nuevo producto
+        // if (!this.products.length) {
+        //     newId = 1;
+        // } else {
+        //     newId = this.products[this.products.length - 1].id + 1; // Si ya existen productos, el ID es el del último producto + 1
+        // }
 
         const newProduct = {  // Objeto del nuevo producto
             id: newId,
