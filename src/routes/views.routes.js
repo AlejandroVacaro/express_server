@@ -1,5 +1,6 @@
 import express from 'express';
 import { productService } from '../dao/index.js';
+import { cartService } from '../dao/index.js';
 
 
 // Creamos un nuevo enrutador de express
@@ -24,7 +25,6 @@ export const router = express.Router();
 // Creamos una ruta GET para '/home' utilizando MongoDB
 router.get('/home', async (req, res) => {
     try {
-        //Capturar los valores de las queries
         console.log(req.query);
         const { limit = 10, page = 1, stock, sort = 'asc' } = req.query;
         const stockValue = stock === 0 ? undefined : parseInt(stock);
@@ -59,28 +59,42 @@ router.get('/home', async (req, res) => {
             nextLink: result.hasNextPage ? baseUrl.includes("page") ? baseUrl.replace(`page=${result.page}`, `page=${result.nextPage}`) : baseUrl.includes("?") ? baseUrl.concat(`&page=${result.nextPage}`) : baseUrl.concat(`?page=${result.nextPage}`) : null
         }
         console.log(resultProductsView);
-        // Renderizamos la vista 'home', pasando los productos y el archivo de estilo
-        res.render('home', resultProductsView);
+
+        const userCartId = req.session.cartId;
+
+        res.render('home', { ...resultProductsView, cartId: userCartId });
     } catch (error) {
         res.render('home', { error: 'No es posible visualizar los productos' });
-
-
-        // Creamos una ruta GET para '/realtimeproducts'
-        router.get('/realtimeproducts', async (req, res) => {
-            try {
-                // Obtenemos todos los productos
-                const products = await productManager.getProducts();
-                // Renderizamos la vista 'realTimeProducts', pasando los productos y el archivo de estilo
-                res.render('realTimeProducts', { products, style: 'realtimeproducts.css' });
-            } catch (error) {
-                // Si hay un error, lo devolvemos en la respuesta
-                res.send({ error: error.message });
-            }
-        });
-
-        // Creamos una ruta GET para '/chat'
-        router.get("/chat", (req, res) => {
-            res.render("chat");
-        });
     }
-})
+});
+
+
+// Creamos una ruta GET para '/realtimeproducts'
+router.get('/realtimeproducts', async (req, res) => {
+    try {
+        // Obtenemos todos los productos
+        const products = await productManager.getProducts();
+        // Renderizamos la vista 'realTimeProducts', pasando los productos y el archivo de estilo
+        res.render('realTimeProducts', { products, style: 'realtimeproducts.css' });
+    } catch (error) {
+        // Si hay un error, lo devolvemos en la respuesta
+        res.send({ error: error.message });
+    }
+});
+
+// Creamos una ruta GET para '/chat'
+router.get("/chat", (req, res) => {
+    res.render("chat");
+});
+
+
+
+router.get('/cart/:cid', async (req, res) => {
+    try {
+        const cartId = req.params.cid;
+        const cart = await cartService.getById(cartId).populate('products');
+        res.render('cartView', { cart });
+    } catch (error) {
+        res.render('errorView', { error: 'Unable to fetch the cart.' });
+    }
+});

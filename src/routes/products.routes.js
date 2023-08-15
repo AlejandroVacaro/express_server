@@ -55,7 +55,7 @@ router.get('/:pid', async (req, res) => {
 });
 
 // Ruta para añadir un nuevo producto
-router.post('/', async (req, res) => {
+router.post('/', validateFields, async (req, res) => {
     try {
         const { title, description, price, code, stock, category, thumbnails } = req.body;
         const status = (req.body.status === 'true');
