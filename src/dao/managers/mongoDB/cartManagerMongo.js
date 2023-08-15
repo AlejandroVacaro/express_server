@@ -1,4 +1,5 @@
 import { cartsModel } from "../../models/carts.model.js";
+import uuid from "uuid/v4";
 
 export class CartManagerMongo {
     constructor() {
@@ -17,6 +18,9 @@ export class CartManagerMongo {
     async getById(cartId) {
         try {
             const cart = await this.model.findById(cartId);
+            if (!cart) {
+                throw new Error("Cart not found");
+            }
             return cart;
         } catch (error) {
             throw error;
@@ -38,7 +42,14 @@ export class CartManagerMongo {
             if (!cart) {
                 throw new Error("Cart not found");
             }
-            cart.products.push(productId);
+            const productIndex = cart.products.findIndex(p => p.productId.toString() === productId.toString());
+
+            if (productIndex !== -1) {
+                cart.products[productIndex].quantity += 1;
+            } else {
+                cart.products.push({ productId, quantity: 1 });
+            }
+
             await cart.save();
             return cart;
         } catch (error) {
@@ -46,9 +57,12 @@ export class CartManagerMongo {
         }
     };
 
-    async update() {
+    async update(cartId, updateData) {
         try {
-            const cartUpdated = await this.model.updateOne();
+            const cartUpdated = await this.model.updateOne({ _id: cartId }, updateData);
+            if (!cartUpdated) {
+                throw new Error("Cart not found or update failed");
+            }
             return cartUpdated;
         } catch (error) {
             throw error;

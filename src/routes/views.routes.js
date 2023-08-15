@@ -44,7 +44,6 @@ router.get('/home', async (req, res) => {
                 sort: { price: sortValue },
                 lean: true
             });
-        console.log(result);
         const baseUrl = `${req.protocol}://${req.get("host")}${req.originalUrl}`
         const resultProductsView = {
             status: "success",
@@ -59,10 +58,11 @@ router.get('/home', async (req, res) => {
             nextLink: result.hasNextPage ? baseUrl.includes("page") ? baseUrl.replace(`page=${result.page}`, `page=${result.nextPage}`) : baseUrl.includes("?") ? baseUrl.concat(`&page=${result.nextPage}`) : baseUrl.concat(`?page=${result.nextPage}`) : null
         }
         console.log(resultProductsView);
+        console.log('chau');
+        //const userCartId = req.session.cartId;
+        console.log('hola');
 
-        const userCartId = req.session.cartId;
-
-        res.render('home', { ...resultProductsView, cartId: userCartId });
+        res.render('home', resultProductsView);
     } catch (error) {
         res.render('home', { error: 'No es posible visualizar los productos' });
     }
