@@ -1,42 +1,86 @@
-// Importamos el paquete express para manejar las rutas y las peticiones HTTP
 import express from 'express';
-// Importamos la clase ProductManager que nos permitirá gestionar los productos
-import { ProductManager } from '../dao/managers/fileSystem/productManager.js';
+import { productService } from '../dao/index.js';
+
 
 // Creamos un nuevo enrutador de express
 export const router = express.Router();
 
 // Creamos una nueva instancia de ProductManager, pasando la ruta al archivo JSON donde se almacenarán los productos
-const productManager = new ProductManager('./products.json');
+// const productManager = new ProductManager('./products.json');
 
-// Creamos una ruta GET para '/home'
+// Creamos una ruta GET para '/home' utilizando FileSystem
+// router.get('/home', async (req, res) => {
+//     try {
+//         // Obtenemos todos los productos
+//         const products = await productManager.getProducts();
+//         // Renderizamos la vista 'home', pasando los productos y el archivo de estilo
+//         res.render('home', { products, style: 'home.css' });
+//     } catch (error) {
+//         // Si hay un error, lo devolvemos en la respuesta
+//         res.send({ error: error.message });
+//     }
+// });
+
+// Creamos una ruta GET para '/home' utilizando MongoDB
 router.get('/home', async (req, res) => {
     try {
-        // Obtenemos todos los productos
-        const products = await productManager.getProducts();
+        //Capturar los valores de las queries
+        console.log(req.query);
+        const { limit = 10, page = 1, stock, sort = 'asc' } = req.query;
+        const stockValue = stock === 0 ? undefined : parseInt(stock);
+        if (!['asc', 'desc'].includes(sort)) {
+            return res.render('home', { error: 'El parámetro sort debe ser asc o desc' });
+        }
+        const sortValue = sort === 'asc' ? 1 : -1;
+        let query = {};
+        if (stockValue) {
+            query = { stock: { $gte: stockValue } };
+        }
+
+        const result = await productService.getWithPaginate(query,
+            {
+                page,
+                limit,
+                sort: { price: sortValue },
+                lean: true
+            });
+        console.log(result);
+        const baseUrl = `${req.protocol}://${req.get("host")}${req.originalUrl}`
+        const resultProductsView = {
+            status: "success",
+            payload: result.docs,
+            totalPages: result.totalPages,
+            page: result.page,
+            prevPage: result.prevPage,
+            hasPrevPage: result.hasPrevPage,
+            prevLink: result.hasPrevPage ? baseUrl.replace(`page=${result.page}`, `page=${result.prevPage}`) : null,
+            nextPage: result.nextPage,
+            hasNextPage: result.hasNextPage,
+            nextLink: result.hasNextPage ? baseUrl.includes("page") ? baseUrl.replace(`page=${result.page}`, `page=${result.nextPage}`) : baseUrl.includes("?") ? baseUrl.concat(`&page=${result.nextPage}`) : baseUrl.concat(`?page=${result.nextPage}`) : null
+        }
+        console.log(resultProductsView);
         // Renderizamos la vista 'home', pasando los productos y el archivo de estilo
-        res.render('home', { products, style: 'home.css' });
+        res.render('home', resultProductsView);
     } catch (error) {
-        // Si hay un error, lo devolvemos en la respuesta
-        res.send({ error: error.message });
+        res.render('home', { error: 'No es posible visualizar los productos' });
+
+
+        // Creamos una ruta GET para '/realtimeproducts'
+        router.get('/realtimeproducts', async (req, res) => {
+            try {
+                // Obtenemos todos los productos
+                const products = await productManager.getProducts();
+                // Renderizamos la vista 'realTimeProducts', pasando los productos y el archivo de estilo
+                res.render('realTimeProducts', { products, style: 'realtimeproducts.css' });
+            } catch (error) {
+                // Si hay un error, lo devolvemos en la respuesta
+                res.send({ error: error.message });
+            }
+        });
+
+        // Creamos una ruta GET para '/chat'
+        router.get("/chat", (req, res) => {
+            res.render("chat");
+        });
     }
-});
-
-// Creamos una ruta GET para '/realtimeproducts'
-router.get('/realtimeproducts', async (req, res) => {
-    try {
-        // Obtenemos todos los productos
-        const products = await productManager.getProducts();
-        // Renderizamos la vista 'realTimeProducts', pasando los productos y el archivo de estilo
-        res.render('realTimeProducts', { products, style: 'realtimeproducts.css' });
-    } catch (error) {
-        // Si hay un error, lo devolvemos en la respuesta
-        res.send({ error: error.message });
-    }
-});
-
-// Creamos una ruta GET para '/chat'
-router.get("/chat", (req, res) => {
-    res.render("chat");
-});
-
+})

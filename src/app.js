@@ -6,7 +6,7 @@ import { __dirname } from './utils.js';
 import path from 'path';
 import { router as viewsRouter } from './routes/views.routes.js';
 import productRoutes from './routes/products.routes.js';
-import cartRoutes from './routes/carts.routes.js';
+import cartsRouter from './routes/carts.routes.js';
 import handlebars from 'express-handlebars';
 import { chatModel } from './dao/models/chat.model.js';
 
@@ -26,7 +26,7 @@ app.use(express.urlencoded({ extended: true }));
 
 // Definición de las rutas para los productos y carritos
 app.use('/api/products', productRoutes);
-app.use('/api/carts', cartRoutes);
+app.use('/api/carts', cartsRouter);
 
 // Inicialización del servidor HTTP
 const httpServer = app.listen(port, () => console.log(`Server started on port ${port}`));

@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import mongoosePaginate from "mongoose-paginate-v2";
 
 //Nombre de la colección de productos
 const productsCollection = 'products';
@@ -19,6 +20,7 @@ const productsSchema = new mongoose.Schema({
     },
     code: {
         type: String,
+        unique: true,
         required: true
     },
     stock: {
@@ -34,9 +36,12 @@ const productsSchema = new mongoose.Schema({
         type: String
     },
     status: {
-        type: String
+        type: Boolean,
+        default: true
     }
-})
+});
+
+productsSchema.plugin(mongoosePaginate);
 
 //Modelo de productos
 export const productsModel = mongoose.model(productsCollection, productsSchema);

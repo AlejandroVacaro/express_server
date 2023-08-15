@@ -1,6 +1,6 @@
 // Importamos los módulos necesarios
 import express from 'express';
-import { ProductsMongo } from '../dao/managers/mongoDB/productsMongo.js';
+import { ProductManagerMongo } from '../dao/managers/mongoDB/productManagerMongo.js';
 import { io } from '../app.js';
 
 
@@ -10,7 +10,16 @@ import { io } from '../app.js';
 
 // Inicializamos el enrutador de Express y el administrador de productos
 const router = express.Router();
-const productManager = new ProductsMongo();
+const productManager = new ProductManagerMongo();
+
+const validateFields = (req, res, next) => {
+    const productInfo = req.body;
+    if (!productInfo.title || !productInfo.description || !productInfo.price || !productInfo.code || !productInfo.stock || !productInfo.category) {
+        return res.json({ status: 'error', message: 'Campos incompletos' });
+    } else {
+        next();
+    }
+};
 
 // Ruta para obtener todos los productos o un número limitado de ellos
 router.get('/', async (req, res) => {

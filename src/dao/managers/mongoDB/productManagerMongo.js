@@ -1,7 +1,8 @@
 import mongoose from "mongoose";
 import { productsModel } from "../../models/products.model.js";
+import { query } from "express";
 
-export class ProductsMongo {
+export class ProductManagerMongo {
     constructor() {
         this.model = productsModel;
     }
@@ -9,13 +10,23 @@ export class ProductsMongo {
     // Obtiene todos los productos de la base de datos
     async getProducts() {
         try {
-            const products = await this.model.find();
+            const products = await this.model.find().lean();
             return products;
         } catch (error) {
             console.log(error.message);
             throw new Error('Hubo un error al obtener los productos');
         }
     };
+
+    // Obtiene productos con paginación
+    async getWithPaginate(query, options) {
+        try {
+            const products = await this.model.paginate(query, options);
+            return products;
+        } catch (error) {
+            throw error;
+        }
+    }
 
     // Guardar un producto en la base de datos
     async addProduct(productInfo) {
