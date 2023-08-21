@@ -1,5 +1,4 @@
 import { cartsModel } from "../../models/carts.model.js";
-import uuid from "uuid/v4";
 
 export class CartManagerMongo {
     constructor() {
@@ -17,7 +16,7 @@ export class CartManagerMongo {
 
     async getById(cartId) {
         try {
-            const cart = await this.model.findById(cartId);
+            const cart = await this.model.findById(cartId).populate('products');
             if (!cart) {
                 throw new Error("Cart not found");
             }
@@ -68,4 +67,31 @@ export class CartManagerMongo {
             throw error;
         }
     };
+
+    async updateProductQuantity(cartId, productId, quantity) {
+        try {
+            // Encuentra el carrito por ID
+            const cart = await this.model.findById(cartId);
+            if (!cart) {
+                throw new Error("Cart not found");
+            }
+    
+            // Busca el producto en el carrito y actualiza su cantidad
+            const productIndex = cart.products.findIndex(p => p.toString() === productId);
+            if (productIndex === -1) {
+                // Si el producto no está en el carrito, agrégalo
+                cart.products.push({ _id: productId, quantity });
+            } else {
+                // Si el producto ya está en el carrito, actualiza su cantidad
+                cart.products[productIndex].quantity = quantity;
+            }
+    
+            // Guarda los cambios en el carrito
+            await cart.save();
+            return cart;
+        } catch (error) {
+            throw error;
+        }
+    }
+    
 };

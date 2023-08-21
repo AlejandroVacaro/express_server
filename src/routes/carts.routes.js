@@ -66,13 +66,12 @@ router.post("/", async (req, res) => {
 router.get("/:cid", async (req, res) => {
     try {
         const cartId = req.params.cid;
-        const cart = await cartService.getById(cartId).populate('products');
+        const cart = await cartService.getById(cartId); // Esta función ahora ya incluye el .populate('products')
         res.json({ status: "success", data: cart });
     } catch (error) {
         res.json({ status: "error", message: error.message });
     }
 });
-
 
 router.post("/:cid/product/:pid", async (req, res) => {
     try {

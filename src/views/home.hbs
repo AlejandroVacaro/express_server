@@ -1,5 +1,7 @@
+<input type="hidden" id="currentCartId" value="{{cartId}}">
 <p style="color:red"><strong>{{error}}</strong></p>
-<a href="/cart/{{cartId}}">View My Cart</a>
+<a id="cartUrl" style="display: none;">Ver mi carrito</a>
+
 
 {{#if payload}}
   <h1>Listado de Productos</h1>

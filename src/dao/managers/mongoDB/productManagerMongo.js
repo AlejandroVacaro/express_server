@@ -1,6 +1,5 @@
-import mongoose from "mongoose";
 import { productsModel } from "../../models/products.model.js";
-import { query } from "express";
+
 
 export class ProductManagerMongo {
     constructor() {

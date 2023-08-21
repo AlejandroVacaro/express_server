@@ -57,11 +57,7 @@ router.get('/home', async (req, res) => {
             hasNextPage: result.hasNextPage,
             nextLink: result.hasNextPage ? baseUrl.includes("page") ? baseUrl.replace(`page=${result.page}`, `page=${result.nextPage}`) : baseUrl.includes("?") ? baseUrl.concat(`&page=${result.nextPage}`) : baseUrl.concat(`?page=${result.nextPage}`) : null
         }
-        console.log(resultProductsView);
-        console.log('chau');
         //const userCartId = req.session.cartId;
-        console.log('hola');
-
         res.render('home', resultProductsView);
     } catch (error) {
         res.render('home', { error: 'No es posible visualizar los productos' });
@@ -88,13 +84,32 @@ router.get("/chat", (req, res) => {
 });
 
 
-
 router.get('/cart/:cid', async (req, res) => {
     try {
         const cartId = req.params.cid;
-        const cart = await cartService.getById(cartId).populate('products');
-        res.render('cartView', { cart });
+        console.log('cartId:', cartId);
+        const cart = await cartService.getById(cartId);
+        console.log('cart:', cart);
+        const detailedProducts = [];
+        for (let product of cart.products) {
+            const productDetails = await productService.getProductById(product._id);
+            detailedProducts.push({
+                ...productDetails._doc, // _doc te da el objeto subyacente del documento Mongoose
+                quantity: product.quantity
+            });
+        }
+
+        // Crear un objeto de carrito con detalles completos de los productos
+        const detailedCart = {
+            _id: cart._id,
+            products: detailedProducts,
+            __v: cart.__v
+        };
+
+        const plainCart = JSON.parse(JSON.stringify(detailedCart));
+        res.render('cart', { cart: plainCart });
     } catch (error) {
-        res.render('errorView', { error: 'Unable to fetch the cart.' });
+        console.error('Error al obtener el carrito', error);   
     }
 });
+
