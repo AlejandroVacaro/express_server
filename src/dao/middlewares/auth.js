@@ -1,16 +1,16 @@
-export const checkUserAuthenticated = (req,res,next)=>{
+export const checkUserAuthenticated = (req, res, next) => {
     console.log(req.session);
-    if(req.session?.userInfo){
+    if (req.session?.userInfo) {
         next();
     } else {
         res.redirect("/login");
     }
 };
 
-export const showLoginView = (req,res,next)=>{
+export const showLoginView = (req, res, next) => {
     console.log(req.session);
-    if(req.session?.userInfo){
-        res.redirect("/perfil");
+    if (req.session?.userInfo) {
+        res.redirect("/home");
     } else {
         next();
     }

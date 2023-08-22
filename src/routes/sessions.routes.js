@@ -4,6 +4,7 @@ import { productService } from "../dao/index.js";
 
 const router = Router();
 
+// Rutas para la creación de usuarios
 router.post("/signup", async (req, res) => {
     try {
         const signupForm = req.body;
@@ -19,41 +20,40 @@ router.post("/signup", async (req, res) => {
     }
 });
 
-// router.post("/login", async (req, res) => {
-//     try {
-//         console.log(req.body);
-//         const { email, password } = req.body;
-//         if (!email || !password) {
-//             return res.status(400).send({ error: 'Campos incompletos' });
-//         } else {
-//         res.redirect('/home');
-//         }
-//     } catch (error) {
-//         res.send({ error: error.message });
-//     }
-// });
-
-router.post("/login", async(req,res)=>{
+// Rutas para el login de usuarios
+router.post("/login", async(req, res) => {
     try {
         const loginForm = req.body;
-        const user = await usersService.getByEmail(loginForm.email);
-        if(!user){
-            return res.render('login',{error:'El usuario no se ha registrado'});
-        }
-        if(user.password === loginForm.password){
+
+        // Verificación directa para el administrador
+        if (loginForm.email === 'adminCoder@coder.com' && loginForm.password === 'adminCod3r123') {
             req.session.userInfo = {
-                first_name:user.first_name,
-                email:user.email
+                first_name: 'Admin',
+                email: 'adminCoder@coder.com',
+                role: 'admin'
+            };
+            return res.redirect('/home');
+        }
+
+        const user = await usersService.getByEmail(loginForm.email);
+        if (!user) {
+            return res.render('login', { error: 'El usuario no se ha registrado' });
+        }
+        if (user.password === loginForm.password) {
+            req.session.userInfo = {
+                first_name: user.first_name,
+                email: user.email,
+                role: 'usuario' // Todos los demás usuarios tienen el rol de 'usuario'
             };
             res.redirect('/home');
         } else {
-            return res.render('login',{error:'Credenciales invalidas'});
+            return res.render('login', { error: 'Credenciales invalidas' });
         }
     } catch (error) {
-        res.render('login',{error:error.message});
+        res.render('login', { error: error.message });
     }
 });
-
+// Rutas para el logout de usuarios
 router.get("/logout", (req,res)=>{
     req.session.destroy(error=>{
         if(error) return res.render("profile",{user: req.session.userInfo, error:"No se pudo cerrar la sesion"});
