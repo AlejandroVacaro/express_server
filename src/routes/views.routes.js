@@ -39,7 +39,7 @@ router.get("/perfil", checkUserAuthenticated, (req,res)=>{
 });
 
 // Creamos una ruta GET para '/home' utilizando MongoDB
-router.get('/home', async (req, res) => {
+router.get('/home', checkUserAuthenticated, async (req, res) => {
     try {
         const { limit = 10, page = 1, stock, sort = 'asc' } = req.query;
         const stockValue = stock === 0 ? undefined : parseInt(stock);
