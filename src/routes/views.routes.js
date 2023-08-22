@@ -1,6 +1,7 @@
 import express from 'express';
 import { productService } from '../dao/index.js';
 import { cartService } from '../dao/index.js';
+import { checkUserAuthenticated, showLoginView } from "../dao/middlewares/auth.js";
 
 
 // Creamos un nuevo enrutador de express
@@ -21,6 +22,22 @@ export const router = express.Router();
 //         res.send({ error: error.message });
 //     }
 // });
+
+// Creamos una ruta GET para '/' para mostrar el login
+router.get("/", showLoginView, (req,res)=>{
+    res.render("login");
+});
+
+// Creamos una ruta GET para '/registro' para mostrar el registro
+router.get("/registro",showLoginView,(req,res)=>{
+    res.render("signup");
+});
+
+// Creamos una ruta GET para '/perfil' para mostrar el perfil del usuario
+router.get("/perfil", checkUserAuthenticated, (req,res)=>{
+    console.log(req.session);
+    res.render("profile",{user: req.session.userInfo});
+});
 
 // Creamos una ruta GET para '/home' utilizando MongoDB
 router.get('/home', async (req, res) => {
@@ -55,7 +72,8 @@ router.get('/home', async (req, res) => {
             prevLink: result.hasPrevPage ? baseUrl.replace(`page=${result.page}`, `page=${result.prevPage}`) : null,
             nextPage: result.nextPage,
             hasNextPage: result.hasNextPage,
-            nextLink: result.hasNextPage ? baseUrl.includes("page") ? baseUrl.replace(`page=${result.page}`, `page=${result.nextPage}`) : baseUrl.includes("?") ? baseUrl.concat(`&page=${result.nextPage}`) : baseUrl.concat(`?page=${result.nextPage}`) : null
+            nextLink: result.hasNextPage ? baseUrl.includes("page") ? baseUrl.replace(`page=${result.page}`, `page=${result.nextPage}`) : baseUrl.includes("?") ? baseUrl.concat(`&page=${result.nextPage}`) : baseUrl.concat(`?page=${result.nextPage}`) : null,
+            user: req.session.userInfo
         }
         //const userCartId = req.session.cartId;
         res.render('home', resultProductsView);
@@ -109,7 +127,7 @@ router.get('/cart/:cid', async (req, res) => {
         const plainCart = JSON.parse(JSON.stringify(detailedCart));
         res.render('cart', { cart: plainCart });
     } catch (error) {
-        console.error('Error al obtener el carrito', error);   
+        console.error('Error al obtener el carrito', error);
     }
 });
 

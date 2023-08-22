@@ -5,10 +5,13 @@ import { connectDB } from './config/dbConnection.js';
 import { __dirname } from './utils.js';
 import path from 'path';
 import { router as viewsRouter } from './routes/views.routes.js';
+import { sessionsRouter } from './routes/sessions.routes.js';
 import productRoutes from './routes/products.routes.js';
 import cartsRouter from './routes/carts.routes.js';
 import handlebars from 'express-handlebars';
 import { chatModel } from './dao/models/chat.model.js';
+import session from 'express-session';
+import MongoStore from 'connect-mongo';
 
 
 // Inicialización de la aplicación express
@@ -23,6 +26,17 @@ app.use(express.static(path.join(__dirname, '/public')));
 app.use(express.json());
 // Middleware para el manejo de solicitudes con cuerpo en formato urlencoded
 app.use(express.urlencoded({ extended: true }));
+
+// Configuración de la sesión
+app.use(session({
+    store: MongoStore.create({ 
+        ttl: 60,
+        mongoUrl: config.mongo.url
+     }),
+    secret: config.server.secretSession,
+    resave: true,
+    saveUninitialized: true
+}));
 
 // Definición de las rutas para los productos y carritos
 app.use('/api/products', productRoutes);
@@ -65,3 +79,6 @@ io.on('connection', (socket) => {
 
 // Definición de las rutas para las vistas
 app.use(viewsRouter);
+
+// Definición de la ruta para las sesiones
+app.use('/api/sessions', sessionsRouter);
