@@ -16,14 +16,11 @@ Swal.fire({
     },
     allowOutsideClick: false
 }).then((result) => {
-    // console.log("result", result);
     user = result.value;
     socketClient.emit("authenticated", `usuario ${user} ha iniciado sesión`)
-    // console.log("user", user);
 });
 
 chatbox.addEventListener("keyup", (e) => {
-    // console.log(e.key);
     if (e.key === "Enter") {
         if (chatbox.value.trim().length > 0) {//corrobamos que el usuario no envie datos vacios
             socketClient.emit("message", { user: user, message: chatbox.value });
@@ -34,7 +31,6 @@ chatbox.addEventListener("keyup", (e) => {
 
 socketClient.on("messageHistory", (dataServer) => {
     let messageElmts = "";
-    // console.log("dataServer", dataServer);
     dataServer.forEach(item => {
         messageElmts = messageElmts + `${item.user}: ${item.message} <br/>`
     });

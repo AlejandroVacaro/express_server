@@ -1,5 +1,4 @@
 export const checkUserAuthenticated = (req, res, next) => {
-    console.log(req.session);
     if (req.session?.userInfo) {
         next();
     } else {
@@ -8,7 +7,6 @@ export const checkUserAuthenticated = (req, res, next) => {
 };
 
 export const showLoginView = (req, res, next) => {
-    console.log(req.session);
     if (req.session?.userInfo) {
         res.redirect("/home");
     } else {

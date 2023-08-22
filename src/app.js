@@ -70,7 +70,6 @@ io.on('connection', (socket) => {
 
     //Recibe un mensaje y lo emite a todos los clientes
     socket.on("message", async (data) => {
-        console.log("data", data);
         const messageCreated = await chatModel.create(data);
         const messages = await chatModel.find();
         io.emit("messageHistory", messages);

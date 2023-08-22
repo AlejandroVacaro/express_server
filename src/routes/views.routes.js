@@ -35,14 +35,12 @@ router.get("/registro",showLoginView,(req,res)=>{
 
 // Creamos una ruta GET para '/perfil' para mostrar el perfil del usuario
 router.get("/perfil", checkUserAuthenticated, (req,res)=>{
-    console.log(req.session);
     res.render("profile",{user: req.session.userInfo});
 });
 
 // Creamos una ruta GET para '/home' utilizando MongoDB
 router.get('/home', async (req, res) => {
     try {
-        console.log(req.query);
         const { limit = 10, page = 1, stock, sort = 'asc' } = req.query;
         const stockValue = stock === 0 ? undefined : parseInt(stock);
         if (!['asc', 'desc'].includes(sort)) {
@@ -105,9 +103,7 @@ router.get("/chat", (req, res) => {
 router.get('/cart/:cid', async (req, res) => {
     try {
         const cartId = req.params.cid;
-        console.log('cartId:', cartId);
         const cart = await cartService.getById(cartId);
-        console.log('cart:', cart);
         const detailedProducts = [];
         for (let product of cart.products) {
             const productDetails = await productService.getProductById(product._id);
