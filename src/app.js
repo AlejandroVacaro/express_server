@@ -12,6 +12,8 @@ import handlebars from 'express-handlebars';
 import { chatModel } from './dao/models/chat.model.js';
 import session from 'express-session';
 import MongoStore from 'connect-mongo';
+import { initializePassport } from './config/passportConfig.js';
+import passport from 'passport';
 
 
 // Inicialización de la aplicación express
@@ -38,9 +40,24 @@ app.use(session({
     saveUninitialized: true
 }));
 
-// Definición de las rutas para los productos y carritos
+// Inicialización de passport
+initializePassport();
+app.use(passport.initialize());
+app.use(passport.session());
+
+
+// Definición de las rutas para los productos
 app.use('/api/products', productRoutes);
+
+// Definición de las rutas para los carritos
 app.use('/api/carts', cartsRouter);
+
+// Definición de las rutas para las vistas
+app.use(viewsRouter);
+
+// Definición de la ruta para las sesiones
+app.use('/api/sessions', sessionsRouter);
+
 
 // Inicialización del servidor HTTP
 const httpServer = app.listen(port, () => console.log(`Server started on port ${port}`));
@@ -76,8 +93,4 @@ io.on('connection', (socket) => {
     })
 });
 
-// Definición de las rutas para las vistas
-app.use(viewsRouter);
 
-// Definición de la ruta para las sesiones
-app.use('/api/sessions', sessionsRouter);

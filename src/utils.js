@@ -1,11 +1,24 @@
-// Importamos el módulo 'path' de Node.js, el cual proporciona utilidades para trabajar con rutas de archivos y directorios.
 import path from 'path';
+import { fileURLToPath } from 'url';
+import bcrypt from 'bcrypt';
 
+export const __dirname = path.dirname(fileURLToPath(import.meta.url));
+// Importamos el módulo 'path' de Node.js, el cual proporciona utilidades para trabajar con rutas de archivos y directorios.
 // Importamos 'fileURLToPath' de 'url' que proporciona utilidades para manipulación de URLs.
 // En este caso, 'fileURLToPath' se utiliza para convertir una URL en una ruta de archivo del sistema.
-import { fileURLToPath } from 'url';
-
-// Aquí, estamos utilizando la función 'dirname' del módulo 'path' para obtener el nombre del directorio del archivo actual.
+// Luego, estamos utilizando la función 'dirname' del módulo 'path' para obtener el nombre del directorio del archivo actual.
 // 'fileURLToPath' se usa para convertir 'import.meta.url' (la URL del archivo actual) en una ruta de archivo del sistema.
 // El resultado se exporta como '__dirname', que es una convención común en Node.js para representar la ruta del directorio del archivo actual.
-export const __dirname = path.dirname(fileURLToPath(import.meta.url));
+
+// Función para crear un hash de una contraseña
+export const createHash = (password) => {
+    return bcrypt.hashSync(password, bcrypt.genSaltSync());
+};
+
+
+// Función para validar una contraseña
+export const isValidPassword = (userDB, password) => {
+    return bcrypt.compareSync(password, userDB.password);
+};
+
+

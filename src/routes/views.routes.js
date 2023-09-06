@@ -24,18 +24,18 @@ export const router = express.Router();
 // });
 
 // Creamos una ruta GET para '/' para mostrar el login
-router.get("/", showLoginView, (req,res)=>{
+router.get("/", showLoginView, (req, res) => {
     res.render("login");
 });
 
 // Creamos una ruta GET para '/registro' para mostrar el registro
-router.get("/registro",showLoginView,(req,res)=>{
+router.get("/registro", showLoginView, (req, res) => {
     res.render("signup");
 });
 
 // Creamos una ruta GET para '/perfil' para mostrar el perfil del usuario
-router.get("/perfil", checkUserAuthenticated, (req,res)=>{
-    res.render("profile",{user: req.session.userInfo});
+router.get("/perfil", checkUserAuthenticated, (req, res) => {
+    res.render("profile", { user: JSON.parse(JSON.stringify(req.user)) });
 });
 
 // Creamos una ruta GET para '/home' utilizando MongoDB
@@ -99,7 +99,7 @@ router.get("/chat", (req, res) => {
     res.render("chat");
 });
 
-
+//Obtener el carrito de un usuario
 router.get('/cart/:cid', async (req, res) => {
     try {
         const cartId = req.params.cid;
