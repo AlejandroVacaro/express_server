@@ -69,7 +69,21 @@ export const initializePassport = () => {
         },
         async (accessToken, refreshToken, profile, done) => {
             try {
-                console.log(profile);
+                // Verificamos si el usuario ya existe
+                const user = await usersService.getByEmail(profile.username);
+                if (!user) {
+                    // Creamos el nuevo usuario
+                    const newUser = {
+                        first_name: profile.username,
+                        email: profile.username,
+                        password: await createHash(profile.id),
+                    };
+                    // Guardamos el nuevo usuario en la base de datos
+                    const userCreated = await usersService.save(newUser);
+                    return done(null, userCreated);
+                } else {
+                    return done(null, user);
+                }
             } catch (error) {
                 return done(error);
             }

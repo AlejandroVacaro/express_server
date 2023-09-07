@@ -13,6 +13,6 @@ export const config = {
     github: {
         clientID: "Iv1.1195ca1e01262dd0",
         clientSecret: "d285716e4e07c2c5429ee1ecba75a5c3a52bef2d",
-        callbackURL: "http://localhost:8080/api/session/github-callback"
+        callbackURL: "http://localhost:8080/api/sessions/github-callback"
     }
 }

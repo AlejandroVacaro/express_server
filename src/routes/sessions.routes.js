@@ -29,7 +29,7 @@ router.get("/fail-login", (req, res) => {
 });
 
 
-// Rutas para el signup con Github
+// Rutas para login y signup con Github
 router.get("/loginGithub", passport.authenticate("githubLoginStrategy"));
 
 router.get("/github-callback", passport.authenticate("githubLoginStrategy", {
@@ -37,6 +37,8 @@ router.get("/github-callback", passport.authenticate("githubLoginStrategy", {
 }), (req, res) => {
     res.redirect("/home");
 });
+
+
 
 // Rutas para el logout de usuarios
 router.get("/logout", (req, res) => {

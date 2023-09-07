@@ -71,7 +71,7 @@ router.get('/home', checkUserAuthenticated, async (req, res) => {
             nextPage: result.nextPage,
             hasNextPage: result.hasNextPage,
             nextLink: result.hasNextPage ? baseUrl.includes("page") ? baseUrl.replace(`page=${result.page}`, `page=${result.nextPage}`) : baseUrl.includes("?") ? baseUrl.concat(`&page=${result.nextPage}`) : baseUrl.concat(`?page=${result.nextPage}`) : null,
-            user: req.session.userInfo
+            user: JSON.parse(JSON.stringify(req.user)) // Esto es para que el usuario se pueda ver en la vista
         }
         //const userCartId = req.session.cartId;
         res.render('home', resultProductsView);
