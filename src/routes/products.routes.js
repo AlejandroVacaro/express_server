@@ -1,8 +1,6 @@
-// Importamos los módulos necesarios
 import express from 'express';
-import { ProductManagerMongo } from '../dao/managers/mongoDB/productManagerMongo.js';
 import { io } from '../app.js';
-
+import { productService as productManager } from '../dao/index.js';
 
 // Configuramos el administrador de productos con el método de persistencia File System
 //import { ProductManager } from '../dao/managers/fileSistem/productManager.js';
@@ -10,7 +8,7 @@ import { io } from '../app.js';
 
 // Inicializamos el enrutador de Express y el administrador de productos
 const router = express.Router();
-const productManager = new ProductManagerMongo();
+
 
 const validateFields = (req, res, next) => {
     const productInfo = req.body;
