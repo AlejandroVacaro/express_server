@@ -50,7 +50,7 @@
 // // Exportamos el enrutador para usarlo en otros módulos
 // export default router;
 import { Router } from "express";
-import { cartService, productService } from "../dao/index.js";
+import { cartService, productsDao } from "../dao/index.js";
 
 const router = Router();
 

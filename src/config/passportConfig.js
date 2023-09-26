@@ -1,9 +1,9 @@
 import passport from "passport";
 import { Strategy as LocalStrategy } from "passport-local";
 import { createHash, isValidPassword } from "../utils.js";
-import { usersService } from "../dao/index.js";
 import githubStrategy from "passport-github2";
 import { config } from "../config/config.js";
+import { UsersService } from "../services/users.service.js";
 
 // Inicialización de passport
 export const initializePassport = () => {
@@ -16,7 +16,7 @@ export const initializePassport = () => {
         async (req, username, password, done) => {
             try {
                 const { first_name } = req.body;
-                const user = await usersService.getByEmail(username);
+                const user = await UsersService.getUserByEmail(username);
                 // Verificamos si el usuario ya existe
                 if (user) {
                     return done(null, false, { message: 'El usuario ya está registrado' });
@@ -28,7 +28,7 @@ export const initializePassport = () => {
                     password: await createHash(password),
                 };
                 // Guardamos el nuevo usuario en la base de datos
-                const userCreated = await usersService.save(newUser);
+                const userCreated = await UsersService.saveUser(newUser);
                 return done(null, userCreated);
             } catch (error) {
                 return done(error);
@@ -43,11 +43,11 @@ export const initializePassport = () => {
         },
         async (username, password, done) => {
             try {
-                const user = await usersService.getByEmail(username);
+                const user = await UsersService.getUserByEmail(username);
                 // Verificamos si el usuario existe
                 if (!user) {
                     return done(null, false, { message: 'El usuario no está registrado' });
-                }   
+                }
                 // Verificamos si la contraseña es válida
                 if (isValidPassword(user, password)) {
                     return done(null, user);
@@ -70,7 +70,7 @@ export const initializePassport = () => {
         async (accessToken, refreshToken, profile, done) => {
             try {
                 // Verificamos si el usuario ya existe
-                const user = await usersService.getByEmail(profile.username);
+                const user = await UsersService.getUserByEmail(profile.username);
                 if (!user) {
                     // Creamos el nuevo usuario
                     const newUser = {
@@ -79,7 +79,7 @@ export const initializePassport = () => {
                         password: await createHash(profile.id),
                     };
                     // Guardamos el nuevo usuario en la base de datos
-                    const userCreated = await usersService.save(newUser);
+                    const userCreated = await UsersService.saveUser(newUser);
                     return done(null, userCreated);
                 } else {
                     return done(null, user);
@@ -97,7 +97,7 @@ export const initializePassport = () => {
     });
 
     passport.deserializeUser(async (id, done) => {
-        const user = await usersService.getByID(id);
+        const user = await UsersService.getUserById(id);
         done(null, user);
     });
 };

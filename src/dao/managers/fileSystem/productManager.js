@@ -2,7 +2,7 @@ import fs from 'fs';
 import { v4 as uuid4 } from 'uuid';
 
 
-export class ProductManager {
+export class productsDao {
     constructor(path) {
         this.path = path;
         this.init();  // Inicializa la clase

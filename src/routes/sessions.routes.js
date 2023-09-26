@@ -1,42 +1,32 @@
 import { Router } from "express";
 import passport from "passport";
+import { SessionsController } from "../controllers/sessions.controller.js";
 
 const router = Router();
 
 // Rutas para la creación de usuarios
 router.post("/signup", passport.authenticate('singupStrategy', {
     failureRedirect: '/api/sessions/fail-signup'
-}), (req, res) => {
-    res.render('login', { message: 'Usuario creado correctamente' });
-});
+}), SessionsController.redirectLogin);
 
-router.get("/fail-signup", (req, res) => {
-    res.render("signup", { error: "No se pudo registrar el usuario" });
-});
-
+// Rutas para los errores de creación de usuarios
+router.get("/fail-signup", SessionsController.failSignup);
 
 // Rutas para el login de usuarios
 router.post("/login", passport.authenticate('loginStrategy', {
     failureRedirect: '/api/sessions/fail-login'
-}), (req, res) => {
-    res.redirect('/home');
-});
+}), SessionsController.renderProfile);
 
-router.get("/fail-login", (req, res) => {
-    res.render("login", { error: "No se pudo iniciar sesión" });
-});
-
+// Rutas para los errores de login de usuarios
+router.get("/fail-login", SessionsController.failLogin);
 
 // Rutas para login y signup con Github
 router.get("/loginGithub", passport.authenticate("githubLoginStrategy"));
 
+// Rutas para los errores de login con Github
 router.get("/github-callback", passport.authenticate("githubLoginStrategy", {
     failureRedirect: "/api/sessions/fail-signup"
-}), (req, res) => {
-    res.redirect("/home");
-});
-
-
+}), SessionsController.redirectLogin);
 
 // Rutas para el logout de usuarios
 router.get("/logout", (req, res) => {
@@ -54,4 +44,4 @@ router.get("/logout", (req, res) => {
     });
 });
 
-    export { router as sessionsRouter };
+export { router as sessionsRouter };
