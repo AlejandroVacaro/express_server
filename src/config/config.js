@@ -1,14 +1,17 @@
+import dotenv from 'dotenv';
+dotenv.config();
+
 export const config = {
 
     //Configuración del puerto local.
     server: {
-        port: 8080,
-        secretSession: 'secretSessionKey'
+        port: process.env.PORT,
+        secretSession: process.env.SECRET_SESSION,
     },
 
     //Configuración de la base de datos con MongoDB Atlas. 
     mongo: {
-        url: "mongodb+srv://avacaro:coder@coderbackend.rf7x0pq.mongodb.net/ecomerceDB?retryWrites=true&w=majority"
+        url: process.env.MONGO_URL,
     },
     github: {
         clientID: "Iv1.1195ca1e01262dd0",
