@@ -1,26 +1,26 @@
 export class SessionsController {
 
-    // Rutas para la creación de usuarios
+    // Ruta para el login de usuarios
     static redirectLogin = (req, res) => {
         res.redirect("/");
     };
 
-    // Rutas para el login de usuarios
+    // Ruta para intentos fallidos de signup
     static failSignup = (req, res) => {
         res.send("<p>Ocurrió un error al crear el usuario, <a href='/registro'>intenta nuevamente</a>.</p>");
     };
 
-    // Rutas para el logout de usuarios
+    // Ruta para renderizar la vista de perfil
     static renderProfile = (req, res) => {
-        res.render("profile", { user: req.user });
+        res.render("profile", { user : JSON.parse(JSON.stringify(req.user)) });
     };
 
-    // Rutas para el logout de usuarios
+    // Ruta para intentos fallidos de login
     static failLogin = (req, res) => {
         res.send("<p>Ocurrió un error al iniciar sesión, <a href='/'>intenta nuevamente</a>.</p>");
     };
 
-    // Rutas para el logout de usuarios
+    // Ruta para intentos fallidos de login con Github
     static failGithub = (req, res) => {
         res.send("<p>Ocurrió un error al iniciar sesión con Github, <a href='/'>intenta nuevamente</a>.</p>");
     };

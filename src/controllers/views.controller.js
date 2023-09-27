@@ -1,3 +1,5 @@
+import { productsDao } from '../dao/index.js';
+
 export class ViewsController{
 
     // Creamos controlador para renderizar la vista de login
@@ -12,7 +14,7 @@ export class ViewsController{
 
     // Creamos controlador para renderizar la vista de perfil
     static renderProfile = (req, res) => {
-        res.render('profile', { user: JSON.parse(JSON.stringify(req.user)) });
+        res.render('profile', { user : JSON.parse(JSON.stringify(req.user)) });
     };  
 
     // Creamos controlador para renderizar la vista de home
