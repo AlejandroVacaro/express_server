@@ -23,10 +23,10 @@ router.get("/fail-login", SessionsController.failLogin);
 // Rutas para login y signup con Github
 router.get("/loginGithub", passport.authenticate("githubLoginStrategy"));
 
-// Rutas para los errores de login con Github
+// Rutas de callback de Github
 router.get("/github-callback", passport.authenticate("githubLoginStrategy", {
     failureRedirect: "/api/sessions/fail-signup"
-}), SessionsController.redirectLogin);
+}), SessionsController.renderProfile);
 
 // Rutas para el logout de usuarios
 router.get("/logout", (req, res) => {

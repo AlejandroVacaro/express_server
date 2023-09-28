@@ -2,7 +2,7 @@ import { productsDao } from '../dao/index.js';
 
 export class ProductsService {
 
-    // Creamos controlador para obtener todos los productos o un número limitado de ellos
+    // Servicio para obtener todos los productos o un número limitado de ellos
     static getProducts = async () => {
         try {
             const result = await productsDao.getProducts();
@@ -12,7 +12,7 @@ export class ProductsService {
         }
     };
 
-    // Creamos controlador para obtener un producto específico por ID
+    // Servicio para obtener un producto específico por ID
     static getProductById = async (id) => {
         try {
             const product = await productsDao.getProductById(id);
@@ -22,7 +22,7 @@ export class ProductsService {
         }
     };
 
-    // Creamos controlador para añadir un nuevo producto
+    // Servicio para añadir un nuevo producto
     static addProduct = async (product) => {
         try {
             const isAdded = await productsDao.addProduct(product);
@@ -32,7 +32,7 @@ export class ProductsService {
         }
     };
 
-    // Creamos controlador para actualizar un producto específico
+    // Servicio para actualizar un producto específico
     static updateProduct = async (id, product) => {
         try {
             const isUpdated = await productsDao.updateProduct(id, product);
@@ -42,7 +42,7 @@ export class ProductsService {
         }
     };
 
-    // Creamos controlador para eliminar un producto específico
+    // Servicio para eliminar un producto específico
     static deleteProduct = async (id) => {
         try {
             const isDeleted = await productsDao.deleteProduct(id);
