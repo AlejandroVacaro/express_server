@@ -1,5 +1,5 @@
 import express from 'express';
-import { checkUserAuthenticated, showLoginView } from "../dao/middlewares/auth.js";
+import { checkUserAuthenticated } from "../middlewares/auth.js";
 import { ViewsController } from '../controllers/views.controller.js';
 
 // Creamos un nuevo enrutador de express

@@ -17,16 +17,26 @@ export const initializePassport = () => {
             try {
                 const { first_name } = req.body;
                 const user = await UsersService.getUserByEmail(username);
+
                 // Verificamos si el usuario ya existe
                 if (user) {
                     return done(null, false, { message: 'El usuario ya está registrado' });
                 }
+
+                // Establecemos el rol user como predeterminado y admin si el correo termina en @coder
+                let role = 'user';
+                if (username.endsWith('@coder.com')){
+                    role = 'admin';
+                }
+
                 // Creamos el nuevo usuario
                 const newUser = {
                     first_name: first_name,
                     email: username,
                     password: await createHash(password),
+                    role: role
                 };
+
                 // Guardamos el nuevo usuario en la base de datos
                 const userCreated = await UsersService.saveUser(newUser);
                 return done(null, userCreated);

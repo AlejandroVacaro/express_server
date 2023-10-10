@@ -1,5 +1,4 @@
 import { ProductsService } from "../services/products.service.js";
-import { productsDao } from "../dao/index.js";
 
 export class ProductsController {
 
@@ -45,8 +44,6 @@ export class ProductsController {
 
             if (isAdded) {
                 res.send({ status: 'success', message: 'Product added successfully' });
-                const updatedProducts = await ProductsService.getProducts();
-                io.emit('productAdded', updatedProducts);
             } else {
                 res.status(400).send({ status: 'error', message: 'Failed to add product, code is repeated' });
             }
@@ -78,8 +75,6 @@ export class ProductsController {
                 return res.status(404).send({ error: 'Product does not exist' });
             }
             await ProductsService.deleteProduct(id);
-            const updatedProducts = await ProductsService.getProducts();
-            io.emit('productDeleted', { status: 'success', message: 'Product deleted successfully', updatedProducts });
             res.send({ status: 'success', message: 'Product deleted successfully' })
         } catch (error) {
             res.status(400).send({ status: 'error', error: 'Invalid request' });

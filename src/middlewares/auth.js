@@ -15,3 +15,15 @@ export const showLoginView = (req, res, next) => {
         next();
     }
 };
+
+//Controla el rol del usuario
+export const checkUserRole = (roles) => {
+    return (req, res, next) => {
+        if (roles.includes(req.user.role)) {
+            next();
+        }   else {
+            res.json({ status: 'error', message: 'No tienes permisos para realizar esta acción' });
+        }   
+    }
+}
+ 
