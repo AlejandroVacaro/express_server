@@ -25,7 +25,7 @@ export class productsDaoMongo {
         } catch (error) {
             throw error;
         }
-    }
+    };
 
     // Guardar un producto en la base de datos
     async addProduct(productInfo) {
@@ -36,7 +36,7 @@ export class productsDaoMongo {
             console.log(error.message);
             throw new Error('Hubo un error al guardar el producto');
         }
-    }
+    };
 
     // Obtener un producto por id  
     async getProductById(id) {
@@ -47,5 +47,22 @@ export class productsDaoMongo {
             console.log(error.message);
             throw new Error('Hubo un error al obtener el producto');
         }
-    }
+    };
+
+    // Actualizar el stock de un producto
+    async updateProductStock(productId, quantity) {
+        try {
+            const product = await this.model.findById(productId);
+            if (product.stock < quantity) {
+                throw new Error('No hay suficiente stock');
+            }
+            product.stock -= quantity;
+            await product.save();
+            return product;
+        }
+        catch (error) {
+            console.log(error.message);
+            throw new Error(`Hubo un error al actualizar el stock del producto ${productId}`);
+        }
+    };
 };

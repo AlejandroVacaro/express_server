@@ -96,6 +96,26 @@ export class CartManagerMongo {
         } catch (error) {
             throw error;
         }
-    }
+    };
+
+    // Método para actualizar el carrito del usuario con solo los productos rechazados
+    async updateUserCartWithRejectedProducts(cartId, rejectedProducts) {
+        try {
+            const cart = await this.getById(cartId);
+            if (!cart) {
+                throw new Error("Cart not found");
+            }
+
+            // Filtrar los productos del carrito para dejar solo los rechazados
+            cart.products = cart.products.filter(product => 
+                rejectedProducts.some(rejected => rejected._id.toString() === product.productId.toString())
+            );
+
+            // Guardar los cambios en la base de datos
+            return await this.update(cartId, cart);
+        } catch (error) {
+            throw error;
+        }
+    };
     
 };

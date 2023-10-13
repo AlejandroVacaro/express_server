@@ -36,4 +36,9 @@ export class CartsService {
     static deleteCart = async (cartId) => {
         return await CartManagerMongo.delete(cartId);
     };
+
+    //Servicio para actualizar el carrito de un usuario con los productos rechazados
+    static async updateUserCart(userId, rejectedProducts) {
+        return await CartManagerMongo.updateUserCart(userId, rejectedProducts);
+    };
 };
