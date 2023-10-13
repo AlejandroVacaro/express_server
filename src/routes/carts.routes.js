@@ -1,6 +1,7 @@
 import { Router } from "express";
 import { CartsController } from "../controllers/carts.controller.js";
 import { checkUserAuthenticated, checkUserRole } from "../middlewares/auth.js";
+import { TicketsController } from "../controllers/tickets.controller.js";
 
 const router = Router();
 
@@ -21,5 +22,9 @@ router.get("/", CartsController.getAllCarts);
 
 //Ruta para eliminar un carrito
 router.delete("/:cid", CartsController.deleteCart);
+
+router.post("/:cid/purchase", TicketsController.createTicket);
+
+
 
 export default router;

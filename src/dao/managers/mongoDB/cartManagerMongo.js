@@ -1,10 +1,12 @@
 import { cartsModel } from "../../models/carts.model.js";
 
+//Se crea un manager para los carritos
 export class CartManagerMongo {
     constructor() {
         this.model = cartsModel;
     };
 
+    //Método para obtener todos los carritos
     async getAll() {
         try {
             const carts = await this.model.find();
@@ -14,6 +16,7 @@ export class CartManagerMongo {
         }
     };
 
+    //Método para obtener un carrito por ID
     async getById(cartId) {
         try {
             const cart = await this.model.findById(cartId).populate('products');
@@ -26,15 +29,17 @@ export class CartManagerMongo {
         }
     };
 
-    async save() {
+    //Método para crear un carrito
+    async save(cart) {
         try {
-            const cartCreated = await this.model.create({});
+            const cartCreated = await this.model.create(cart);
             return cartCreated;
         } catch (error) {
             throw error;
         }
     };
 
+    //Método para agregar un producto al carrito
     async addProduct(cartId, productId) {
         try {
             const cart = await this.model.findById(cartId);
@@ -56,18 +61,17 @@ export class CartManagerMongo {
         }
     };
 
+    //Método para actualizar un carrito
     async update(cartId, updateData) {
         try {
-            const cartUpdated = await this.model.updateOne({ _id: cartId }, updateData);
-            if (!cartUpdated) {
-                throw new Error("Cart not found or update failed");
-            }
+            const cartUpdated = await this.model.findByIdAndUpdate(cartId, updateData, { new: true });
             return cartUpdated;
         } catch (error) {
             throw error;
         }
     };
 
+    //Método para actualizar la cantidad de un producto en el carrito
     async updateProductQuantity(cartId, productId, quantity) {
         try {
             // Encuentra el carrito por ID

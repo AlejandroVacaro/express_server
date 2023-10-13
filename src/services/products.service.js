@@ -13,9 +13,9 @@ export class ProductsService {
     };
 
     // Servicio para obtener un producto específico por ID
-    static getProductById = async (id) => {
+    static getProductById = async (productId) => {
         try {
-            const product = await productsDao.getProductById(id);
+            const product = await productsDao.getProductById(productId);
             return product;
         } catch (error) {
             throw error;
