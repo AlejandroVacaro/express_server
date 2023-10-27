@@ -21,7 +21,7 @@ export class TicketsController {
                     // Actualizar el stock del producto
                     await ProductsService.updateProductStock(product._id, productsCart[i].quantity);
                 }
-            }
+            };
 
             // Crear el ticket con los productos comprados
             const ticketInfo = {
@@ -43,7 +43,7 @@ export class TicketsController {
                     status: 'success',
                     message: 'Compra realizada con éxito.'
                 });
-            }
+            };
 
             // Actualizar el carrito del usuario para contener solo los productos rechazados
             await CartsService.updateUserCart(req.user._id, rejectedProducts);
