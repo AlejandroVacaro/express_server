@@ -12,6 +12,7 @@ import session from 'express-session';
 import MongoStore from 'connect-mongo';
 import { initializePassport } from './config/passportConfig.js';
 import passport from 'passport';
+import { generateRandomProducts } from './utils/helpers.js';
 
 
 
@@ -56,6 +57,15 @@ app.use(viewsRouter);
 
 // Definición de la ruta para las sesiones
 app.use('/api/sessions', sessionsRouter);
+
+// Definición de la ruta para generar productos aleatorios con Faker
+app.get('/api/mockingproducts', (req, res) => {
+    let products = [];
+    for (let i = 0; i < 100; i++) {
+        products.push(generateRandomProducts());
+    };
+    res.json({status: 'success', data: products});
+});
 
 
 // Inicialización del servidor HTTP
