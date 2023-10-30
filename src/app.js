@@ -13,8 +13,7 @@ import MongoStore from 'connect-mongo';
 import { initializePassport } from './config/passportConfig.js';
 import passport from 'passport';
 import { generateRandomProducts } from './utils/helpers.js';
-
-
+import { errorHandler } from './middlewares/errorHandler.js';
 
 // Inicialización de la aplicación express
 const app = express();
@@ -79,3 +78,6 @@ app.engine('.hbs', handlebars.engine({ extname: '.hbs' }));
 app.set('view engine', '.hbs');
 // Definición del directorio de las vistas
 app.set('views', path.join(__dirname, '/views'));
+
+// Manejo de errores
+// app.use(errorHandler);

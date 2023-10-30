@@ -1,11 +1,12 @@
 import { Router } from "express";
 import passport from "passport";
 import { SessionsController } from "../controllers/sessions.controller.js";
+import { validateUserInput } from "../middlewares/validateUserInput.js";
 
 const router = Router();
 
 // Rutas para la creación de usuarios
-router.post("/signup", passport.authenticate('singupStrategy', {
+router.post("/signup", validateUserInput, passport.authenticate('singupStrategy', {
     failureRedirect: '/api/sessions/fail-signup'
 }), SessionsController.redirectLogin);
 
