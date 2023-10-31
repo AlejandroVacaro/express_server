@@ -1,5 +1,7 @@
 import { CartsService } from '../services/carts.service.js';
 import { ProductsService } from '../services/products.service.js';
+import { CustomError } from '../services/error/customError.service.js';
+import { EError } from '../enums/EError.js';
 
 export class CartsController {
 
@@ -26,56 +28,66 @@ export class CartsController {
     };
 
     // Creamos controlador para añadir un producto a un carrito
-    static addProductToCart = async (req, res) => {
+    static addProductToCart = async (req, res, next) => {
         try {
             const cartId = req.params.cid;
             const productId = req.params.pid;
             const updatedCart = await CartsService.getCartById(cartId);
             const product = await ProductsService.getProductById(productId);
-            const productExists = updatedCart.products.find(p => p.productId.toString() === productId.toString());
-            if (productExists) {
-                productExists.quantity += 1;
-            } else {
-                updatedCart.products.push({ productId, quantity: 1 });
-            }
-            res.json({ status: "success", data: updatedCart });
-        } catch (error) {
-            res.json({ status: "error", message: error.message });
+
+            if (!product) {
+                const error = CustomError.createError({
+                    name: 'ProductNotFound error',
+                    message: `El producto con el ID ${ productId } no fue encontrado`,
+                    errorCode: EError.INVALID_PARAM
+                });
+            return next(error);
         }
-    };
+    
+            const productExists = updatedCart.products.find(p => p.productId.toString() === productId.toString());
+        if (productExists) {
+            productExists.quantity += 1;
+        } else {
+            updatedCart.products.push({ productId, quantity: 1 });
+        }
+        res.json({ status: "success", data: updatedCart });
+    } catch(error) {
+        res.json({ status: "error", message: error.message });
+    }
+};
 
     // Creamos controlador para eliminar un producto de un carrito
     static removeProductFromCart = async (req, res) => {
-        try {
-            const cartId = req.params.cid;
-            const productId = req.params.pid;
-            const updatedCart = await CartsService.deleteFromCart(cartId, productId);
-            res.json({ status: "success", data: updatedCart });
-        } catch (error) {
-            res.json({ status: "error", message: error.message });
-        }
-    };
+    try {
+        const cartId = req.params.cid;
+        const productId = req.params.pid;
+        const updatedCart = await CartsService.deleteFromCart(cartId, productId);
+        res.json({ status: "success", data: updatedCart });
+    } catch (error) {
+        res.json({ status: "error", message: error.message });
+    }
+};
 
     // Creamos controlador para obtener todos los carritos
     static getAllCarts = async (req, res) => {
-        try {
-            const carts = await CartsService.getAll();
-            res.json({ status: "success", data: carts });
-        } catch (error) {
-            res.json({ status: "error", message: error.message });
-        }
-    };
+    try {
+        const carts = await CartsService.getAll();
+        res.json({ status: "success", data: carts });
+    } catch (error) {
+        res.json({ status: "error", message: error.message });
+    }
+};
 
     // Creamos controlador para eliminar un carrito específico
     static deleteCart = async (req, res) => {
-        try {
-            const cartId = req.params.cid;
-            await CartsService.deleteCart(cartId);
-            res.json({ status: "success", message: "Cart deleted successfully" });
-        } catch (error) {
-            res.json({ status: "error", message: error.message });
-        }
-    };
+    try {
+        const cartId = req.params.cid;
+        await CartsService.deleteCart(cartId);
+        res.json({ status: "success", message: "Cart deleted successfully" });
+    } catch (error) {
+        res.json({ status: "error", message: error.message });
+    }
+};
 
 };
 
