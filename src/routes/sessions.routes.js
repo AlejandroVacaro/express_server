@@ -2,6 +2,10 @@ import { Router } from "express";
 import passport from "passport";
 import { SessionsController } from "../controllers/sessions.controller.js";
 import { validateUserInput } from "../middlewares/validateUserInput.js";
+import { parse } from "dotenv";
+import { CustomError } from "../services/error/customError.service.js";
+import { invalidParamMsg } from "../services/error/invalidParamError.service.js";
+import { EError } from "../enums/EError.js";
 
 const router = Router();
 
@@ -39,10 +43,28 @@ router.get("/logout", (req, res) => {
             // Elimina la sesión de la base de datos
             req.session.destroy(error => {
                 if (error) return res.render("profile", { user: req.user, error: "No se pudo cerrar la sesion" });
-                    res.redirect("/");
+                res.redirect("/");
             });
         }
     });
+});
+
+// Ruta para obtener un usuario por el id
+router.get("/:uid", (req, res, next) => {
+    const uid = req.params.uid;
+    const userId = parseInt(uid);
+
+    if (Number.isNaN(userId)) {
+        const error = CustomError.createError({
+            name: 'userById error',
+            cause: invalidParamMsg(uid),
+            message: 'Datos invalidos para buscar el usuario',
+            errorCode: EError.INVALID_PARAM
+        });
+        return next(error);
+    }
+
+    res.json({ status: 'success', message: 'Usuario encontrado' });
 });
 
 export { router as sessionsRouter };

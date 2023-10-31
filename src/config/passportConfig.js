@@ -15,7 +15,7 @@ export const initializePassport = () => {
         // Función para validar el login
         async (req, username, password, done) => {
             try {
-                const { first_name } = req.body;
+                const { first_name, last_name } = req.body;
                 const user = await UsersService.getUserByEmail(username);
 
                 // Verificamos si el usuario ya existe
@@ -25,13 +25,14 @@ export const initializePassport = () => {
 
                 // Establecemos el rol user como predeterminado y admin si el correo termina en @coder
                 let role = 'user';
-                if (username.endsWith('@coder.com')){
+                if (username.endsWith('@coder.com')) {
                     role = 'admin';
                 }
 
                 // Creamos el nuevo usuario
                 const newUser = {
                     first_name: first_name,
+                    last_name: last_name,
                     email: username,
                     password: await createHash(password),
                     role: role
@@ -111,6 +112,3 @@ export const initializePassport = () => {
         done(null, user);
     });
 };
-
-
-

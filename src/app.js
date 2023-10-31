@@ -80,4 +80,4 @@ app.set('view engine', '.hbs');
 app.set('views', path.join(__dirname, '/views'));
 
 // Manejo de errores
-// app.use(errorHandler);
+app.use(errorHandler);
