@@ -18,15 +18,11 @@ export class CartManagerMongo {
 
     //Método para obtener un carrito por ID
     async getById(cartId) {
-        try {
-            const cart = await this.model.findById(cartId).populate('products');
-            if (!cart) {
-                throw new Error("Cart not found");
-            }
-            return cart;
-        } catch (error) {
-            throw error;
+        const cart = await this.model.findById(cartId).populate('products');
+        if (!cart) {
+            throw new Error("Cart not found");
         }
+        return cart;
     };
 
     //Método para crear un carrito
@@ -79,7 +75,7 @@ export class CartManagerMongo {
             if (!cart) {
                 throw new Error("Cart not found");
             }
-    
+
             // Busca el producto en el carrito y actualiza su cantidad
             const productIndex = cart.products.findIndex(p => p.toString() === productId);
             if (productIndex === -1) {
@@ -89,7 +85,7 @@ export class CartManagerMongo {
                 // Si el producto ya está en el carrito, actualiza su cantidad
                 cart.products[productIndex].quantity = quantity;
             }
-    
+
             // Guarda los cambios en el carrito
             await cart.save();
             return cart;
@@ -107,7 +103,7 @@ export class CartManagerMongo {
             }
 
             // Filtrar los productos del carrito para dejar solo los rechazados
-            cart.products = cart.products.filter(product => 
+            cart.products = cart.products.filter(product =>
                 rejectedProducts.some(rejected => rejected._id.toString() === product.productId.toString())
             );
 
@@ -117,5 +113,5 @@ export class CartManagerMongo {
             throw error;
         }
     };
-    
+
 };
