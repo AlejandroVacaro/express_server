@@ -1,4 +1,7 @@
 import {ticketsModel} from '../../models/tickets.model.js';
+import {addLogger} from '../../utils/logger.js';
+
+const logger = addLogger();
 
 //Se crea un manager para los tickets
 export class TicketsMongo {
@@ -11,7 +14,7 @@ export class TicketsMongo {
             const result = await this.model.create(ticketInfo);
             return result;
         } catch (error) {
-            console.log(error);
+            logger.error(error);
             throw error;
         }
     };

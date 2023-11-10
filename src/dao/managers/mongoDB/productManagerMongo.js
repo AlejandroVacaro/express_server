@@ -1,5 +1,7 @@
 import { productsModel } from "../../models/products.model.js";
+import { addLogger } from "../../utils/logger.js";
 
+const logger = addLogger();
 
 export class productsDaoMongo {
     constructor() {
@@ -12,7 +14,7 @@ export class productsDaoMongo {
             const products = await this.model.find().lean();
             return products;
         } catch (error) {
-            console.log(error.message);
+            logger.error(error.message);
             throw new Error('Hubo un error al obtener los productos');
         }
     };
@@ -33,7 +35,7 @@ export class productsDaoMongo {
             const productCreated = await this.model.create(productInfo);
             return productCreated;
         } catch (error) {
-            console.log(error.message);
+            logger.error(error.message);
             throw new Error('Hubo un error al guardar el producto');
         }
     };
@@ -44,7 +46,7 @@ export class productsDaoMongo {
             const product = await this.model.findById(id);
             return product;
         } catch (error) {
-            console.log(error.message);
+            logger.error(error.message);
             throw new Error('Hubo un error al obtener el producto');
         }
     };
@@ -61,7 +63,7 @@ export class productsDaoMongo {
             return product;
         }
         catch (error) {
-            console.log(error.message);
+            logger.error(error.message);
             throw new Error(`Hubo un error al actualizar el stock del producto ${productId}`);
         }
     };

@@ -1,7 +1,10 @@
 import { EError } from '../enums/EError.js';
+import { addLogger } from '../utils/logger.js';
+
+const logger = addLogger();
 
 export const errorHandler = (error, req, res, next) => {
-    console.log("Error received:", error);
+    logger.error("Error received:", error);
     switch (error.code) {
         case EError.AUTH_ERROR:
             res.status(401).json({status: 'error', error: error.cause});

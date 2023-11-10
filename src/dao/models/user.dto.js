@@ -1,6 +1,6 @@
+// DTO: Data Transfer Object (Objeto de transferencia de datos)
 class UserDTO {
     constructor (user) {
-        console.log('UserDTO');
         this.name = user.name;
         this.email = user.email;
     }

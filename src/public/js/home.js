@@ -1,6 +1,10 @@
+import { addLogger } from '../utils/logger.js';
+
+const logger = addLogger();
+
 const addToCart = async (productId) => {
     let cartElement = document.getElementById('currentCartId');
-    console.log('Elemento cartId encontrado:', cartElement.value);
+    logger.info('Elemento cartId encontrado:', cartElement.value);
     let cartId = cartElement ? cartElement.value : null
 
     // Si no hay un carrito existente, crea uno nuevo
@@ -15,16 +19,16 @@ const addToCart = async (productId) => {
             const data = await response.json();
             if (data.status === "success") {
                 cartId = data.data._id;
-                console.log('Nuevo carrito creado:', cartId);
+                logger.info('Nuevo carrito creado:', cartId);
                 cartElement.value = cartId;
                 // Guarda el ID del carrito en el almacenamiento local
                 let cartUrlElement = document.getElementById('cartUrl');
                 if (cartUrlElement) {
-                    console.log('Elemento cartUrl encontrado.');
+                    logger.info('Elemento cartUrl encontrado.');
                     cartUrlElement.setAttribute('href', `/cart/${cartId}`);
                     cartUrlElement.style.display = 'flex';
                 } else {
-                    console.log('Elemento cartUrl no encontrado.');
+                    logger.warning('Elemento cartUrl no encontrado.');
                 }
             } else {
                 alert('Error al crear un nuevo carrito.');

@@ -1,7 +1,8 @@
 import fs from 'fs';
 import { v4 as uuid4 } from 'uuid';
+import { addLoger } from '../../utils/logger.js';
 
-
+const logger = addLoger();
 export class productsDao {
     constructor(path) {
         this.path = path;
@@ -49,7 +50,7 @@ export class productsDao {
 
         // Validación de las propiedades requeridas del producto
         if (!title || !description || !price || !code || !stock || !category) {
-            console.log('None of the mandatory properties can be empty');
+            logger.error('None of the mandatory properties can be empty');
             return;
         }
 
@@ -61,7 +62,7 @@ export class productsDao {
             await this.saveProductsInFile();  // Guarda la lista actualizada en el archivo
             return true;
         } else {
-            console.log('Repeated code, try again');
+            logger.warning('Repeated code, try again');
             return false;
         }
 
@@ -86,7 +87,7 @@ export class productsDao {
         if (result) {
             return result;
         } else {
-            console.log('Not found');
+            logger.warning('Not found');
         }
     }
 
@@ -100,7 +101,7 @@ export class productsDao {
 
         // Si el producto no existe, muestra un mensaje de error
         if (!product) {
-            console.log('Not found');
+            logger.warning('Not found');
             return;
         }
 
@@ -113,7 +114,7 @@ export class productsDao {
         try {
             this.saveProductsInFile();
         } catch (error) {
-            console.log('Could not update file');
+            logger.error('Could not update file');
         }
 
     }
@@ -125,14 +126,14 @@ export class productsDao {
 
             // Si el producto no existe, muestra un mensaje de error
             if (index === -1) {
-                console.log("Product not found")
+                logger.error("Product not found")
                 return
             }
             this.products.splice(index, 1);  // Elimina el producto de la lista
             this.saveProductsInFile();  // Guarda la lista actualizada en el archivo
-            console.log('Product has been deleted')
+            logger.info('Product has been deleted')
         } catch (error) {
-            console.log('Error deleting product');
+            logger.error('Error deleting product');
         }
 
     }

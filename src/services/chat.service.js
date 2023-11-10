@@ -1,11 +1,14 @@
 import { Server } from "socket.io";
 import { chatManagerMongo } from "../dao/managers/mongoDB/chatManagerMongo.js";
+import { addLogger } from "../utils/logger.js";
+
+const logger = addLogger();
 
 const initializeChatService = (httpServer) => {
     const io = new Server(httpServer);
 
     io.on('connection', (socket) => {
-        console.log(`Cliente conectado: ${socket.id}`);
+        logger.info(`Cliente conectado: ${socket.id}`);
 
         socket.on("authenticated", async (msg) => {
             const messages = await chatManagerMongo.getMessages();

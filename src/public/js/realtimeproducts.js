@@ -1,3 +1,7 @@
+import { addLogger } from "../../utils/loggers";
+
+const logger = addLogger();
+
 // Establecemos una conexión con el servidor a través de Socket.IO
 const socket = io();
 
@@ -74,7 +78,7 @@ document.getElementById('addForm').addEventListener('submit', event => {
         body: JSON.stringify({ title, description, price, code, stock, category, thumbnails, status }),
     })
         .then(response => response.json())
-        .then(data => console.log(data))
+        .then(data => logger.info(data))
         .catch(error => console.error('Error:', error));
 });
 
@@ -91,6 +95,6 @@ document.getElementById('deleteForm').addEventListener('submit', event => {
         method: 'DELETE',
     })
         .then(response => response.json())
-        .then(data => console.log(data))
+        .then(data => logger.info(data))
         .catch(error => console.error('Error:', error));
 });
