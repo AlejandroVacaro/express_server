@@ -2,7 +2,6 @@ import { Router } from "express";
 import passport from "passport";
 import { SessionsController } from "../controllers/sessions.controller.js";
 import { validateUserInput } from "../middlewares/validateUserInput.js";
-import { parse } from "dotenv";
 import { CustomError } from "../services/error/customError.service.js";
 import { invalidParamMsg } from "../services/error/invalidParamError.service.js";
 import { EError } from "../enums/EError.js";

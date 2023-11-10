@@ -14,11 +14,15 @@ import { initializePassport } from './config/passportConfig.js';
 import passport from 'passport';
 import { generateRandomProducts } from './utils/helpers.js';
 import { errorHandler } from './middlewares/errorHandler.js';
+import { addLogger } from './utils/loggers.js';
 
 // Inicialización de la aplicación express
 const app = express();
 // Definición del puerto en el que se ejecutará la aplicación
 const port = config.server.port;
+
+// Configuración de los loggers
+const logger = addLogger();
 
 // Configuración de los archivos estáticos en el directorio 'public'
 app.use(express.static(path.join(__dirname, '/public')));
@@ -66,9 +70,19 @@ app.get('/api/mockingproducts', (req, res) => {
     res.json({status: 'success', data: products});
 });
 
+// Definición de la ruta para generar loggers
+app.get('/loggerTest', (req, res) => {
+    logger.debug('Mensaje de error nivel debug');
+    logger.http('Mensaje de error nivel http');
+    logger.info('Mensaje de error nivel info');
+    logger.warning('Mensaje de error nivel warning');
+    logger.error('Mensaje de error nivel error');
+    logger.fatal('Mensaje de error nivel fatal');
+    res.send('Petición recibida');
+});
 
 // Inicialización del servidor HTTP
-const httpServer = app.listen(port, () => console.log(`Server started on port ${port}`));
+const httpServer = app.listen(port, () => logger.info(`Server started on port ${port}`));
 
 //Conexión a la Base de Datos
 connectDB();
