@@ -1,6 +1,6 @@
 import fs from 'fs';
 import { v4 as uuid4 } from 'uuid';
-import { addLoger } from '../../utils/logger.js';
+import { addLoger } from '../../utils/loggers.js';
 
 const logger = addLoger();
 export class productsDao {

@@ -33,7 +33,9 @@ const devLogger = winston.createLogger({
 const prodLogger = winston.createLogger({
     levels: customLevels.levels,
     transports: [
+        // Mostrar mensajes de nivel info y superiores en la consola
         new winston.transports.Console({ level: 'info' }),
+        // Almacenar mensajes de nivel error y superiores en un archivo
         new winston.transports.File({ filename: './logs/errors.log', level: 'error' })
     ]
 });

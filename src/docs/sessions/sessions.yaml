@@ -1,0 +1,8 @@
+paths:
+  /api/sessions:
+    get:
+      summary: Endpoint para obtener todos los registros de sesiones
+      tags:
+        - Sesiones
+      responses:
+      

@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 import { config } from "./config.js";
-import { addLogger } from "../utils/logger.js";
+import { addLogger } from "../utils/loggers.js";
 
 const logger = addLogger();
 

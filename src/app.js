@@ -15,6 +15,8 @@ import passport from 'passport';
 import { generateRandomProducts } from './utils/helpers.js';
 import { errorHandler } from './middlewares/errorHandler.js';
 import { addLogger } from './utils/loggers.js';
+import { swaggerSpecs } from './config/swagger.config.js';
+import swaggerUi from 'swagger-ui-express';
 
 // Inicialización de la aplicación express
 const app = express();
@@ -95,3 +97,6 @@ app.set('views', path.join(__dirname, '/views'));
 
 // Manejo de errores
 app.use(errorHandler);
+
+// Configuración de Swagger para la documentación de la API
+app.use('/api/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpecs));
