@@ -102,8 +102,13 @@ export class ViewsController{
             res.render('cart', { cart: plainCart });
         } catch (error) {
             console.error('Error al obtener el carrito', error);
-        }
-    }
+        };
+    };
 
-}
+    // Creamos controlador para renderizar la vista de recuperación de contraseña
+    static renderForgot = (req, res) => {
+        res.render('forgotPassword');
+    };
+
+};
 

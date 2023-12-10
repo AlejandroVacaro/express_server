@@ -12,7 +12,7 @@ const swaggerOptions = {
         },
     },
     // Archivos que contienen la documentación de los endpoints
-    apis: [`${path.join(__dirname, "/docs/**/*.yaml")}}`],
+    apis: [`${path.join(__dirname, "/docs/**/*.yaml")}`],
 };
 
 // Genera una instancia de Swagger para la documentación de la API

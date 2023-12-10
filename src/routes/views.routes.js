@@ -23,6 +23,9 @@ router.get('/realtimeproducts', checkUserAuthenticated, ViewsController.renderRe
 // Creamos una ruta GET para '/chat'
 router.get("/chat", checkUserAuthenticated, ViewsController.renderChat);
 
-//Obtener el carrito de un usuario
+// Obtener el carrito de un usuario
 router.get('/cart/:cid', checkUserAuthenticated, ViewsController.renderCart);
+
+// Creamos una ruta GET para '/reset-password'
+router.get('/forgot-password', ViewsController.renderForgot);
 

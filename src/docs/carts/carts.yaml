@@ -1,0 +1,95 @@
+paths:
+  /carts:
+    post:
+      summary: Crear un nuevo carrito
+      description: Permite a los usuarios con rol 'user' crear un nuevo carrito
+      tags:
+        - carritos
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      responses:
+        200:
+          description: Carrito creado exitosamente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Cart'
+        400:
+          description: Error al crear el carrito
+        500:
+          description: Se produjo un error en el servidor
+
+  /carts/{cid}:
+    get:
+      summary: Obtener un carrito específico
+      description: Retorna información detallada de un carrito específico por ID
+      tags:
+        - carritos
+      parameters:
+        - name: cid
+          in: path
+          required: true
+          type: string
+          description: ID del carrito
+      produces:
+        - application/json
+      responses:
+        200:
+          description: Información del carrito obtenida
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Cart'
+        404:
+          description: Carrito no encontrado
+        500:
+          description: Se produjo un error en el servidor
+
+    delete:
+      summary: Eliminar un carrito específico
+      description: Elimina un carrito específico por ID
+      tags:
+        - carritos
+      parameters:
+        - name: cid
+          in: path
+          required: true
+          type: string
+          description: ID del carrito
+      produces:
+        - application/json
+      responses:
+        200:
+          description: Carrito eliminado con éxito
+        400:
+          description: Error al eliminar el carrito
+        500:
+          description: Se produjo un error en el servidor
+
+components:
+  schemas:
+    Cart:
+      type: object
+      properties:
+        _id:
+          type: string
+          description: ID del carrito generado por MongoDB
+        products:
+          type: array
+          description: Productos en el carrito
+          items:
+            type: object
+            properties:
+              productId:
+                type: string
+                description: ID del producto
+              quantity:
+                type: number
+                description: Cantidad del producto en el carrito
+      example:
+        _id: "5f50c31f1c9d44000047b037"
+        products:
+          - productId: "5f50c31f1c9d44000047b036"
+            quantity: 2
