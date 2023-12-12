@@ -42,7 +42,7 @@ export class SessionsController {
                 // Si existe, generamos un token válido por una hora y enviamos el email
                 const token = await generateEmailWithToken(email, '1h');
                 await recoveryEmail(req, email, token);
-                res.send('Se envió un email para reestablecer la contraseña');
+                res.send('Se envió un email para reestablecer la contraseña. Por favor, revisa tu casilla de correo. <a href="/">Iniciar sesión</a>');
             }
         } catch (error) {
             res.json({ status: 'error', message: 'No se pudo reestablecer la contraseña' })
@@ -52,7 +52,7 @@ export class SessionsController {
     // Ruta para reestablecer la contraseña
     static resetPassword = async (req, res) => {
         try {
-            const token = req.params.token;
+            const token = req.query.token;
             const { newPassword } = req.body;
             const validEmail = validateToken(token);
             if (validEmail) {

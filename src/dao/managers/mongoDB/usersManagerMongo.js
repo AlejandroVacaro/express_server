@@ -45,7 +45,7 @@ export class UsersManagerMongo {
     // Función para actualizar un usuario
     async update(userId, newUserInfo) {
         try {
-            const userUpdated = await this.model.findByIdAndUpdate(userId, newuserInfo, { new: true });
+            const userUpdated = await this.model.findByIdAndUpdate(userId, newUserInfo, { new: true });
             return userUpdated;
         } catch (error) {
             console.error("Error al actualizar el usuario", error);
