@@ -1,6 +1,8 @@
 import path from 'path';
 import { fileURLToPath } from 'url';
 import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken';
+import { config } from './config/config.js';
 
 export const __dirname = path.dirname(fileURLToPath(import.meta.url));
 // Importamos el módulo 'path' de Node.js, el cual proporciona utilidades para trabajar con rutas de archivos y directorios.
@@ -20,5 +22,17 @@ export const createHash = (password) => {
 export const isValidPassword = (userDB, password) => {
     return bcrypt.compareSync(password, userDB.password);
 };
+
+// Función para validar un token
+export const validateToken = (token) => {
+    try {
+        const info = jwt.verify(token, config.gmail.secretToken);
+        return info.email;
+    } catch (error) {
+        console.log('Error al validar el token', error.message);
+        return null;
+    }
+};
+
 
 

@@ -29,3 +29,6 @@ router.get('/cart/:cid', checkUserAuthenticated, ViewsController.renderCart);
 // Creamos una ruta GET para '/reset-password'
 router.get('/forgot-password', ViewsController.renderForgot);
 
+// Creamos una ruta GET para '/reset-password'
+router.get('/reset-password', ViewsController.renderResetPassword);
+

@@ -10,10 +10,10 @@ export const generateEmailWithToken = (email, expireTime) => {
 };
 
 // Función para generar enlace con el token.
-export const recoveryEmail = async (email, emailtoken) => {
+export const recoveryEmail = async (req, email, emailtoken) => {
     try {
         // Obtenemos el dominio del servidor para generar el enlace.
-        const domain = `${req.protocol}://${req.get('host')}}`
+        const domain = `${req.protocol}://${req.get('host')}`
         // Generamos el enlace con el token.
         const link = `${domain}/reset-password?token=${emailtoken}`;
         // Enviamos el email con el enlace.

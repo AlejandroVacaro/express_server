@@ -66,7 +66,10 @@ router.get("/:uid", (req, res, next) => {
     res.json({ status: 'success', message: 'Usuario encontrado' });
 });
 
-// Ruta para reestablecer la contraseña
+// Ruta para solicitar el cambio de contraseña
 router.post('/forgot-password', SessionsController.forgotPassword);
+
+// Ruta para reestablecer la contraseña
+router.post('/reset-password', SessionsController.resetPassword);
 
 export { router as sessionsRouter };

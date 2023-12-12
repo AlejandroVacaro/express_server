@@ -110,5 +110,11 @@ export class ViewsController{
         res.render('forgotPassword');
     };
 
+    // Creamos controlador para renderizar la vista de reestablecer contraseña
+    static renderResetPassword = (req, res) => {
+        const token = req.params.token;
+        res.render('resetPassword', { token });
+    };
+
 };
 
