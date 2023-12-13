@@ -30,14 +30,14 @@ const validateFields = (req, res, next) => {
         next();
     }
 };
-// Ruta para añadir un nuevo producto, solo para usuarios con rol admin
-router.post('/', checkUserAuthenticated, checkUserRole(['admin']), validateFields, ProductsController.addProduct);
+// Ruta para añadir un nuevo producto, solo para usuarios con rol admin o premium
+router.post('/', checkUserAuthenticated, checkUserRole(['admin', 'premium']), validateFields, ProductsController.addProduct);
 
 // Ruta para actualizar un producto específico, solo para usuarios con rol admin
 router.put('/:pid', checkUserAuthenticated, checkUserRole(['admin']), ProductsController.updateProduct);
 
 // Ruta para eliminar un producto específico, solo para usuarios con rol admin
-router.delete('/:pid', checkUserAuthenticated, checkUserRole(['admin']), ProductsController.deleteProduct);
+router.delete('/:pid', checkUserAuthenticated, checkUserRole(['admin', 'premium']), ProductsController.deleteProduct);
 
 // Exportamos el enrutador para usarlo en otros módulos
 export default router;

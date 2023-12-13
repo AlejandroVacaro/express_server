@@ -17,6 +17,7 @@ import { errorHandler } from './middlewares/errorHandler.js';
 import { addLogger } from './utils/loggers.js';
 import { swaggerSpecs } from './config/swagger.config.js';
 import swaggerUi from 'swagger-ui-express';
+import { usersRouter } from './routes/users.routes.js';
 
 // Inicialización de la aplicación express
 const app = express();
@@ -62,6 +63,9 @@ app.use(viewsRouter);
 
 // Definición de la ruta para las sesiones
 app.use('/api/sessions', sessionsRouter);
+
+// Definición de la ruta para modificar el rol de un usuario
+app.use('/api/users', usersRouter);
 
 // Definición de la ruta para generar productos aleatorios con Faker
 app.get('/api/mockingproducts', (req, res) => {

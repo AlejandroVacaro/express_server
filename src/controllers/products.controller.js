@@ -38,9 +38,11 @@ export class ProductsController {
     // Creamos controlador para añadir un nuevo producto
     static addProduct = async (req, res) => {
         try {
+            // Se obtienen los datos del producto desde el body de la petición y se guarda en la BD
             const { title, description, price, code, stock, category, thumbnails } = req.body;
-            const status = (req.body.status === 'true');
-            const isAdded = await ProductsService.addProduct({ title, description, price, code, stock, category, thumbnails, status });
+            const owner = req.user._id;
+            const status = req.body.status !== undefined ? (req.body.status === 'true') : true;
+            const isAdded = await ProductsService.addProduct({ title, description, price, code, stock, category, thumbnails, status, owner });
 
             if (isAdded) {
                 res.send({ status: 'success', message: 'Product added successfully' });

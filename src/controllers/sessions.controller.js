@@ -61,7 +61,7 @@ export class SessionsController {
                 if (user) {
                     user.password = createHash(newPassword);
                     await UsersService.updateUser(user._id, user);
-                    res.send('Contraseña actualizada correctamente, <a href="/login">inicia sesión</a> con tu nueva contraseña');
+                    res.send('Contraseña actualizada correctamente, <a href="/">inicia sesión</a> con tu nueva contraseña');
                 }
             } else {
                 // Si el token no es válido, enviamos un mensaje de error
