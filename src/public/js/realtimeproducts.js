@@ -79,7 +79,7 @@ document.getElementById('addForm').addEventListener('submit', event => {
     })
         .then(response => response.json())
         .then(data => logger.info(data))
-        .catch(error => console.error('Error:', error));
+        .catch(error => logger.error('Error:', error));
 });
 
 // Escuchamos el evento de envío del formulario de eliminar producto
@@ -96,5 +96,5 @@ document.getElementById('deleteForm').addEventListener('submit', event => {
     })
         .then(response => response.json())
         .then(data => logger.info(data))
-        .catch(error => console.error('Error:', error));
+        .catch(error => logger.error('Error:', error));
 });

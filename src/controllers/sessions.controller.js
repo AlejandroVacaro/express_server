@@ -1,6 +1,6 @@
 import { UsersService } from "../services/users.service.js";
 import { generateEmailWithToken, recoveryEmail } from "../utils/gmail.js";
-import { validateToken, createHash } from "../utils.js";
+import { validateToken, createHash, isValidPassword } from "../utils.js";
 
 export class SessionsController {
 
@@ -38,7 +38,7 @@ export class SessionsController {
             await req.session.destroy();
             res.redirect("/");
         } catch (error) {
-            console.log(error);
+            logger.errorlog(error);
             res.send("<p>Ocurrió un error al cerrar sesión, <a href='/'>intenta nuevamente</a>.</p>");
         }
     };
@@ -70,19 +70,23 @@ export class SessionsController {
             const { newPassword } = req.body;
             const validEmail = validateToken(token);
             if (validEmail) {
-                // Si el token es válido, actualizamos la contraseña del usuario
                 const user = await UsersService.getUserByEmail(validEmail);
                 if (user) {
+                    // Comprobar si la nueva contraseña es diferente a la actual
+                    if (isValidPassword(user, newPassword)) {
+                        return res.send('La nueva contraseña no puede ser la misma que la actual. <a href=\"/forgot-password\">Intentar de nuevo</a>');
+                    }
+
                     user.password = createHash(newPassword);
                     await UsersService.updateUser(user._id, user);
-                    res.send('Contraseña actualizada correctamente, <a href="/">inicia sesión</a> con tu nueva contraseña');
+                    res.send('Contraseña actualizada correctamente, <a href=\"/\">inicia sesión</a> con tu nueva contraseña');
                 }
             } else {
-                // Si el token no es válido, enviamos un mensaje de error
-                return res.send('El enlace para reestablecer la contraseña expiró. Por favor, solicita nuevamente el cambio de contraseña: <a href="/forgot-password">Reestablecer contraseña</a>');
+                return res.send('El enlace para reestablecer la contraseña expiró. Por favor, solicita nuevamente el cambio de contraseña: <a href=\"/forgot-password\">Reestablecer contraseña</a>');
             }
         } catch (error) {
-            res.send('No se pudo restablecer la contraseña. Por favor, solicita nuevamente el cambio de contraseña: <a href="/forgot-password">Reestablecer contraseña</a>');
+            res.send('No se pudo restablecer la contraseña. Por favor, solicita nuevamente el cambio de contraseña: <a href=\"/forgot-password\">Reestablecer contraseña</a>');
         }
     };
+
 };

@@ -30,7 +30,7 @@ export const validateToken = (token) => {
         const info = jwt.verify(token, config.gmail.secretToken);
         return info.email;
     } catch (error) {
-        console.log('Error al validar el token', error.message);
+        logger.errorlog('Error al validar el token', error.message);
         return null;
     }
 };

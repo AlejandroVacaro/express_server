@@ -40,7 +40,7 @@ class CartManager {
             const carts = await fs.promises.readFile(this.file, 'utf-8');
             return JSON.parse(carts);
         } catch (error) {
-            console.error('Error reading carts file', error);
+            logger.error('Error reading carts file', error);
             return [];
         }
     }
@@ -63,7 +63,7 @@ class CartManager {
             // Se convierten los carritos a string y se guardan en el archivo
             await fs.promises.writeFile(this.file, JSON.stringify(carts, null, 2));
         } catch (error) {
-            console.error('Error writing to carts file', error);
+            logger.error('Error writing to carts file', error);
         }
     }
 
@@ -73,7 +73,7 @@ class CartManager {
         let cart = carts.find(cart => cart.id === cartId);
 
         if (!cart) {
-            console.error('Cart not found');
+            logger.error('Cart not found');
             return;
         }
 

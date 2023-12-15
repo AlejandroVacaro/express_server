@@ -1,6 +1,6 @@
 import { productsDao } from '../dao/index.js';
 
-export class ViewsController{
+export class ViewsController {
 
     // Creamos controlador para renderizar la vista de login
     static renderLogin = (req, res) => {
@@ -14,8 +14,8 @@ export class ViewsController{
 
     // Creamos controlador para renderizar la vista de perfil
     static renderProfile = (req, res) => {
-        res.render('profile', { user : JSON.parse(JSON.stringify(req.user)) });
-    };  
+        res.render('profile', { user: JSON.parse(JSON.stringify(req.user)) });
+    };
 
     // Creamos controlador para renderizar la vista de home
     static renderHome = async (req, res) => {
@@ -101,7 +101,7 @@ export class ViewsController{
             const plainCart = JSON.parse(JSON.stringify(detailedCart));
             res.render('cart', { cart: plainCart });
         } catch (error) {
-            console.error('Error al obtener el carrito', error);
+            logger.error('Error al obtener el carrito', error);
         };
     };
 

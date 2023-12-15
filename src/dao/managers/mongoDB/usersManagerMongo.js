@@ -32,9 +32,9 @@ export class UsersManagerMongo {
     // Función para obtener un usuario por email
     async getByEmail(email) {
         try {
-            const user = await this.model.findOne({ email:email });
+            const user = await this.model.findOne({ email: email });
             if (!user) {
-                console.error("Usuario no encontrado");
+                logger.error("Usuario no encontrado");
             }
             return user;
         } catch (error) {
@@ -48,7 +48,7 @@ export class UsersManagerMongo {
             const userUpdated = await this.model.findByIdAndUpdate(userId, newUserInfo, { new: true });
             return userUpdated;
         } catch (error) {
-            console.error("Error al actualizar el usuario", error);
+            logger.error("Error al actualizar el usuario", error);
             throw error;
         }
     }

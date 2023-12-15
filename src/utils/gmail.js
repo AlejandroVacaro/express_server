@@ -5,7 +5,7 @@ import { gmailTransporter } from '../config/gmail.config.js';
 
 export const generateEmailWithToken = (email, expireTime) => {
     // Gereramos el token con el email y el tiempo de expiración.
-    const token = jwt.sign({email}, config.gmail.secretToken, {expiresIn: expireTime});
+    const token = jwt.sign({ email }, config.gmail.secretToken, { expiresIn: expireTime });
     return token;
 };
 
@@ -28,7 +28,7 @@ export const recoveryEmail = async (req, email, emailtoken) => {
             `,
         });
     } catch (error) {
-        console.log(`Error al enviar el email de recuperación de contraseña: ${error.message}`);
+        logger.errorlog(`Error al enviar el email de recuperación de contraseña: ${error.message}`);
     }
-}; 
+};
 

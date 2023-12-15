@@ -15,7 +15,7 @@ export class TicketsService {
             };
             return await this.createTicket(ticket);
         } catch (error) {
-            console.error("Error creating ticket:", error);
+            logger.error("Error creating ticket:", error);
             throw new Error('Error al crear el ticket');
         }
     };

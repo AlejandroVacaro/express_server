@@ -35,7 +35,7 @@ const addToCart = async (productId) => {
                 return;
             }
         } catch (error) {
-            console.error('Error:', error);
+            logger.error('Error:', error);
             alert('Error al crear un nuevo carrito.');
             return;
         }
@@ -58,7 +58,7 @@ const addToCart = async (productId) => {
             }
         })
         .catch(error => {
-            console.error('Error:', error);
+            logger.error('Error:', error);
             alert('Error al agregar el producto al carrito.');
         });
 }
