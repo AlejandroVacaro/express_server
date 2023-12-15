@@ -28,57 +28,38 @@ export class CartsController {
         }
     };
 
-    // Creamos controlador para añadir un producto a un carrito
+    // Controlador para añadir un producto a un carrito
     static addProductToCart = async (req, res, next) => {
         const cartId = req.params.cid;
         const productId = req.params.pid;
+        const userId = req.user._id; 
 
-        // Check if cartId is a valid ObjectId format
-        if (!cartId || cartId.length !== 24) {
-            const error = CustomError.createError({
-                name: 'InvalidCartId error',
-                cause: invalidCartIdError(cartId),
-                message: `El ID del carrito ${cartId} no es válido`,
-                errorCode: EError.INVALID_PARAM
-            });
-            return next(error);
+        // Verificar si cartId y productId son válidos
+        if (!cartId || cartId.length !== 24 || !productId || productId.length !== 24) {
+            return res.status(400).json({ error: 'ID de carrito o producto no válido' });
         }
 
         try {
-            const updatedCart = await CartsService.getCartById(cartId);
-
-            // Check if the cartId exists in the database
-            if (!updatedCart) {
-                const error = CustomError.createError({
-                    name: 'CartNotFound error',
-                    cause: invalidCartIdError(cartId),
-                    message: `El carrito con el ID ${cartId} no fue encontrado`,
-                    errorCode: EError.INVALID_PARAM
-                });
-                return next(error);
-            }
-
             const product = await ProductsService.getProductById(productId);
             if (!product) {
-                const error = CustomError.createError({
-                    name: 'ProductNotFound error',
-                    cause: invalidProductIdError(productId),
-                    message: `El producto con el ID ${productId} no fue encontrado`,
-                    errorCode: EError.INVALID_PARAM
-                });
-                return next(error);
+                return res.status(404).json({ error: 'Producto no encontrado' });
             }
 
-            // Check if product exists in the cart and update its quantity or add it
-            const productExists = updatedCart.products.find(p => p.productId && p.productId.toString() === productId.toString());
-            if (productExists) {
-                productExists.quantity += 1;
-            } else {
-                updatedCart.products.push({ productId, quantity: 1 });
+            // Verificar si el usuario es el propietario del producto y tiene rol premium
+            if (req.user.role === 'premium' && product.owner.toString() === userId.toString()) {
+                return res.status(403).json({ error: 'No puedes agregar tu propio producto al carrito' });
             }
-            res.json({ status: "success", data: updatedCart });
+
+            const cart = await CartsService.getCartById(cartId);
+            if (!cart) {
+                return res.status(404).json({ error: 'Carrito no encontrado' });
+            }
+
+            // Agregar el producto al carrito
+            const updatedCart = await CartsService.addProductToCart(cartId, productId);
+            res.json({ status: 'success', data: updatedCart });
         } catch (error) {
-            next(error); // Pass the error to the next middleware
+            next(error); 
         }
     };
 
