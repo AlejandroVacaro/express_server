@@ -35,7 +35,8 @@ export const initializePassport = () => {
                     last_name: last_name,
                     email: username,
                     password: await createHash(password),
-                    role: role
+                    role: role,
+                    avatar: req.file.filename
                 };
 
                 // Guardamos el nuevo usuario en la base de datos
@@ -61,6 +62,9 @@ export const initializePassport = () => {
                 }
                 // Verificamos si la contraseña es válida
                 if (isValidPassword(user, password)) {
+                    // Actualizamos la fecha de última conexión
+                    user.last_connection = new Date();
+                    await UsersService.updateUser(user._id, user);
                     return done(null, user);
                 } else {
                     return done(null, false, { message: 'Credenciales inválidas' });
@@ -86,6 +90,7 @@ export const initializePassport = () => {
                     // Creamos el nuevo usuario
                     const newUser = {
                         first_name: profile.username,
+                        last_name: profile.username,
                         email: profile.username,
                         password: await createHash(profile.id),
                     };

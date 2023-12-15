@@ -71,15 +71,25 @@ export class ProductsController {
     // Creamos controlador para eliminar un producto específico
     static deleteProduct = async (req, res) => {
         try {
-            const id = parseInt(req.params.pid);
+            const id = req.params.pid;
             const product = await ProductsService.getProductById(id);
             if (!product) {
                 return res.status(404).send({ error: 'Product does not exist' });
             }
-            await ProductsService.deleteProduct(id);
-            res.send({ status: 'success', message: 'Product deleted successfully' })
+            // Comprobar si el usuario es admin o si es el propietario del producto y tiene rol premium
+            const user = req.user;
+            const isOwner = user._id.toString() === product.owner.toString();
+            const isAdmin = user.role === 'admin';
+            const isPremium = user.role === 'premium';
+            // Si es admin o es el propietario del producto y tiene rol premium, se elimina el producto
+            if (isAdmin || (isPremium && isOwner)) {
+                await ProductsService.deleteProduct(id);
+                res.json({ status: 'success', message: 'Producto eliminado correctamente' });
+            } else {
+                res.json({ status: 'error', error: 'No tienes permisos para eliminar este producto' });
+            }
         } catch (error) {
             res.status(400).send({ status: 'error', error: 'Invalid request' });
         }
     };
-}
+};

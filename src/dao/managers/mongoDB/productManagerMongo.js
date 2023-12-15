@@ -67,4 +67,15 @@ export class productsDaoMongo {
             throw new Error(`Hubo un error al actualizar el stock del producto ${productId}`);
         }
     };
+
+    // Eliminar un producto de la base de datos
+    async deleteProduct(id) {
+        try {
+            const product = await this.model.findByIdAndDelete(id);
+            return product;
+        } catch (error) {
+            logger.error(error.message);
+            throw new Error('Hubo un error al eliminar el producto');
+        }
+    };
 };

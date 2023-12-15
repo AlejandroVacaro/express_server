@@ -1,3 +1,4 @@
+import multer from 'multer';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import bcrypt from 'bcrypt';
@@ -33,6 +34,73 @@ export const validateToken = (token) => {
         return null;
     }
 };
+
+
+// Función para validar los campos de un usuario
+const checkValidFields = (body) => {
+    const { first_name, last_name, email, password } = body;
+    if (!first_name || !last_name || !email || !password) {
+        return false;
+    }
+    return true;
+};
+
+// Filtro para validar los campos de un usuario
+const multerProfileFilter = (req, file, cb) => {
+    const valid = checkValidFields(req.body);
+    if (valid) {
+        cb(null, true);
+    } else {
+        cb(null, false);
+    }
+};
+
+// Configuración de multer para guardar imágenes de perfil de usuario
+const profileStorage = multer.diskStorage({
+    // Establecemos el almacenamiento de la imagen de perfil
+    destination: (req, file, cb) => {
+        cb(null, path.join(__dirname, '/multer/users/profiles'));
+    },
+    // Establecemos el nombre de la imagen de perfil
+    filename: (req, file, cb) => {
+        cb(null, `${req.body.email}-perfil-${file.originalname}`);
+    }
+});
+
+// Creamos uploader para la imagen de perfil
+export const profileUploader = multer({ storage: profileStorage, fileFilter: multerProfileFilter });
+
+
+// Configuración de multer para guardar imágenes de productos
+const productStorage = multer.diskStorage({
+    // Establecemos el almacenamiento de la imagen de producto
+    destination: (req, file, cb) => {
+        cb(null, path.join(__dirname, '/multer/products/img'));
+    },
+    // Establecemos el nombre de la imagen de producto
+    filename: (req, file, cb) => {
+        cb(null, `${req.body.code}-product-${file.originalname}`);
+    }
+});
+
+// Creamos uploader para la imagen de producto
+export const productUploader = multer({ storage: productStorage });
+
+
+// Configuración de multer para guardar documentos de usuario
+const documentStorage = multer.diskStorage({
+    // Establecemos el almacenamiento del documento
+    destination: (req, file, cb) => {
+        cb(null, path.join(__dirname, '/multer/users/documents'));
+    },
+    // Establecemos el nombre del documento
+    filename: (req, file, cb) => {
+        cb(null, `${req.body.email}-document-${file.originalname}`);
+    }
+});
+
+// Creamos uploader para el documento
+export const documentUploader = multer({ storage: documentStorage });
 
 
 

@@ -5,11 +5,12 @@ import { validateUserInput } from "../middlewares/validateUserInput.js";
 import { CustomError } from "../services/error/customError.service.js";
 import { invalidParamMsg } from "../services/error/invalidParamError.service.js";
 import { EError } from "../enums/EError.js";
+import { profileUploader } from "../utils.js";
 
 const router = Router();
 
 // Rutas para la creación de usuarios
-router.post("/signup", validateUserInput, passport.authenticate('singupStrategy', {
+router.post("/signup", profileUploader.single('avatar'), validateUserInput, passport.authenticate('singupStrategy', {
     failureRedirect: '/api/sessions/fail-signup'
 }), SessionsController.redirectLogin);
 
@@ -33,20 +34,7 @@ router.get("/github-callback", passport.authenticate("githubLoginStrategy", {
 }), SessionsController.renderProfile);
 
 // Rutas para el logout de usuarios
-router.get("/logout", (req, res) => {
-    //Eliminamos el req.user que crea Passport
-    req.logOut(error => {
-        if (error) {
-            return res.render("profile", { user: req.user, error: "No se pudo cerrar la sesion" });
-        } else {
-            // Elimina la sesión de la base de datos
-            req.session.destroy(error => {
-                if (error) return res.render("profile", { user: req.user, error: "No se pudo cerrar la sesion" });
-                res.redirect("/");
-            });
-        }
-    });
-});
+router.get("/logout", SessionsController.logout);
 
 // Ruta para obtener un usuario por el id
 router.get("/:uid", (req, res, next) => {

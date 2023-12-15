@@ -1,6 +1,6 @@
 import { UsersService } from "../services/users.service.js";
 import { generateEmailWithToken, recoveryEmail } from "../utils/gmail.js";
-import { validateToken, createHash} from "../utils.js";
+import { validateToken, createHash } from "../utils.js";
 
 export class SessionsController {
 
@@ -27,6 +27,20 @@ export class SessionsController {
     // Ruta para intentos fallidos de login con Github
     static failGithub = (req, res) => {
         res.send("<p>Ocurrió un error al iniciar sesión con Github, <a href='/'>intenta nuevamente</a>.</p>");
+    };
+
+    // Ruta para el logout de usuarios
+    static logout = async (req, res) => {
+        try {
+            const user = req.user;
+            user.last_connection = new Date();
+            await UsersService.updateUser(user._id, user);
+            await req.session.destroy();
+            res.redirect("/");
+        } catch (error) {
+            console.log(error);
+            res.send("<p>Ocurrió un error al cerrar sesión, <a href='/'>intenta nuevamente</a>.</p>");
+        }
     };
 
     // Ruta para solicitar reestablecer la contraseña

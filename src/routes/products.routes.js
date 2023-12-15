@@ -36,7 +36,7 @@ router.post('/', checkUserAuthenticated, checkUserRole(['admin', 'premium']), va
 // Ruta para actualizar un producto específico, solo para usuarios con rol admin
 router.put('/:pid', checkUserAuthenticated, checkUserRole(['admin']), ProductsController.updateProduct);
 
-// Ruta para eliminar un producto específico, solo para usuarios con rol admin
+// Ruta para eliminar un producto específico, solo para usuarios con rol admin o premium si es el dueño del producto
 router.delete('/:pid', checkUserAuthenticated, checkUserRole(['admin', 'premium']), ProductsController.deleteProduct);
 
 // Exportamos el enrutador para usarlo en otros módulos
