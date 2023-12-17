@@ -4,6 +4,7 @@ import { checkUserRole, checkUserAuthenticated } from '../middlewares/auth.js';
 import { createProductError } from '../services/error/createProductError.service.js';
 import { CustomError } from '../services/error/customError.service.js';
 import { EError } from '../enums/EError.js';
+import { productUploader } from '../utils.js';
 
 // Inicializamos el enrutador de Express y el administrador de productos
 const router = express.Router();
@@ -31,7 +32,7 @@ const validateFields = (req, res, next) => {
     }
 };
 // Ruta para añadir un nuevo producto, solo para usuarios con rol admin o premium
-router.post('/', checkUserAuthenticated, checkUserRole(['admin', 'premium']), validateFields, ProductsController.addProduct);
+router.post('/', checkUserAuthenticated, checkUserRole(['admin', 'premium']), validateFields, productUploader.single('thumbnail'), ProductsController.addProduct);
 
 // Ruta para actualizar un producto específico, solo para usuarios con rol admin
 router.put('/:pid', checkUserAuthenticated, checkUserRole(['admin']), ProductsController.updateProduct);

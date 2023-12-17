@@ -20,7 +20,7 @@ socket.on('productAdded', (updatedProducts) => {
             <p>ID: ${product.id}</p>
             <p>Descripción: ${product.description}</p>
             <p>Precio: ${product.price}</p>
-            <p>Miniatura:${product.thumbnails}</p>
+            <p>Miniatura:${product.thumbnail}</p>
             <p>Código: ${product.code}</p>
             <p>Stock: ${product.stock}</p>
             <p>Estado: ${product.status}</p>
@@ -43,7 +43,7 @@ socket.on('productDeleted', (response) => {
         <p>ID: ${product.id}</p>
         <p>Descripción: ${product.description}</p>
         <p>Precio: ${product.price}</p>
-        <p>Miniatura:${product.thumbnails}</p>
+        <p>Miniatura:${product.thumbnail}</p>
         <p>Código: ${product.code}</p>
         <p>Stock: ${product.stock}</p>
         <p>Estado: ${product.status}</p>
@@ -66,7 +66,7 @@ document.getElementById('addForm').addEventListener('submit', event => {
     const code = document.getElementById('code').value;
     const stock = document.getElementById('stock').value;
     const category = document.getElementById('category').value;
-    const thumbnails = document.getElementById('thumbnails').value;
+    const thumbnail = document.getElementById('thumbnail').value;
     const status = document.getElementById('status').value;
 
     // Hacemos un request POST al servidor con los datos del formulario
@@ -75,7 +75,7 @@ document.getElementById('addForm').addEventListener('submit', event => {
         headers: {
             'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ title, description, price, code, stock, category, thumbnails, status }),
+        body: JSON.stringify({ title, description, price, code, stock, category, thumbnail, status }),
     })
         .then(response => response.json())
         .then(data => logger.info(data))

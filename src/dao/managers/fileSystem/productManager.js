@@ -23,7 +23,7 @@ export class productsDao {
         }
     }
 
-    async addProduct(title, description, price, code, stock, category, thumbnails = "", status = true) {
+    async addProduct(title, description, price, code, stock, category, thumbnail = "", status = true) {
 
         let newId = uuid4(); //Generación de un Id aleatorio utilizando la librería "uuid"
 
@@ -44,7 +44,7 @@ export class productsDao {
             code: code.trim(),
             stock: stock,
             category: category.trim(),
-            thumbnails: thumbnails ? thumbnails.trim() : "",
+            thumbnail: thumbnail ? thumbnail.trim() : "",
             status: status
         };
 

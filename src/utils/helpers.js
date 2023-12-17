@@ -1,7 +1,7 @@
-import {faker} from '@faker-js/faker';
+import { faker } from '@faker-js/faker';
 
 //Desestructuración de Faker para obtener los métodos que necesitamos
-const {database, commerce, string, image} = faker;
+const { database, commerce, string, image } = faker;
 
 // Configuración de Faker para que genere productos random
 export const generateRandomProducts = () => {
@@ -13,7 +13,7 @@ export const generateRandomProducts = () => {
         code: string.alphanumeric(7),
         stock: parseInt(string.numeric(3)),
         category: 'Comestibles',
-        thumbnails: image.url(),
+        thumbnail: image.url(),
         status: true
     };
 };

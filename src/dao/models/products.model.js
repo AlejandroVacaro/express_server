@@ -32,7 +32,7 @@ const productsSchema = new mongoose.Schema({
         required: true,
         enum: ['Bebidas', 'Higiene', 'Frutas y verduras', 'Panadería', 'Comestibles']
     },
-    thumbnails: {
+    thumbnail: {
         type: String
     },
     status: {

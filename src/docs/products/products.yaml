@@ -15,7 +15,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Product'
+                  $ref: "#/components/schemas/Product"
         400:
           description: Error en la solicitud
         500:
@@ -35,7 +35,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Product'
+              $ref: "#/components/schemas/Product"
       responses:
         200:
           description: Producto añadido con éxito
@@ -64,7 +64,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Product'
+                $ref: "#/components/schemas/Product"
         404:
           description: Producto no encontrado
         500:
@@ -90,7 +90,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Product'
+              $ref: "#/components/schemas/Product"
       responses:
         200:
           description: Producto actualizado con éxito
@@ -146,7 +146,7 @@ components:
         category:
           type: string
           description: Categoría del producto
-        thumbnails:
+        thumbnail:
           type: string
           description: Imágenes miniatura del producto
         status:

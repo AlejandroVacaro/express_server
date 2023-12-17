@@ -88,19 +88,19 @@ export const productUploader = multer({ storage: productStorage });
 
 
 // Configuración de multer para guardar documentos de usuario
-const documentStorage = multer.diskStorage({
+const documentsStorage = multer.diskStorage({
     // Establecemos el almacenamiento del documento
     destination: (req, file, cb) => {
         cb(null, path.join(__dirname, '/multer/users/documents'));
     },
     // Establecemos el nombre del documento
     filename: (req, file, cb) => {
-        cb(null, `${req.body.email}-document-${file.originalname}`);
+        cb(null, `${req.user.email}-document-${file.originalname}`);
     }
 });
 
 // Creamos uploader para el documento
-export const documentUploader = multer({ storage: documentStorage });
+export const documentsUploader = multer({ storage: documentsStorage });
 
 
 
