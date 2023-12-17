@@ -55,12 +55,12 @@ export class ProductsController {
     };
 
     // Creamos controlador para actualizar el stock de un producto específico
-    static updateProductStock = async (req, res) => {
+    static updateProductPrice = async (req, res) => {
         try {
             const id = req.params.pid;
-            const { quantity } = req.body;
+            const { price } = req.body;
 
-            await ProductsService.updateProductStock(id, quantity);
+            await ProductsService.updateProductPrice(id, price);
             res.send({ status: 'success', message: 'Product updated successfully' })
 
         } catch (error) {

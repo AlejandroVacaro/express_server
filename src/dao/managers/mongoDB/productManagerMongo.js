@@ -52,6 +52,19 @@ export class productsDaoMongo {
         }
     };
 
+    // Actualizar el precio de un producto
+    async updateProductPrice(productId, price) {
+        try {
+            const product = await this.model.findById(productId);
+            product.price = price;
+            await product.save();
+            return product;
+        }
+        catch (error) {
+            logger.error(error.message);
+            throw new Error(`Hubo un error al actualizar el precio del producto ${productId}`);
+        }
+    };
 
     // Actualizar el stock de un producto
     async updateProductStock(productId, quantity) {
@@ -69,6 +82,8 @@ export class productsDaoMongo {
             throw new Error(`Hubo un error al actualizar el stock del producto ${productId}`);
         }
     };
+
+    
 
     // Eliminar un producto de la base de datos
     async deleteProduct(id) {

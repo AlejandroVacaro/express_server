@@ -34,8 +34,8 @@ const validateFields = (req, res, next) => {
 // Ruta para añadir un nuevo producto, solo para usuarios con rol admin o premium
 router.post('/', checkUserAuthenticated, checkUserRole(['admin', 'premium']), validateFields, productUploader.single('thumbnail'), ProductsController.addProduct);
 
-// Ruta para actualizar el stock un producto específico, solo para usuarios con rol admin
-router.put('/:pid', checkUserAuthenticated, checkUserRole(['admin']), ProductsController.updateProductStock);
+// Ruta para actualizar el precio un producto específico, solo para usuarios con rol admin
+router.put('/:pid', checkUserAuthenticated, checkUserRole(['admin']), ProductsController.updateProductPrice);
 
 // Ruta para eliminar un producto específico, solo para usuarios con rol admin o premium si es el dueño del producto
 router.delete('/:pid', checkUserAuthenticated, checkUserRole(['admin', 'premium']), ProductsController.deleteProduct);
