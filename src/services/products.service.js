@@ -33,9 +33,9 @@ export class ProductsService {
     };
 
     // Servicio para actualizar un producto específico
-    static updateProduct = async (id, product) => {
+    static updateProductStock = async (id, quantity) => {
         try {
-            const isUpdated = await productsDao.updateProduct(id, product);
+            const isUpdated = await productsDao.updateProductStock(id, quantity);
             return isUpdated;
         } catch (error) {
             throw error;
