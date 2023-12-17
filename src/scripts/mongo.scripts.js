@@ -1,6 +1,9 @@
 import mongoose from "mongoose";
 import { config } from "../config/config.js";
 import { productsModel } from "../dao/models/products.model.js";
+import { addLogger } from './utils/loggers.js';
+
+const logger = addLogger();
 
 
 const updateProducts = async () => {

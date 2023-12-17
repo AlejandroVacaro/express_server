@@ -1,6 +1,9 @@
 import { UsersService } from "../services/users.service.js";
 import { generateEmailWithToken, recoveryEmail } from "../utils/gmail.js";
 import { validateToken, createHash, isValidPassword } from "../utils.js";
+import { addLogger } from '../utils/loggers.js';
+
+const logger = addLogger();
 
 export class SessionsController {
 

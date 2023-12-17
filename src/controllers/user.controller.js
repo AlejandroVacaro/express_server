@@ -1,8 +1,9 @@
 import UserDTO from "../dao/models/user.dto.js";
 import express from "express";
 import { UsersService } from "../services/users.service.js";
-import { Logger } from "winston";
-import e from "express";
+import { addLogger } from '../utils/loggers.js';
+
+const logger = addLogger();
 
 const router = express.Router();
 
@@ -21,26 +22,33 @@ export class UserController {
             // Verificamos que el usuario exista
             const user = await UsersService.getUserById(userId);
             const userRole = user.role;
-            // Validación del estado del usuario
-            if (user.status === 'completo' && user.documents.length >= 3) {
-                // Validación del rol actual del usuario y el rol que se quiere asignar
+
+            // Cambiar de 'user' a 'premium'
             if (userRole === 'user') {
-                user.role = 'premium';
-            } else if (userRole === 'premium') {
+                if (user.status === 'completo' && user.documents.length >= 3) {
+                    user.role = 'premium';
+                    await UsersService.updateUser(user._id, user);
+                    return res.json({ status: 'success', message: 'El rol del usuario ha sido modificado a premium con éxito' });
+                } else {
+                    return res.json({ status: 'error', message: 'El usuario no cumple con los requisitos para ser premium' });
+                }
+            }
+
+            // Cambiar de 'premium' a 'user'
+            if (userRole === 'premium') {
                 user.role = 'user';
-            } else {
-                return res.json({ status: 'error', message: 'No se puede cambiar el rol de este usuario' });
-            };
-            // Actualizamos el usuario en la base de datos
-            await UsersService.updateUser(user._id, user);
-            res.json({ status: 'success', message: `El rol del usuario ha sido modificado a ${user.role} con éxito` });
-            } else {
-                res.json({ status: 'error', message: 'El usuario no ha completado su registro' });
-            };
+                await UsersService.updateUser(user._id, user);
+                return res.json({ status: 'success', message: 'El rol del usuario ha sido modificado a user con éxito' });
+            }
+
+            // Si el usuario no es ni 'user' ni 'premium' (sería 'admin')
+            return res.json({ status: 'error', message: 'No se puede cambiar el rol de este usuario' });
+
         } catch (error) {
             res.json({ status: 'error', message: error.message });
         }
     };
+
 
     // Método para cargar los documentos de un usuario
     static uploadDocuments = async (req, res) => {
@@ -73,7 +81,7 @@ export class UserController {
             const result = await UsersService.updateUser(user._id, user);
             res.json({ status: 'success', data: result, message: 'Documentos cargados con éxito' });
         } catch (error) {
-            loggers.error(error.message);
+            logger.error(error.message);
             res.json({ status: 'error', message: 'No se pudieron cargar los documentos' });
         }
     };

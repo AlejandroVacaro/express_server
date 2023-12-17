@@ -1,4 +1,7 @@
 import { tickestsDao } from '../dao/index.js';
+import { addLogger } from '../utils/loggers.js';
+
+const logger = addLogger();
 
 export class TicketsService {
     static async createTicket(ticketInfo) {

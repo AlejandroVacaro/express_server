@@ -1,6 +1,6 @@
 import { Server } from "socket.io";
 import { chatManagerMongo } from "../dao/managers/mongoDB/chatManagerMongo.js";
-import { addLogger } from "../utils/loggers.js";
+import { addLogger } from '../utils/loggers.js';
 
 const logger = addLogger();
 

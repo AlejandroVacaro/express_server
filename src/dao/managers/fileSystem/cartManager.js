@@ -1,4 +1,7 @@
 import fs from 'fs';
+import { addLogger } from './utils/loggers.js';
+
+const logger = addLogger();
 
 // Clase para gestionar la funcionalidad de los carritos
 class CartManager {

@@ -1,4 +1,7 @@
 import { usersModel } from "../../models/users.model.js";
+import { addLogger } from '../../../utils/loggers.js';
+
+const logger = addLogger();
 
 // Clase para manejar los usuarios en la base de datos
 export class UsersManagerMongo {

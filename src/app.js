@@ -104,3 +104,6 @@ app.use(errorHandler);
 
 // Configuración de Swagger para la documentación de la API
 app.use('/api/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpecs));
+
+// Se exporta la aplicación para poder testearla
+export default app;

@@ -4,6 +4,9 @@ import { fileURLToPath } from 'url';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import { config } from './config/config.js';
+import { addLogger } from './utils/loggers.js';
+
+const logger = addLogger();
 
 export const __dirname = path.dirname(fileURLToPath(import.meta.url));
 // Importamos el módulo 'path' de Node.js, el cual proporciona utilidades para trabajar con rutas de archivos y directorios.

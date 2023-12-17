@@ -1,5 +1,5 @@
 import { productsModel } from "../../models/products.model.js";
-import { addLogger } from "../../../utils/loggers.js";
+import { addLogger } from '../../../utils/loggers.js';
 
 const logger = addLogger();
 

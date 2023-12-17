@@ -1,8 +1,5 @@
 import { CartsService } from '../services/carts.service.js';
 import { ProductsService } from '../services/products.service.js';
-import { CustomError } from '../services/error/customError.service.js';
-import { EError } from '../enums/EError.js';
-import { invalidCartIdError, invalidProductIdError } from '../services/error/addProductToCartError.service.js';
 
 export class CartsController {
 

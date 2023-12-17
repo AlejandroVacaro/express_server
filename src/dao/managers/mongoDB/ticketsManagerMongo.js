@@ -1,5 +1,5 @@
 import {ticketsModel} from '../../models/tickets.model.js';
-import {addLogger} from '../../../utils/loggers.js';
+import { addLogger } from '../../../utils/loggers.js';
 
 const logger = addLogger();
 

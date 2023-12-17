@@ -1,6 +1,9 @@
 import jwt from 'jsonwebtoken';
 import { config } from '../config/config.js';
 import { gmailTransporter } from '../config/gmail.config.js';
+import { addLogger } from './loggers.js';
+
+const logger = addLogger();
 
 
 export const generateEmailWithToken = (email, expireTime) => {
