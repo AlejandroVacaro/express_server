@@ -58,9 +58,9 @@ export class ProductsController {
     static updateProductStock = async (req, res) => {
         try {
             const id = req.params.pid;
-            const productUpdates = req.body;
+            const { quantity } = req.body;
 
-            await ProductsService.updateProductStock(id, productUpdates);
+            await ProductsService.updateProductStock(id, quantity);
             res.send({ status: 'success', message: 'Product updated successfully' })
 
         } catch (error) {
