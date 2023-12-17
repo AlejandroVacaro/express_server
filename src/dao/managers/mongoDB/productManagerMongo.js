@@ -42,7 +42,6 @@ export class productsDaoMongo {
 
     // Obtener un producto por id  
     async getProductById(id) {
-        console.log(id);
         try {
             const product = await this.model.findById(id);
             return product;

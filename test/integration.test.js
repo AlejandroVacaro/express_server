@@ -15,42 +15,41 @@ describe("API Integration Tests", function () {
     let userToken = '';
 
     before(async () => {
-        // Hardcoded user credentials
+        
         const testUserCredentials = {
-            email: "avacaro@outlook.com", // Replace with your hardcoded user's email
-            password: "coder" // Replace with your hardcoded user's password
+            email: "avacaro@outlook.com",
+            password: "coder" 
         };
 
-        // Log in to get the authentication cookie
+        // Prueba de login
         const loginResponse = await requester
-            .post('/api/sessions/login') // Ensure this is the correct login endpoint
+            .post('/api/sessions/login') 
             .send(testUserCredentials);
 
-        expect(loginResponse.status).to.equal(200); // Or the status code your login endpoint returns on success
+        expect(loginResponse.status).to.equal(200); 
 
     });
 
-    // Tests for Carts Routes
+    //Pruebas para Rutas de Carritos.
     describe("Carts Routes", function () {
         this.timeout(10000);
 
-        // Test 1: Create a new cart
+        // Prueba 1: Crear un carrito nuevo.
         it("should create a new cart", async () => {
             const response = await requester.post("/api/carts")
                 .set('Authorization', `Bearer ${userToken}`);
             expect(response.status).to.equal(200);
-            console.log(response.body);
             expect(response.body).to.have.property("data");
         });
 
-        // Test 2: Retrieve a cart by ID
+        // Prueba 2: Recuperar un carrito por su ID.
         it("should retrieve a cart by ID", async () => {
-            // Create a cart first
+            // Crear un carrito nuevo
             const cartResponse = await requester.post("/api/carts")
                 .set('Authorization', `Bearer ${userToken}`);
-            const cartId = cartResponse.body.data._id; // Capture the cart ID
+            const cartId = cartResponse.body.data._id;
 
-            // Retrieve the created cart
+            // Recuperar el carrito por su ID
             const response = await requester.get(`/api/carts/${cartId}`)
                 .set('Authorization', `Bearer ${userToken}`);
             expect(response.status).to.equal(200);
@@ -58,7 +57,7 @@ describe("API Integration Tests", function () {
             expect(response.body.data).to.have.property("_id", cartId);
         });
 
-        // Test 3: Delete a cart
+        // Prueba 3: Eliminar un carrito por su ID.
         it("should delete a cart", async () => {
             const cartResponse = await requester.post("/api/carts")
                 .set('Authorization', `Bearer ${userToken}`);
@@ -70,13 +69,13 @@ describe("API Integration Tests", function () {
         });
     });
 
-    // Tests for Products Routes
+    // Pruebas para Rutas de Productos.
     describe("Products Routes", function () {
         this.timeout(10000);
 
         const generateUniqueCode = () => `SP${Date.now()}`;
 
-        // Test 1: Create a new product
+        // Prueba 1: Crear un producto nuevo.
         it("should create a new product", async () => {
             const productMock = {
                 title: "Sample Product",
@@ -95,8 +94,7 @@ describe("API Integration Tests", function () {
             expect(createResponse.body).to.have.property("message", "Product added successfully");
         });
 
-        // Test 2: Retrieve a product by ID
-        // Hardcoded _id of the product you want to test
+        // Prueba 2: Recuperar un producto por su ID.
         const hardcodedProductId = "64dadcdd097f2828ab742b69";
         it("should retrieve a product by ID", async () => {
             const response = await requester.get(`/api/products/${hardcodedProductId}`)
@@ -107,82 +105,76 @@ describe("API Integration Tests", function () {
         });
 
 
-        // Test 3: Update a product
-        it("should update a product", async () => {
-            // Create a new instance of requester that will retain cookies
+        // Función para generar un precio aleatorio.
+        const generateRandomPrice = () => Math.floor(Math.random() * 500) + 10;
+
+        // Prueba 3: Actualizar el precio de un producto.
+        it("should update the price of a product", async () => {
+            // Crea un agente de supertest para simular la sesión de un usuario específico
             const requesterForUpdate = supertest.agent(app);
-    
-            // User credentials for a user with permissions to update the product
+
+            // Credenciales de usuario para la sesión de prueba
             const userCredentialsForUpdate = {
                 email: "avacaro@coder.com",
                 password: "coder"
             };
-    
-            // Log in as the specific user for this test
+
+            // Inicia sesión con el usuario específico
             const loginResponse = await requesterForUpdate
                 .post('/api/sessions/login')
                 .send(userCredentialsForUpdate);
-    
+
             expect(loginResponse.status).to.equal(200);
-    
-            const hardcodedProductId = "64dadcdd097f2828ab742b69"; // Hardcoded product ID
-            const updatedProductDetails = {
-                title: "Updated Product",
-                description: "Updated Description",
-                price: 150,
-                // other fields to update
-            };
-    
-            // Update the product using the specific user's session
+
+            const hardcodedProductId = "64dadcdd097f2828ab742b69"; 
+            const newPrice = generateRandomPrice(); 
+
+            // Actualiza el precio del producto
             const updateResponse = await requesterForUpdate
                 .put(`/api/products/${hardcodedProductId}`)
-                .send(updatedProductDetails);
-    
-            expect(updateResponse.status).to.equal(200); // Assuming 200 for successful update
-    
-            // Optionally, retrieve the product again to verify updates
+                .send({ price: newPrice });
+
+            expect(updateResponse.status).to.equal(200); 
+
+            // Actualiza el precio del producto
             const response = await requesterForUpdate.get(`/api/products/${hardcodedProductId}`);
-            expect(response.body).to.include(updatedProductDetails); // Validate the response includes updated product details
+            expect(response.body).to.have.property("price", newPrice); 
         });
 
-        // Tests for Sessions Routes
+        // Pruebas para las rutas de sesiones.
         describe("Sessions Routes", function () {
             this.timeout(10000);
 
-            // Assuming you have a hardcoded user for testing
             const testUserCredentials = {
-                email: "avacaro@outlook.com", // Replace with your test user's email
-                password: "coder" // Replace with your test user's password
+                email: "avacaro@outlook.com",
+                password: "coder"
             };
 
-            // Test 1: User login
+            // Prueba 1: Iniciar sesión.
             it("should log in a user", async () => {
                 const response = await requester.post("/api/sessions/login").send(testUserCredentials);
                 expect(response.status).to.equal(200);
-                // Check for set-cookie header if your login response sets a cookie
+                // Comprueba que la respuesta incluya una cookie de sesión
                 expect(response.headers).to.have.property("set-cookie");
             });
 
-            // Test 2: User logout
+            // Prueba 2: Cerrar sesión.
             it("should log out a user", async () => {
-                // // First, log in to establish a session
-                // await requester.post("/api/sessions/login").send(testUserCredentials);
 
-                // Then, attempt to log out
+                // Cierra la sesión del usuario
                 const response = await requester.get("/api/sessions/logout");
                 const redirectUrl = response.headers['location'];
                 expect(response.status).to.equal(302);
                 expect(redirectUrl).to.equal("/");
             });
 
-            // Test 3: Invalid login attempt
+            // Prueba 3: Iniciar sesión con credenciales inválidas.
             it("should not log in with invalid credentials", async () => {
                 const invalidCredentials = {
                     email: "wrong@example.com",
                     password: "incorrect"
                 };
                 const response = await requester.post("/api/sessions/login").send(invalidCredentials);
-                console.log(response.body);
                 expect(response.status).to.equal(302);
             });
         });
