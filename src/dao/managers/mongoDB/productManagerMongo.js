@@ -42,6 +42,7 @@ export class productsDaoMongo {
 
     // Obtener un producto por id  
     async getProductById(id) {
+        console.log(id);
         try {
             const product = await this.model.findById(id);
             return product;
@@ -50,6 +51,7 @@ export class productsDaoMongo {
             throw new Error('Hubo un error al obtener el producto');
         }
     };
+
 
     // Actualizar el stock de un producto
     async updateProductStock(productId, quantity) {

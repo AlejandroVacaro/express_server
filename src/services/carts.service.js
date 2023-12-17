@@ -8,7 +8,7 @@ const cartManager = new CartManagerMongo();
 export class CartsService {
 
     //Servicio para crear un carrito
-    static cartCreated = async (cartInfo) => {
+    static cartCreate = async (cartInfo) => {
         return await cartManager.save(cartInfo);
     };
 

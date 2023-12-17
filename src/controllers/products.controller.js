@@ -22,7 +22,7 @@ export class ProductsController {
     // Creamos controlador para obtener un producto específico por ID
     static getProductById = async (req, res) => {
         try {
-            const id = parseInt(req.params.pid);
+            const id = req.params.pid;
             const product = await ProductsService.getProductById(id);
 
             if (!product) {
@@ -57,14 +57,15 @@ export class ProductsController {
     // Creamos controlador para actualizar un producto específico
     static updateProduct = async (req, res) => {
         try {
-            const id = parseInt(req.params.pid);
+            const id = req.params.pid;
             const productUpdates = req.body;
 
             await ProductsService.updateProduct(id, productUpdates);
             res.send({ status: 'success', message: 'Product updated successfully' })
 
         } catch (error) {
-            res.status(400).send({ status: 'error', error: 'Invalid request' });
+            console.error('Error al actualizar el producto:', error);
+            res.status(400).send({ status: 'error', error: 'Invalid request', details: error.message });
         }
     };
 

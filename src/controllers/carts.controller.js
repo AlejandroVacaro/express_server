@@ -7,7 +7,7 @@ export class CartsController {
     static createCart = async (req, res) => {
         try {
             const newCart = req.body;
-            const cartCreated = await CartsService.save(newCart);
+            const cartCreated = await CartsService.cartCreate(newCart);
             res.json({ status: "success", data: cartCreated });
         } catch (error) {
             res.json({ status: "error", message: error.message });
