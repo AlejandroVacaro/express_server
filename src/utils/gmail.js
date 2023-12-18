@@ -35,3 +35,17 @@ export const recoveryEmail = async (req, email, emailtoken) => {
     }
 };
 
+// Función para enviar mails sin token.
+export const sendEmail = async (req, email, subject, message) => {
+    try {
+        await gmailTransporter.sendMail({
+            from: config.gmail.account,
+            to: email,
+            subject: subject,
+            html: message,
+        });
+    } catch (error) {
+        logger.errorlog(`Error al enviar el email: ${error.message}`);
+    }
+};
+

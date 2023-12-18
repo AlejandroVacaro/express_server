@@ -15,4 +15,10 @@ router.put ('/:uid/documents', documentsUploader.fields([
     { name: 'estadoDeCuenta', maxCount: 1 }
 ]), UserController.uploadDocuments);
 
+// Ruta para obtener todos los usuarios
+router.get('/', checkUserRole('[admin]'), UserController.getAllUsers);
+
+// Ruta para eliminar los usuarios que no hayan tenido actividad en los últimos 2 días
+router.delete('/inactive', checkUserRole('[admin]'), UserController.deleteInactiveUsers);
+
 export { router as usersRouter }

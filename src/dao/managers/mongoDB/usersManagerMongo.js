@@ -54,5 +54,23 @@ export class UsersManagerMongo {
             logger.error("Error al actualizar el usuario", error);
             throw error;
         }
-    }
+    };
+
+    // Función para obtener todos los usuarios inactivos en los últimos 2 días
+    async getInactiveUsers(date) {
+        try {
+            return await this.model.find({ last_connection: { $lte: date } });
+        } catch (error) {
+            throw error;
+        }
+    };
+
+    // Función para eliminar un usuario por id
+    async delete(userId) {
+        try {
+            return this.model.findByIdAndDelete(userId);
+        } catch (error) {
+            throw error;
+        }
+    };
 };

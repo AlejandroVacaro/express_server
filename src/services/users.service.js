@@ -21,4 +21,14 @@ export class UsersService {
     static updateUser = async (userId, userInfo) => {
         return await usersDao.update(userId, userInfo);
     };
+
+    // Servicio para obtener todos los usuarios inactivos
+    static getInactiveUsers = async (date) => {
+        return await usersDao.getInactiveUsers(date);
+    };
+
+    // Servicio para eliminar un usuario por id
+    static deleteUserById = async (id) => {
+        return await usersDao.delete(id);
+    };
 }

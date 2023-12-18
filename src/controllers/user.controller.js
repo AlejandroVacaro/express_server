@@ -2,6 +2,7 @@ import UserDTO from "../dao/models/user.dto.js";
 import express from "express";
 import { UsersService } from "../services/users.service.js";
 import { addLogger } from '../utils/loggers.js';
+import { sendEmail } from "../utils/gmail.js";
 
 const logger = addLogger();
 
@@ -83,6 +84,36 @@ export class UserController {
         } catch (error) {
             logger.error(error.message);
             res.json({ status: 'error', message: 'No se pudieron cargar los documentos' });
+        }
+    };
+
+    // Método para obtener todos los usuarios
+    static getAllUsers = async (req, res) => {
+        try {
+            const users = await UsersService.getAllUsers();
+            const usersDTO = users.map(user => new UserDTO(user));
+            res.json({ status: 'success', data: usersDTO });
+        } catch (error) {
+            res.json({ status: 'error', message: error.message });
+        }
+    };
+
+    // Método para eliminar los usuarios que no hayan tenido actividad en los últimos 2 días
+    static deleteInactiveUsers = async (req, res) => {
+        try {
+            // Obtenemos la fecha de hace 2 días para comparar con la fecha de última actividad
+            const twoDaysAgo = new Date(new Date().setDate(new Date().getDate() - 2));
+            const inactiveUsers = await UsersService.getInactiveUsers(twoDaysAgo);
+
+            for (const user of inactiveUsers) {
+                // Eliminamos los documentos de cada usuario inactivo y enviamos un email informando la eliminación
+                for (const doc of user.documents) {
+                    await UsersService.deleteUserById(doc._id);
+                    sendEmail(req, user.email, 'Cuenta eliminada por inactividad', 'Lamentamos informarle que su cuenta ha sido eliminada por inactividad mayor a 2 días.');
+                }
+            };
+        } catch (error) {
+            res.json({ status: 'error', message: error.message });
         }
     };
 };
