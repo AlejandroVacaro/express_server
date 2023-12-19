@@ -9,12 +9,12 @@ const logger = addLogger();
 const updateProducts = async () => {
     try {
         await mongoose.connect(config.mongo.url);
-        logger.errorlog("base de datos conectada");
+        logger.error("base de datos conectada");
         const adminId = "651f7435e568328697780377";
         const result = await productsModel.updateMany({}, { $set: { owner: adminId } });
-        logger.errorlog(result);
+        logger.error(result);
     } catch (error) {
-        logger.errorlog(error);
+        logger.error(error);
     } finally {
         await mongoose.connection.close();
     }

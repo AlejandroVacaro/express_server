@@ -21,4 +21,7 @@ router.get('/', checkUserRole('[admin]'), UserController.getAllUsers);
 // Ruta para eliminar los usuarios que no hayan tenido actividad en los últimos 2 días
 router.delete('/inactive', checkUserRole('[admin]'), UserController.deleteInactiveUsers);
 
+// Ruta para eliminar un usuario
+router.delete('/:uid', checkUserRole('[admin]'), UserController.deleteUser);
+
 export { router as usersRouter }

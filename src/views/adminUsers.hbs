@@ -1,0 +1,48 @@
+<header>
+  <a href="/home">
+    Inicio
+  </a>
+  <a href="/perfil">
+    Perfil
+  </a>
+  <a href="/api/sessions/logout">
+    Cerrar sesion
+  </a>
+</header>
+
+{{!-- Contenido principal --}}
+<main>
+  <h1>Panel de Administración de usuarios</h1>
+
+  {{!-- Lista de usuarios --}}
+  <table>
+    <h2>Gestión individual de usuarios</h2>
+    <thead>
+      <tr>
+        <th>Nombre</th>
+        <th>Email</th>
+        <th>Rol</th>
+        <th>ID</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      {{#each users}}
+        <tr>
+          <td>{{this.first_name}}</td>
+          <td>{{this.email}}</td>
+          <td>{{this.role}}</td>
+          <td>{{this._id}}</td>
+          <td>
+            <!-- Botón para modificar el rol -->
+            <button onclick="modifyRole('{{this._id}}')">Modificar Rol</button>
+            <!-- Botón para eliminar -->
+            <button onclick="deleteUser('{{this._id}}')">Eliminar</button>
+          </td>
+        </tr>
+      {{/each}}
+    </tbody>
+  </table>
+  {{!-- Botón para eliminar usuarios inactivos --}}
+  <h3>Eliminar masivamente usuarios inactivos por más de 2 días</h3>
+<button onclick="deleteInactiveUsers()">Eliminar Usuarios</button>

@@ -119,5 +119,14 @@ export class ViewsController {
         res.render('resetPassword', { token });
     };
 
+    // Creamos controlador para renderizar la vista de Administración de usuarios
+    static renderAdminUsers = (req, res) => {
+        if (req.user.role === 'admin') {
+            res.render('adminUsers');
+        } else {
+            res.redirect('/');
+        }
+    };
+
 };
 

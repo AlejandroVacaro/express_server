@@ -41,7 +41,7 @@ export class SessionsController {
             await req.session.destroy();
             res.redirect("/");
         } catch (error) {
-            logger.errorlog(error);
+            logger.error(error);
             res.send("<p>Ocurrió un error al cerrar sesión, <a href='/'>intenta nuevamente</a>.</p>");
         }
     };

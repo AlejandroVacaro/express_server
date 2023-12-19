@@ -31,7 +31,7 @@ export const recoveryEmail = async (req, email, emailtoken) => {
             `,
         });
     } catch (error) {
-        logger.errorlog(`Error al enviar el email de recuperación de contraseña: ${error.message}`);
+        logger.error(`Error al enviar el email de recuperación de contraseña: ${error.message}`);
     }
 };
 
@@ -45,7 +45,7 @@ export const sendEmail = async (req, email, subject, message) => {
             html: message,
         });
     } catch (error) {
-        logger.errorlog(`Error al enviar el email: ${error.message}`);
+        logger.error(`Error al enviar el email: ${error.message}`);
     }
 };
 
