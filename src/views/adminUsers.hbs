@@ -46,3 +46,34 @@
   {{!-- Botón para eliminar usuarios inactivos --}}
   <h3>Eliminar masivamente usuarios inactivos por más de 2 días</h3>
 <button onclick="deleteInactiveUsers()">Eliminar Usuarios</button>
+
+
+<script>
+  function modifyRole(userId) {
+    
+  }
+
+  function deleteUser(userId) {
+    if (confirm('¿Estás seguro de que quieres eliminar este usuario?')) {
+      fetch(`/api/users/${userId}`, { method: 'DELETE' })
+        .then(response => response.json())
+        .then(data => {
+          alert(data.message);
+          window.location.reload();
+        })
+        .catch(error => console.error('Error:', error));
+    }
+  }
+
+  function deleteInactiveUsers() {
+    if (confirm('¿Estás seguro de que quieres eliminar todos los usuarios inactivos?')) {
+      fetch('/api/users/inactive', { method: 'DELETE' })
+        .then(response => response.json())
+        .then(data => {
+          alert(data.message);
+          window.location.reload();
+        })
+        .catch(error => console.error('Error:', error));
+    }
+  }
+</script>

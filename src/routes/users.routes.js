@@ -6,7 +6,7 @@ import { documentsUploader } from '../utils.js';
 const router = Router();
 
 // Ruta para modificar el rol de un usuario a premium
-router.post ('/premium/:uid', checkUserRole('[admin]'), UserController.modifyRole);
+router.post ('/premium/:uid', checkUserRole(['admin']), UserController.modifyRole);
 
 // Ruta para cargar los documentos de un usuario
 router.put ('/:uid/documents', documentsUploader.fields([

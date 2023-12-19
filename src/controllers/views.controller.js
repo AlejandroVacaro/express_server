@@ -1,5 +1,6 @@
 import { productsDao } from '../dao/index.js';
 import { addLogger } from '../utils/loggers.js';
+import { UsersService } from '../services/users.service.js';
 
 const logger = addLogger();
 
@@ -119,14 +120,18 @@ export class ViewsController {
         res.render('resetPassword', { token });
     };
 
-    // Creamos controlador para renderizar la vista de Administración de usuarios
-    static renderAdminUsers = (req, res) => {
-        if (req.user.role === 'admin') {
-            res.render('adminUsers');
+     // Método para renderizar la vista de Administración de usuarios
+     static renderAdminUsers = async (req, res) => {
+        if (req.user && req.user.role === 'admin') {
+            try {
+                const users = await UsersService.getAllUsers();
+                res.render('adminUsers', { users: users });
+            } catch (error) {
+                res.status(500).send('Error al obtener los usuarios');
+            }
         } else {
             res.redirect('/');
         }
     };
-
 };
 

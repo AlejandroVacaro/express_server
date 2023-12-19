@@ -2,6 +2,11 @@ import { usersDao } from '../dao/index.js';
 
 export class UsersService {
 
+    // Servicio para obtener todos los usuarios
+    static getAllUsers = async () => {
+        return await usersDao.getAll();
+    };
+
     // Servicio para obtener todos los usuarios por email/username
     static getUserByEmail = async (username) => {
         return await usersDao.getByEmail(username);

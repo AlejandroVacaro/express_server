@@ -9,6 +9,16 @@ export class UsersManagerMongo {
         this.model = usersModel;
     };
 
+    // Función para obtener todos los usuarios
+    async getAll() {
+        try {
+            const users = await this.model.find();
+            return users;
+        } catch (error) {
+            throw error;
+        }
+    };
+
     // Función para guardar un nuevo usuario
     async save(user) {
         try {
