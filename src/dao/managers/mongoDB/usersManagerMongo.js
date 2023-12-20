@@ -12,7 +12,7 @@ export class UsersManagerMongo {
     // Función para obtener todos los usuarios
     async getAll() {
         try {
-            const users = await this.model.find();
+            const users = await this.model.find().lean();
             return users;
         } catch (error) {
             throw error;
