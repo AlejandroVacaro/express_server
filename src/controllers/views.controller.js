@@ -43,6 +43,8 @@ export class ViewsController {
                     lean: true
                 });
             const baseUrl = `${req.protocol}://${req.get("host")}${req.originalUrl}`
+            // Check if the user is an admin
+            const isAdmin = req.user && req.user.role === 'admin';
             const resultProductsView = {
                 status: "success",
                 payload: result.docs,
@@ -54,7 +56,8 @@ export class ViewsController {
                 nextPage: result.nextPage,
                 hasNextPage: result.hasNextPage,
                 nextLink: result.hasNextPage ? baseUrl.includes("page") ? baseUrl.replace(`page=${result.page}`, `page=${result.nextPage}`) : baseUrl.includes("?") ? baseUrl.concat(`&page=${result.nextPage}`) : baseUrl.concat(`?page=${result.nextPage}`) : null,
-                user: JSON.parse(JSON.stringify(req.user)) 
+                isAdmin: isAdmin,
+                user: JSON.parse(JSON.stringify(req.user))
             }
             //const userCartId = req.session.cartId;
             res.render('home', resultProductsView);
@@ -120,8 +123,8 @@ export class ViewsController {
         res.render('resetPassword', { token });
     };
 
-     // Método para renderizar la vista de Administración de usuarios
-     static renderAdminUsers = async (req, res) => {
+    // Método para renderizar la vista de Administración de usuarios
+    static renderAdminUsers = async (req, res) => {
         if (req.user && req.user.role === 'admin') {
             try {
                 const users = await UsersService.getAllUsers();
@@ -134,4 +137,3 @@ export class ViewsController {
         }
     };
 };
-

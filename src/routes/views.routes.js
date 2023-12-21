@@ -34,4 +34,3 @@ router.get('/reset-password', ViewsController.renderResetPassword);
 
 // Creamos una ruta GET para '/admin-users' para gestionar los usuarios
 router.get('/admin-users', checkUserAuthenticated, checkUserRole(['admin']), ViewsController.renderAdminUsers);
-

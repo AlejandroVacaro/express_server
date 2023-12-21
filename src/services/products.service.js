@@ -1,4 +1,5 @@
-import { productsDao } from '../dao/index.js';
+import { productsDao, usersDao } from '../dao/index.js';
+import { sendEmail } from '../utils/gmail.js';
 
 export class ProductsService {
 
@@ -45,9 +46,26 @@ export class ProductsService {
     // Servicio para eliminar un producto específico
     static deleteProduct = async (id) => {
         try {
+            // Recuperar el producto y su propietario
+            const product = await productsDao.getProductById(id);
+            const owner = await usersDao.getByID(product.owner);
+
+            // Chequear si el propietario es premium
+            const isPremiumUser = owner.isPremium || owner.role === 'premium';
+
+            // Borramos el producto
             const isDeleted = await productsDao.deleteProduct(id);
+
+            // Si el producto se borró y el propietario es premium, enviar un email de notificación
+            if (isDeleted && isPremiumUser) {
+                const subject = 'Notificación de producto eliminado';
+                const message = `<p>El producto "${product.title}" ha sido eliminado.</p>`;
+                await sendEmail(null, owner.email, subject, message);
+            }
+
             return isDeleted;
         } catch (error) {
+            console.error('Error deleting product:', error);
             throw error;
         }
     };

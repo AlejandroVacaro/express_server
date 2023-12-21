@@ -64,7 +64,7 @@ export class ProductsController {
             res.send({ status: 'success', message: 'Product updated successfully' })
 
         } catch (error) {
-            console.error('Error al actualizar el producto:', error);
+            consol.error('Error al actualizar el producto:', error);
             res.status(400).send({ status: 'error', error: 'Invalid request', details: error.message });
         }
     };

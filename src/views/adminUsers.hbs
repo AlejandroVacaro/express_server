@@ -2,7 +2,7 @@
   <a href="/home">
     Inicio
   </a>
-  <a href="/perfil">
+  <a href="/profile">
     Perfil
   </a>
   <a href="/api/sessions/logout">
@@ -49,10 +49,20 @@
 
 
 <script>
-  function modifyRole(userId) {
-    
-  }
 
+  // Función para modificar el rol de un usuario
+  function modifyRole(userId) {
+  fetch(`/premium/${userId}`, { method: 'POST' })
+    .then(response => response.json())
+    .then(data => {
+      alert(data.message);
+      window.location.reload();
+    })
+    .catch(error => console.error('Error:', error));
+};
+
+
+  // Función para eliminar un usuario
   function deleteUser(userId) {
     if (confirm('¿Estás seguro de que quieres eliminar este usuario?')) {
       fetch(`/api/users/${userId}`, { method: 'DELETE' })
@@ -63,8 +73,9 @@
         })
         .catch(error => console.error('Error:', error));
     }
-  }
+  };
 
+  // Función para eliminar usuarios inactivos
   function deleteInactiveUsers() {
     if (confirm('¿Estás seguro de que quieres eliminar todos los usuarios inactivos?')) {
       fetch('/api/users/inactive', { method: 'DELETE' })
@@ -75,5 +86,6 @@
         })
         .catch(error => console.error('Error:', error));
     }
-  }
+  };
+
 </script>
