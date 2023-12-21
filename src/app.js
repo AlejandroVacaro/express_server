@@ -105,5 +105,14 @@ app.use(errorHandler);
 // Configuración de Swagger para la documentación de la API
 app.use('/api/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpecs));
 
+// Configuración de variables globales para las vistas
+app.use((req, res, next) => {
+    if (req.user) {
+      res.locals.user = req.user;
+    }
+    next();
+  });
+  
+
 // Se exporta la aplicación para poder testearla
 export default app;

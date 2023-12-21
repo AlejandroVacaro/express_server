@@ -54,7 +54,7 @@ export class ViewsController {
                 nextPage: result.nextPage,
                 hasNextPage: result.hasNextPage,
                 nextLink: result.hasNextPage ? baseUrl.includes("page") ? baseUrl.replace(`page=${result.page}`, `page=${result.nextPage}`) : baseUrl.includes("?") ? baseUrl.concat(`&page=${result.nextPage}`) : baseUrl.concat(`?page=${result.nextPage}`) : null,
-                user: JSON.parse(JSON.stringify(req.user)) // Esto es para que el usuario se pueda ver en la vista
+                user: JSON.parse(JSON.stringify(req.user)) 
             }
             //const userCartId = req.session.cartId;
             res.render('home', resultProductsView);
@@ -90,7 +90,7 @@ export class ViewsController {
             for (let product of cart.products) {
                 const productDetails = await productsDao.getProductById(product._id);
                 detailedProducts.push({
-                    ...productDetails._doc, // _doc te da el objeto subyacente del documento Mongoose
+                    ...productDetails._doc,
                     quantity: product.quantity
                 });
             }
