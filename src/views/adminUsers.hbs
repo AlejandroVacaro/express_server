@@ -28,64 +28,94 @@
     </thead>
     <tbody>
       {{#each users}}
-        <tr>
-          <td>{{this.first_name}}</td>
-          <td>{{this.email}}</td>
-          <td>{{this.role}}</td>
-          <td>{{this._id}}</td>
-          <td>
-            <!-- Botón para modificar el rol -->
-            <button onclick="modifyRole('{{this._id}}')">Modificar Rol</button>
-            <!-- Botón para eliminar -->
-            <button onclick="deleteUser('{{this._id}}')">Eliminar</button>
-          </td>
-        </tr>
+      <tr>
+        <td>{{this.first_name}}</td>
+        <td>{{this.email}}</td>
+        <td>{{this.role}}</td>
+        <td>{{this._id}}</td>
+        <td>
+          <!-- Botón para modificar el rol -->
+          <button onclick="modifyRole('{{this._id}}')">Modificar Rol</button>
+          <!-- Botón para eliminar -->
+          <button onclick="deleteUser('{{this._id}}')">Eliminar</button>
+        </td>
+      </tr>
       {{/each}}
     </tbody>
   </table>
   {{!-- Botón para eliminar usuarios inactivos --}}
   <h3>Eliminar masivamente usuarios inactivos por más de 2 días</h3>
-<button onclick="deleteInactiveUsers()">Eliminar Usuarios</button>
+  <button onclick="deleteInactiveUsers()">Eliminar Usuarios</button>
 
 
-<script>
+  <script>
 
-  // Función para modificar el rol de un usuario
-  function modifyRole(userId) {
-  fetch(`/premium/${userId}`, { method: 'POST' })
-    .then(response => response.json())
-    .then(data => {
-      alert(data.message);
-      window.location.reload();
-    })
-    .catch(error => console.error('Error:', error));
-};
-
-
-  // Función para eliminar un usuario
-  function deleteUser(userId) {
-    if (confirm('¿Estás seguro de que quieres eliminar este usuario?')) {
-      fetch(`/api/users/${userId}`, { method: 'DELETE' })
-        .then(response => response.json())
+    function modifyRole(userId) {
+      fetch(`api/users/premium/${userId}`, { method: 'POST' })
+        .then(response => {
+          if (!response.ok) {
+            // Log and throw an error if the response status is not OK
+            console.error('Server responded with non-OK status:', response.status);
+            return response.text().then(text => { throw new Error(text) });
+          }
+          return response.json();
+        })
         .then(data => {
           alert(data.message);
           window.location.reload();
         })
-        .catch(error => console.error('Error:', error));
+        .catch(error => {
+          console.error('Error during fetch operation:', error);
+          alert('An error occurred: ' + error.message);
+        });
     }
-  };
 
-  // Función para eliminar usuarios inactivos
-  function deleteInactiveUsers() {
-    if (confirm('¿Estás seguro de que quieres eliminar todos los usuarios inactivos?')) {
-      fetch('/api/users/inactive', { method: 'DELETE' })
-        .then(response => response.json())
-        .then(data => {
-          alert(data.message);
-          window.location.reload();
-        })
-        .catch(error => console.error('Error:', error));
+    // Función para eliminar un usuario
+    function deleteUser(userId) {
+      if (confirm('¿Estás seguro de que quieres eliminar este usuario?')) {
+        fetch(`/api/users/${userId}`, { method: 'DELETE' })
+          .then(response => {
+            console.log('Response status:', response.status);
+            console.log('Response status text:', response.statusText);
+
+            if (!response.ok) {
+              // Si el estado de la respuesta no es OK, lanzamos un error
+              return response.text().then(text => { throw new Error(text) });
+            }
+
+            return response.json();
+          })
+          .then(data => {
+            console.log('Response data:', data);
+            alert(data.message);
+            window.location.reload();
+          })
+          .catch(error => {
+            console.error('Error during fetch operation:', error);
+            alert('An error occurred: ' + error.message);
+          });
+      }
     }
-  };
 
-</script>
+    // Función para eliminar usuarios inactivos
+    function deleteInactiveUsers() {
+      if (confirm('¿Estás seguro de que quieres eliminar todos los usuarios inactivos?')) {
+        fetch('/api/users/inactive', { method: 'DELETE' })
+          .then(response => response.json())
+          .then(data => {
+            alert(data.message);
+            window.location.reload();
+          })
+          .catch(error => console.error('Error:', error));
+      }
+    };
+
+  </script>
+
+
+
+
+
+
+
+

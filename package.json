@@ -30,6 +30,7 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
+    "type": "module",
     "test": "mocha test/integration.test.js",
     "start": "node src/app.js",
     "dev": "nodemon src/app.js",

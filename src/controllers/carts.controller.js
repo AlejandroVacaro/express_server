@@ -53,7 +53,7 @@ export class CartsController {
             }
 
             // Agregar el producto al carrito
-            const updatedCart = await CartsService.addProductToCart(cartId, productId);
+            const updatedCart = await CartsService.addToCart(cartId, productId);
             res.json({ status: 'success', data: updatedCart });
         } catch (error) {
             next(error); 

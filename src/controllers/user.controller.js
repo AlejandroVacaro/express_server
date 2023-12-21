@@ -121,16 +121,21 @@ export class UserController {
     static deleteUser = async (req, res) => {
         try {
             const userId = req.params.uid;
-            // Verificamos que el usuario exista
             const user = await UsersService.getUserById(userId);
-            // Eliminamos los documentos del usuario y enviamos un email informando la eliminación
-            for (const doc of user.documents) {
-                await UsersService.deleteUserById(doc._id);
-                sendEmail(req, user.email, 'Cuenta eliminada', 'Lamentamos informarle que su cuenta ha sido eliminada.');
+    
+            if (!user) {
+                return res.status(404).json({ status: 'error', message: 'Usuario no encontrado' });
             }
+
+            // Borramos el usuario de la base de datos
+            await UsersService.deleteUserById(userId);
+    
+            // Enviamos un email informando la eliminación
+            sendEmail(req, user.email, 'Cuenta eliminada', 'Lamentamos informarle que su cuenta ha sido eliminada.');
+    
             res.json({ status: 'success', message: 'Usuario eliminado con éxito' });
         } catch (error) {
-            res.json({ status: 'error', message: error.message });
+            res.status(500).json({ status: 'error', message: error.message });
         }
     };
 };

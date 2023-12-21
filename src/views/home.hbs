@@ -20,8 +20,12 @@
   <h1>Listado de Productos</h1>
   <ul>
     {{#each payload}}
-      <li>Nombre: {{this.title}} Precio: {{this.price}}</li>
+      <li>Nombre: {{this.title}}</li>
+      </li>Precio: {{this.price}}</li>
+      <br>
       <button onclick="addToCart('{{this._id}}')">Agregar al carrito</button>
+      <br>
+      <br>
     {{/each}}
   </ul>
 
