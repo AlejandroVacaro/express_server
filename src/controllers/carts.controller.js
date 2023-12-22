@@ -29,7 +29,7 @@ export class CartsController {
     static addProductToCart = async (req, res, next) => {
         const cartId = req.params.cid;
         const productId = req.params.pid;
-        const userId = req.user._id; 
+        const userId = req.user._id;
 
         // Verificar si cartId y productId son válidos
         if (!cartId || cartId.length !== 24 || !productId || productId.length !== 24) {
@@ -53,10 +53,11 @@ export class CartsController {
             }
 
             // Agregar el producto al carrito
-            const updatedCart = await CartsService.addToCart(cartId, productId);
+            const updatedCart = await CartsService.updateCart(cartId, productId);
             res.json({ status: 'success', data: updatedCart });
         } catch (error) {
-            next(error); 
+            console.error('Error adding product to cart:', error);
+            next(error);
         }
     };
 
@@ -94,5 +95,4 @@ export class CartsController {
     };
 
 };
-
 

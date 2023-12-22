@@ -12,7 +12,7 @@ router.post("/", checkUserAuthenticated, checkUserRole(['user', 'premium']), Car
 router.get("/:cid", CartsController.getCartById);
 
 //Ruta para agregar un producto a un carrito, solo para usuarios con rol user o premium
-router.post("/:cid/products/:pid", checkUserAuthenticated, checkUserRole(['user', 'premium']), CartsController.addProductToCart);
+router.put("/:cid/products/:pid", checkUserAuthenticated, checkUserRole(['user', 'premium']), CartsController.addProductToCart);
 
 //Ruta para eliminar un producto de un carrito, solo para usuarios con rol user o premium
 router.delete("/:cid/products/:pid", checkUserAuthenticated, checkUserRole(['user', 'premium']), CartsController.removeProductFromCart);

@@ -1,8 +1,18 @@
 <header>
-  <nav class="nav">
+  <nav>
     <a href="/home">Inicio</a>
+    <a href="/perfil">Perfil</a>
     <a href="/chat">Sala de chat</a>
     <a href="/api/sessions/logout">Cerrar sesión</a>
+    {{#if isAdmin}}
+    <a href="/admin-users">Administración de usuarios</a>
+    {{/if}}
+    <style>
+        #cart-link {
+            display: none;
+        }
+    </style>
+    <a href="/cart/{{cartId}}" id="cart-link">Ver mi carrito</a>
   </nav>
 </header>
 
@@ -12,3 +22,20 @@
   Bienvenido {{user.first_name}}<br />
   Correo: {{user.email}}
 </div>
+
+<script src="/js/updateCartLink.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const cartLink = document.getElementById('cart-link');
+        const cartId = localStorage.getItem('cartId');
+
+        if (cartLink) {
+            if (cartId) {
+                cartLink.style.display = 'inline'; 
+                cartLink.setAttribute('href', `/cart/${cartId}`);
+            } else {
+                cartLink.style.display = 'none'; 
+            }
+        }
+    });
+</script>

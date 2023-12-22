@@ -46,7 +46,8 @@ export class UserController {
             return res.json({ status: 'error', message: 'No se puede cambiar el rol de este usuario' });
 
         } catch (error) {
-            res.json({ status: 'error', message: error.message });
+            console.error('Error modifying user role:', error);
+            res.status(500).json({ status: 'error', message: error.message });
         }
     };
 
@@ -98,7 +99,6 @@ export class UserController {
         }
     };
 
-    // Método para eliminar los usuarios que no hayan tenido actividad en los últimos 2 días
     static deleteInactiveUsers = async (req, res) => {
         try {
             const twoDaysAgo = new Date(new Date().setDate(new Date().getDate() - 2));
@@ -128,17 +128,17 @@ export class UserController {
         try {
             const userId = req.params.uid;
             const user = await UsersService.getUserById(userId);
-    
+
             if (!user) {
                 return res.status(404).json({ status: 'error', message: 'Usuario no encontrado' });
             }
 
             // Borramos el usuario de la base de datos
             await UsersService.deleteUserById(userId);
-    
+
             // Enviamos un email informando la eliminación
             sendEmail(req, user.email, 'Cuenta eliminada', 'Lamentamos informarle que su cuenta ha sido eliminada.');
-    
+
             res.json({ status: 'success', message: 'Usuario eliminado con éxito' });
         } catch (error) {
             res.status(500).json({ status: 'error', message: error.message });

@@ -1,13 +1,55 @@
-<h1>Mi carrito</h1>
+ <div class="cart-page-container">
+        <header>
+            <nav class="nav">
+                <a href="/home">Inicio</a>
+                <a href="/perfil">Perfil</a>
+                <a href="/chat">Sala de chat</a>
+                <a href="/api/sessions/logout">Cerrar sesión</a>
+                {{#if isAdmin}}
+                <a href="/admin-users">Administración de usuarios</a>
+                {{/if}}
+                <a href="/cart/{{cartId}}" id="cart-link">Ver mi carrito</a>
+            </nav>
+        </header>
+        <div class="cart-container">
+            <h1 class="cart-title">Mi carrito</h1>
+            <p class="cart-description">Productos en el carrito:</p>
+            <ul class="cart-list">
+                {{#each cart.products}}
+                <li class="cart-item">
+                    <h2>Artículo: {{this.title}}</h2>
+                    <p>Precio: ${{this.price}}</p>
+                    <p>Cantidad: {{this.quantity}}</p>
+                </li>
+                {{/each}}
+            </ul>
+            <p class="cart-total">Total: ${{totalCost}}</p>
+            <button id="finalize-purchase" class="finalize-purchase-button">Finalizar compra</button>
+        </div>
+    </div>
+<script>
+        document.getElementById('finalize-purchase').addEventListener('click', function () {
+            fetch(`/api/carts/${localStorage.getItem('cartId')}`, { method: 'DELETE' })
+                .then(response => {
+                    if (response.ok) {
+                        // Clear the cartId from localStorage
+                        localStorage.removeItem('cartId');
 
-<h2>Productos en el carrito:</h2>
-<ul>
-    {{#each cart.products}}
-        <li>
-            <strong>Nombre:</strong> {{this.title}}<br>
-            <strong>Precio:</strong> {{this.price}}<br>
-        </li>
-    {{/each}}
-    <h3>Total compra:</h3>
-    <button>Finalizar compra</button>
-</ul>
+                        // Show success alert
+                        alert('Compra completada con éxito');
+
+                        // Redirect to the home page or perform other actions as needed
+                        window.location.href = '/home';
+                    } else {
+                        alert('Error al finalizar la compra.');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Error al finalizar la compra.');
+                });
+        });
+</script>
+
+</html>
+<script src="/js/updateCartLink.js"></script>

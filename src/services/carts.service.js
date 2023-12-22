@@ -51,7 +51,7 @@ export class CartsService {
 
     //Servicio para eliminar un carrito
     static deleteCart = async (cartId) => {
-        return await cartManager.delete(cartId);
+        return await cartManager.deleteCart(cartId);
     };
 
     //Servicio para actualizar el carrito de un usuario con los productos rechazados

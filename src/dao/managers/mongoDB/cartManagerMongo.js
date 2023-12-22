@@ -58,14 +58,32 @@ export class CartManagerMongo {
     };
 
     //Método para actualizar un carrito
-    async update(cartId, updateData) {
+    async update(cartId, productId) {
         try {
-            const cartUpdated = await this.model.findByIdAndUpdate(cartId, updateData, { new: true });
+            const cart = await this.model.findById(cartId);
+            if (!cart) {
+                throw new Error("Cart not found");
+            }
+
+            // Find the product in the cart
+            const productIndex = cart.products.findIndex(p => p.productId.toString() === productId);
+
+            if (productIndex === -1) {
+                // If the product is not in the cart, add it
+                cart.products.push({ productId: productId, quantity: 1 });
+            } else {
+                // If the product is already in the cart, increment its quantity
+                cart.products[productIndex].quantity += 1;
+            }
+
+            // Save the updated cart
+            const cartUpdated = await cart.save();
             return cartUpdated;
         } catch (error) {
+            console.error('Error updating cart:', error);
             throw error;
         }
-    };
+    }
 
     //Método para actualizar la cantidad de un producto en el carrito
     async updateProductQuantity(cartId, productId, quantity) {
@@ -113,5 +131,18 @@ export class CartManagerMongo {
             throw error;
         }
     };
+
+    // Método para eliminar un carrito específico
+    async deleteCart(cartId) {
+        try {
+            const result = await this.model.findByIdAndDelete(cartId);
+            if (!result) {
+                throw new Error('Cart not found');
+            }
+            return result;
+        } catch (error) {
+            throw error;
+        }
+    }
 
 };

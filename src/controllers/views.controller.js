@@ -1,6 +1,7 @@
 import { productsDao } from '../dao/index.js';
 import { addLogger } from '../utils/loggers.js';
 import { UsersService } from '../services/users.service.js';
+import { cartService } from '../dao/index.js';
 
 const logger = addLogger();
 
@@ -58,7 +59,7 @@ export class ViewsController {
                 nextLink: result.hasNextPage ? baseUrl.includes("page") ? baseUrl.replace(`page=${result.page}`, `page=${result.nextPage}`) : baseUrl.includes("?") ? baseUrl.concat(`&page=${result.nextPage}`) : baseUrl.concat(`?page=${result.nextPage}`) : null,
                 isAdmin: isAdmin,
                 user: JSON.parse(JSON.stringify(req.user))
-            };
+            }
             //const userCartId = req.session.cartId;
             res.render('home', resultProductsView);
         } catch (error) {
@@ -89,27 +90,44 @@ export class ViewsController {
         try {
             const cartId = req.params.cid;
             const cart = await cartService.getById(cartId);
+
+            if (!cart) {
+                return res.render('cart', { error: 'Carrito no encontrado.' });
+            }
             const detailedProducts = [];
+            let totalCost = 0; // Initialize total cost
+
             for (let product of cart.products) {
-                const productDetails = await productsDao.getProductById(product._id);
-                detailedProducts.push({
-                    ...productDetails._doc,
-                    quantity: product.quantity
-                });
+                const productDetails = await productsDao.getProductById(product.productId);
+
+                if (productDetails) {
+                    const productTotal = productDetails.price * product.quantity;
+                    totalCost += productTotal; // Add to total cost
+
+                    detailedProducts.push({
+                        ...productDetails._doc,
+                        quantity: product.quantity,
+                        total: productTotal // Optional: include total cost per product
+                    });
+                } else {
+                    console.log('Detalles del producto no encontrados para el producto ID:', product.productId);
+                }
             }
 
-            // Crear un objeto de carrito con detalles completos de los productos
             const detailedCart = {
                 _id: cart._id,
                 products: detailedProducts,
-                __v: cart.__v
+                __v: cart.__v,
+                totalCost: totalCost // Include total cost in the cart object
             };
 
             const plainCart = JSON.parse(JSON.stringify(detailedCart));
-            res.render('cart', { cart: plainCart });
+            console.log('Total cost:', totalCost);
+            res.render('cart', { cart: detailedCart, totalCost: totalCost });
         } catch (error) {
-            logger.error('Error al obtener el carrito', error);
-        };
+            console.error('Error al obtener el carrito', error);
+            res.render('errorPage', { error: 'Error al obtener el carrito.' });
+        }
     };
 
     // Creamos controlador para renderizar la vista de recuperación de contraseña
