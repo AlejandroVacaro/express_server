@@ -6,7 +6,7 @@ const chat = document.getElementById("messageLogs");
 let user;
 
 Swal.fire({
-    title: "Identificate",
+    title: "Ingresa tu nickname",
     input: "text",
     text: "Ingresa un nombre de usuario para el chat",
     inputValidator: (value) => {
