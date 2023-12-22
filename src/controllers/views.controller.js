@@ -58,7 +58,7 @@ export class ViewsController {
                 nextLink: result.hasNextPage ? baseUrl.includes("page") ? baseUrl.replace(`page=${result.page}`, `page=${result.nextPage}`) : baseUrl.includes("?") ? baseUrl.concat(`&page=${result.nextPage}`) : baseUrl.concat(`?page=${result.nextPage}`) : null,
                 isAdmin: isAdmin,
                 user: JSON.parse(JSON.stringify(req.user))
-            }
+            };
             //const userCartId = req.session.cartId;
             res.render('home', resultProductsView);
         } catch (error) {

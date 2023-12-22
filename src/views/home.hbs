@@ -2,11 +2,10 @@
   <nav>
     <a href="/perfil">Perfil</a>
     <a href="/chat">Sala de chat</a>
-    <a href="/carts">Carrito</a>
-    <a href="/api/sessions/logout">Cerrar sesion</a>
     {{#if isAdmin}}
       <a href="/admin-users">Administración de usuarios</a>
     {{/if}}
+    <a href="/api/sessions/logout">Cerrar sesion</a>
   </nav>
 </header>
 
@@ -21,14 +20,15 @@
   <ul>
     {{#each payload}}
       <li>Nombre: {{this.title}}</li>
-      </li>Precio: {{this.price}}</li>
+      </li>Precio: ${{this.price}}</li>
       <br>
-      <button onclick="addToCart('{{this._id}}')">Agregar al carrito</button>
+      {{#unless isAdmin}}
+        <button onclick="addToCart('{{this._id}}')">Agregar al carrito</button>
+      {{/unless}}
       <br>
       <br>
     {{/each}}
   </ul>
-
   {{#if hasPrevPage}}
     <a href="{{prevLink}}">Anterior</a>
   {{/if}}
@@ -42,4 +42,4 @@
   <h2>No hay productos</h2>
 {{/if}}
 
-<script src="/js/home.js"></script>
+<script src="/src/public/js/home.js"></script>

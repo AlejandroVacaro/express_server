@@ -101,19 +101,25 @@ export class UserController {
     // Método para eliminar los usuarios que no hayan tenido actividad en los últimos 2 días
     static deleteInactiveUsers = async (req, res) => {
         try {
-            // Obtenemos la fecha de hace 2 días para comparar con la fecha de última actividad
             const twoDaysAgo = new Date(new Date().setDate(new Date().getDate() - 2));
             const inactiveUsers = await UsersService.getInactiveUsers(twoDaysAgo);
 
             for (const user of inactiveUsers) {
-                // Eliminamos los documentos de cada usuario inactivo y enviamos un email informando la eliminación
-                for (const doc of user.documents) {
-                    await UsersService.deleteUserById(doc._id);
-                    sendEmail(req, user.email, 'Cuenta eliminada por inactividad', 'Lamentamos informarle que su cuenta ha sido eliminada por inactividad mayor a 2 días.');
-                }
+                console.log(`Borrando usuario: ${user._id}`);
+
+                // Borramos el usuario de la base de datos
+                await UsersService.deleteUserById(user._id);
+
+                // Enviamos un email informando la eliminación
+                sendEmail(req, user.email, 'Cuenta eliminada por inactividad', 'Lamentamos informarle que su cuenta ha sido eliminada por inactividad mayor a 2 días.');
+
+                console.log(`Usuario eliminado y email enviado a: ${user._id}`);
             };
+
+            res.json({ status: 'success', message: 'Usuarios inactivos eliminados con éxito' });
         } catch (error) {
-            res.json({ status: 'error', message: error.message });
+            console.error('Error deleting inactive users:', error);
+            res.status(500).json({ status: 'error', message: error.message });
         }
     };
 
