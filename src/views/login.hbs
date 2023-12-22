@@ -1,7 +1,6 @@
+{{!-- login.hbs --}}
 <div class="login-container">
   <h2>Iniciar Sesión</h2>
-  <p style="color:red"><strong>{{error}}</strong></p>
-  <p style="color:blue"><strong>{{message}}</strong></p>
   <form id="loginForm" action="/api/sessions/login" method="POST">
     <div class="form-group">
       <label for="email">Correo Electrónico:</label>
@@ -23,5 +22,3 @@
   <p>¿No tienes una cuenta? <a href="/registro">Regístrate</a></p>
 </div>
 
-</body>
-</html>

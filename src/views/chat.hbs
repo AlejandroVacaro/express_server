@@ -1,22 +1,18 @@
-<header>
-  <nav>
-    <a href="/home">
-      Inicio
-    </a>
-    <a href="/profile">
-      Perfil
-    </a>
-    <a href="/api/sessions/logout">
-      Cerrar sesion
-    </a>
-  </nav>
-</header>
+<div class="chat-container">
+  <header>
+    <nav class="nav">
+      <a href="/home">Inicio</a>
+      <a href="/perfil">Perfil</a>
+      <a href="/api/sessions/logout">Cerrar sesión</a>
+    </nav>
+  </header>
 
-<h1>Chat</h1>
+  <h1 class="chat-title">Chat</h1>
 
-<div id="messageLogs"></div>
-<input type="text" id="chatbox" placeholder="Ingrese su mensaje" />
+  <div id="messageLogs" class="message-logs"></div>
+  <input type="text" id="chatbox" class="chat-input" placeholder="Ingrese su mensaje" />
 
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<script src="socket.io/socket.io.js"></script>
-<script src="/js/chat.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script src="socket.io/socket.io.js"></script>
+  <script src="/js/chat.js"></script>
+</div>

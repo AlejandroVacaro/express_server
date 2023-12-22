@@ -1,21 +1,14 @@
 <header>
-  <nav>
-    <a href="/home">
-      Inicio
-    </a>
-    <a href="/chat">
-      Sala de chat
-    </a>
-    <a href="/api/sessions/logout">
-      Cerrar sesion
-    </a>
+  <nav class="nav">
+    <a href="/home">Inicio</a>
+    <a href="/chat">Sala de chat</a>
+    <a href="/api/sessions/logout">Cerrar sesión</a>
   </nav>
 </header>
 
-<h1>Pagina de Perfil</h1>
-<p>{{error}}</p>
-Bienvenido
-{{user.first_name}}
-<br />
-Correo:
-{{user.email}}
+<h1 class="profile-title">Pagina de Perfil</h1>
+<p class="error-message">{{error}}</p>
+<div class="welcome-message">
+  Bienvenido {{user.first_name}}<br />
+  Correo: {{user.email}}
+</div>

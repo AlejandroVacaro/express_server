@@ -1,45 +1,48 @@
-<header>
-  <nav>
-    <a href="/perfil">Perfil</a>
-    <a href="/chat">Sala de chat</a>
-    {{#if isAdmin}}
-      <a href="/admin-users">Administración de usuarios</a>
-    {{/if}}
-    <a href="/api/sessions/logout">Cerrar sesion</a>
-  </nav>
-</header>
+<div class="home-container">
+  <header>
+    <nav class="nav">
+      <a href="/perfil">Perfil</a>
+      <a href="/chat">Sala de chat</a>
+      {{#if isAdmin}}
+        <a href="/admin-users">Administración de usuarios</a>
+      {{/if}}
+      <a href="/api/sessions/logout">Cerrar sesión</a>
+    </nav>
+  </header>
 
-<p>¡Bienvenido {{user.role}} {{user.first_name}}!</p>
+  <p class="home-welcome">{{user.first_name}}, usted tiene privilegios tipo: {{user.role}}</p>
 
-<input type="hidden" id="currentCartId" value="{{cartId}}" />
-<p style="color:red"><strong>{{error}}</strong></p>
-<a id="cartUrl" style="display: none;">Ver mi carrito</a>
+  <input type="hidden" id="currentCartId" value="{{cartId}}" />
+  <p class="error-message">{{error}}</p>
+  <a id="cartUrl" style="display: none;">Ver mi carrito</a>
 
-{{#if payload}}
-  <h1>Listado de Productos</h1>
-  <ul>
-    {{#each payload}}
-      <li>Nombre: {{this.title}}</li>
-      </li>Precio: ${{this.price}}</li>
-      <br>
-      {{#unless isAdmin}}
-        <button onclick="addToCart('{{this._id}}')">Agregar al carrito</button>
-      {{/unless}}
-      <br>
-      <br>
-    {{/each}}
-  </ul>
-  {{#if hasPrevPage}}
-    <a href="{{prevLink}}">Anterior</a>
+  {{#if payload}}
+    <h1>Listado de Productos</h1>
+    <ul class="product-list">
+      {{#each payload}}
+        <li class="product-item">
+          Nombre: {{this.title}}
+          Precio: ${{this.price}}
+          {{#unless isAdmin}}
+            <button onclick="addToCart('{{this._id}}')">Agregar al carrito</button>
+          {{/unless}}
+        </li>
+      {{/each}}
+    </ul>
+    <div class="pagination">
+      {{#if hasPrevPage}}
+        <a href="{{prevLink}}">Anterior</a>
+      {{/if}}
+
+      {{page}}
+
+      {{#if hasNextPage}}
+        <a href="{{nextLink}}">Siguiente</a>
+      {{/if}}
+    </div>
+  {{else}}
+    <h2>No hay productos</h2>
   {{/if}}
 
-  {{page}}
-
-  {{#if hasNextPage}}
-    <a href="{{nextLink}}">Siguiente</a>
-  {{/if}}
-{{else}}
-  <h2>No hay productos</h2>
-{{/if}}
-
-<script src="/src/public/js/home.js"></script>
+  <script src="/src/public/js/home.js"></script>
+</div>

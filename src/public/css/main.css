@@ -1,85 +1,577 @@
 /* Estilos para la Navbar */
-.navbar {
-    background-color: #007bff; /* Azul */
-    color: lightgray;
-  }
-  
-  .navbar a {
-    color: lightgray;
-    text-decoration: none;
-    padding: 10px;
-    display: inline-block;
-  }
-  
-  .navbar a:hover {
-    background-color: #00bfff; /* Celeste */
-  }
+.nav {
+  background-color: #0056b3; /* Azul más oscuro */
+  color: #f0f0f0; /* Gris más claro */
+  font-family: Arial, sans-serif; /* Fuente Arial */
+}
 
-  /* Estilos para el contenedor del formulario de inicio de sesión */
+.nav a {
+  color: #f0f0f0; /* Gris más claro */
+  text-decoration: none;
+  padding: 10px;
+  display: inline-block;
+  font-size: 1.1em; /* Letras un poco más grandes */
+}
+
+.nav a:hover {
+  background-color: #f0f0f0; /* Gris más claro */
+  color: #0056b3; /* Azul más oscuro */
+}
+
+
+/* Estilos para el contenedor del formulario de inicio de sesión */
 .login-container {
-    background-color: #007bff; /* Azul */
-    padding: 20px;
-    max-width: 400px;
-    margin: 0 auto;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  }
-  
-  .login-container h2,
-  .login-container label,
-  .login-container p,
-  .login-container a {
-    color: lightgray;
-  }
-  
-  .login-container form {
-    background-color: #00bfff; /* Celeste */
-    padding: 20px;
-    border-radius: 5px;
-  }
-  
-  .form-group {
-    margin-bottom: 15px;
-  }
-  
-  .form-group label {
-    display: block;
-    margin-bottom: 5px;
-  }
-  
-  .form-group input[type="email"],
-  .form-group input[type="password"] {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-  }
-  
-  .form-group button[type="submit"] {
-    width: 100%;
-    padding: 10px;
-    background-color: #007bff; /* Azul */
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-  }
-  
-  .form-group button[type="submit"]:hover {
-    background-color: #0056b3; /* Azul oscuro */
-  }
-  
-  /* Estilos adicionales para los enlaces y botones */
-  .login-container a,
-  .login-container button {
-    color: lightgray;
-    text-decoration: none;
-    display: block;
-    text-align: center;
-    margin-top: 10px;
-  }
-  
-  .login-container a:hover,
-  .login-container button:hover {
-    color: white;
-  }
-  
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background-color: #0056b3; /* Azul más oscuro */
+  padding: 20px;
+  max-width: 400px;
+  margin: 0 auto;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  color: #f0f0f0; /* Gris más claro */
+  font-family: 'Arial'; /* Fuente Arial */
+}
+
+.login-container h2{
+  text-align: center;
+  color: #f0f0f0; /* Gris más claro */
+  font-size: 2em; /* Letras un poco más grandes */
+}
+
+.login-container label,
+.login-container p,
+.login-container a {
+  color: #f0f0f0; /* Gris más claro */
+  font-size: 1.3em; /* Letras un poco más grandes */
+}
+
+.login-container form {
+  padding: 20px;
+  border-radius: 5px;
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 5px;
+}
+
+.form-group input[type="email"],
+.form-group input[type="password"] {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.form-group button[type="submit"] {
+  margin: auto;
+  font-size: 1.1em;
+  padding: 10px;
+  background-color: #007bff; /* Azul */
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.form-group button[type="submit"]:hover {
+  background-color: #f0f0f0;
+  color: #007bff; /* Azul */
+}
+
+/* Estilos adicionales para los enlaces y botones */
+.login-container a,
+.login-container button {
+  color: #f0f0f0; /* Gris más claro */
+  text-decoration: none;
+  display: block;
+  text-align: center;
+  margin-top: 10px;
+  font-size: 1.1em; /* Letras un poco más grandes */
+}
+
+.login-container a:hover,
+.login-container button:hover {
+  color: white;
+}
+
+/* Estilo para el botón de GitHub */
+.login-container a[href="/api/sessions/loginGithub"] button {
+  cursor: pointer;
+  margin: auto;
+  background-color: #007bff;
+  font-size: 0.9em; /* Letra más grande */
+  padding: 5px 5px; /* Más grande */
+}
+
+/* Centrar el texto de registro */
+.login-container p:last-of-type {
+  text-align: center;
+}
+
+
+/* Estilos para la vista de administración de usuarios y productos */
+.admin-container {
+  background-color: #f8f9fa; /* Fondo claro */
+  padding: 20px;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.admin-container h1 {
+  color: #007bff; /* Azul */
+  text-align: center;
+}
+
+.admin-container table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.admin-container th,
+.admin-container td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left;
+}
+
+.admin-container th {
+  background-color: #007bff; /* Azul */
+  color: white;
+}
+
+
+/* Estilos para los botones de eliminar */
+.delete-button {
+  background-color: red;
+  color: white;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  text-transform: uppercase;
+  font-weight: bold;
+}
+
+.delete-button:hover {
+  background-color: darkred;
+}
+
+
+/* Estilos para los artículos en grid */
+.grid-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 20px;
+  padding: 20px;
+}
+
+.grid-item {
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  padding: 15px;
+  text-align: center;
+}
+
+.grid-item img {
+  max-width: 100%;
+  height: auto;
+  border-bottom: 1px solid #ddd;
+  margin-bottom: 15px;
+}
+
+.grid-item h3 {
+  margin: 0;
+  color: #333;
+}
+
+
+.pagination {
+  text-align: center;
+  padding: 20px 0;
+}
+
+.pagination a {
+  color: #007bff;
+  padding: 8px 16px;
+  text-decoration: none;
+  border: 1px solid #ddd;
+  margin: 0 4px;
+  border-radius: 4px;
+}
+
+.pagination a:hover {
+  background-color: #007bff;
+  color: white;
+}
+
+/* Estilos generales para la página de perfil */
+.profile-container {
+  font-family: Arial, sans-serif; /* Fuente Arial */
+  color: #f0f0f0; /* Gris claro */
+  background-color: #0056b3; /* Azul oscuro */
+  padding: 20px;
+  max-width: 600px;
+  margin: 0 auto;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.profile-title {
+  font-family: Arial, sans-serif; /* Fuente Arial */
+  color: #0056b3; /* Gris claro */
+  font-size: 2em; /* Tamaño de fuente más grande */
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.error-message {
+  color: red;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.welcome-message {
+  font-family: Arial, sans-serif; /* Fuente Arial */
+  font-size: 1.2em; /* Tamaño de fuente más grande */
+  background-color: #007bff; /* Azul */
+  padding: 15px;
+  border-radius: 5px;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+/* Estilos adicionales para detalles del usuario */
+.user-details {
+  color: #f0f0f0; /* Gris claro */
+  background-color: #007bff; /* Azul */
+  padding: 10px;
+  border-radius: 5px;
+  margin-bottom: 20px;
+}
+
+/* Estilos para la página de inicio */
+.home-container {
+  font-family: Arial, sans-serif; /* Fuente Arial */
+  color: #f0f0f0; /* Gris claro */
+  padding: 20px;
+}
+
+.home-container h1 {
+  font-family: Arial, sans-serif; /* Fuente Arial */
+  color: #0056b3; /* Azul */
+  font-size: 2em; /* Tamaño de fuente más grande */
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.home-welcome {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+.product-list {
+  list-style-type: none;
+  padding: 0;
+}
+
+.product-item {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  background-color: #007bff; /* Azul */
+  padding: 10px;
+  border-radius: 5px;
+  margin-bottom: 10px;
+}
+
+.product-item button {
+  background-color: #f0f0f0; /* Gris claro */
+  color: #0056b3; /* Azul oscuro */
+  border: none;
+  padding: 5px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.product-item button:hover {
+  background-color: #e0e0e0; /* Gris más claro */
+}
+
+.pagination {
+  color: #333;
+  text-align: center;
+  margin-top: 20px;
+}
+
+.admin-container {
+  font-family: Arial, sans-serif;
+  background-color: #0056b3; /* Azul oscuro */
+  color: #f0f0f0; /* Gris claro */
+  padding: 20px;
+}
+
+.admin-title,
+.admin-subtitle {
+  color: #f0f0f0;
+}
+
+.admin-table {
+  width: 100%;
+  margin-top: 20px;
+}
+
+.admin-table th,
+.admin-table td {
+  padding: 10px;
+  border: 1px solid #f0f0f0;
+}
+
+.modify-button,
+.delete-button {
+  background-color: #007bff; /* Azul */
+  color: #f0f0f0; /* Gris claro */
+  border: none;
+  padding: 5px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.delete-button {
+  margin: auto;
+  padding: 5px 10px;
+  background-color: red;
+}
+
+.modify-button:hover,
+.delete-button:hover {
+  opacity: 0.8;
+}
+
+.chat-container {
+  font-family: Arial, sans-serif;
+  background-color: #0056b3; /* Azul oscuro */
+  color: #f0f0f0; /* Gris claro */
+  padding: 20px;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.chat-title {
+  text-align: center;
+  color: #f0f0f0;
+  margin-bottom: 20px;
+}
+
+.message-logs {
+  background-color: #007bff; /* Azul */
+  padding: 10px;
+  border-radius: 5px;
+  min-height: 300px;
+  overflow-y: auto;
+  margin-bottom: 10px;
+}
+
+.chat-input {
+  width: 97%;
+  padding: 10px;
+  border-radius: 4px;
+  border: 1px solid #f0f0f0;
+}
+
+.chat-input:focus {
+  outline: none;
+  border-color: #007bff; /* Azul */
+}
+
+.chat-button {
+  background-color: #007bff; /* Azul */
+  color: #f0f0f0; /* Gris claro */
+  border: none;
+  padding: 5px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.chat-button:hover {
+  opacity: 0.8;
+}
+
+.forgot-password-container {
+  font-family: Arial, sans-serif;
+  background-color: #0056b3; /* Azul oscuro */
+  color: #f0f0f0; /* Gris claro */
+  padding: 50px 80px;
+  max-width: 400px;
+  margin: 0 auto;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.forgot-password-title {
+  text-align: center;
+  color: #f0f0f0;
+  margin-bottom: 20px;
+}
+
+.forgot-password-instructions {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.forgot-password-form {
+  text-align: center;
+}
+
+.forgot-password-input {
+  width: 100%;
+  padding: 10px;
+  border-radius: 4px;
+  border: 1px solid #f0f0f0;
+  margin-bottom: 20px;
+}
+
+.forgot-password-button {
+  background-color: #007bff; /* Azul */
+  color: #f0f0f0; /* Gris claro */
+  border: none;
+  padding: 10px 20px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.forgot-password-button:hover {
+  background-color: #0066cc; /* Azul más oscuro */
+}
+
+.forgot-password-back-link {
+  color: #f0f0f0;
+  text-decoration: none;
+  display: block;
+  text-align: center;
+  margin-top: 20px;
+}
+
+.signup-container {
+  font-family: Arial, sans-serif;
+  background-color: #0056b3; /* Azul oscuro */
+  color: #f0f0f0; /* Gris claro */
+  padding: 20px 40px;
+  max-width: 400px;
+  margin: 0 auto;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.signup-title {
+  font-size: 2em;
+  text-align: center;
+  color: #f0f0f0;
+  margin-bottom: 20px;
+}
+
+.error-message {
+  color: red;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.signup-form {
+  text-align: center;
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+.form-group label {
+  text-align: left;
+  font-size: 1.3em;
+  display: block;
+  margin-bottom: 5px;
+}
+
+.form-group input[type="text"],
+.form-group input[type="email"],
+.form-group input[type="number"],
+.form-group input[type="password"],
+.form-group input[type="file"] {
+  font-size: 1em;
+  width: 100%;
+  padding: 5px;
+  border-radius: 4px;
+  border: 1px solid #f0f0f0;
+}
+
+.signup-button,
+.github-signup-button {
+  font-size: 1.1em;
+  background-color: #007bff; /* Azul */
+  color: #f0f0f0; /* Gris claro */
+  border: none;
+  padding: 10px 20px;
+  border-radius: 4px;
+  cursor: pointer;
+  width: 90%;
+}
+
+.form-group button:hover {
+  background-color: #0066cc;
+}
+.github-signup-button:hover {
+  background-color: #0066cc; /* Azul más oscuro */
+}
+
+.github-signup-link {
+  display: block;
+  margin-top: 20px;
+}
+
+
+.reset-password-container {
+  font-family: Arial, sans-serif;
+  background-color: #0056b3; /* Azul oscuro */
+  color: #f0f0f0; /* Gris claro */
+  padding: 20px;
+  max-width: 400px;
+  margin: 0 auto;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.reset-password-title {
+  text-align: center;
+  color: #f0f0f0;
+  margin-bottom: 20px;
+}
+
+.reset-password-form {
+  text-align: center;
+}
+
+.reset-password-input {
+  width: 90%;
+  padding: 10px;
+  border-radius: 4px;
+  border: 1px solid #f0f0f0;
+  margin-bottom: 20px;
+}
+
+.reset-password-button {
+  background-color: #007bff; /* Azul */
+  color: #f0f0f0; /* Gris claro */
+  border: none;
+  padding: 10px 20px;
+  border-radius: 4px;
+  cursor: pointer;
+  width: auto;
+}
+
+.reset-password-button:hover {
+  background-color: #0066cc; /* Azul más oscuro */
+}
+
+
