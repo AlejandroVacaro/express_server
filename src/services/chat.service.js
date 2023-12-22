@@ -17,7 +17,7 @@ const initializeChatService = (httpServer) => {
         });
 
         socket.on("message", async (data) => {
-            await chatManagerMongo.createMessage(data.sender, data.message);
+            await chatManagerMongo.createMessage(data.user, data.message);
             const messages = await chatManagerMongo.getMessages();
             io.emit("messageHistory", messages);
         });

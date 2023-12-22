@@ -44,7 +44,7 @@ export class ViewsController {
                     lean: true
                 });
             const baseUrl = `${req.protocol}://${req.get("host")}${req.originalUrl}`
-            // Check if the user is an admin
+            // Comprobamos si el usuario es admin
             const isAdmin = req.user && req.user.role === 'admin';
             const resultProductsView = {
                 status: "success",
@@ -60,7 +60,6 @@ export class ViewsController {
                 isAdmin: isAdmin,
                 user: JSON.parse(JSON.stringify(req.user))
             }
-            //const userCartId = req.session.cartId;
             res.render('home', resultProductsView);
         } catch (error) {
             res.render('home', { error: 'No es posible visualizar los productos' });
@@ -102,12 +101,12 @@ export class ViewsController {
 
                 if (productDetails) {
                     const productTotal = productDetails.price * product.quantity;
-                    totalCost += productTotal; // Add to total cost
+                    totalCost += productTotal; 
 
                     detailedProducts.push({
                         ...productDetails._doc,
                         quantity: product.quantity,
-                        total: productTotal // Optional: include total cost per product
+                        total: productTotal 
                     });
                 } else {
                     console.log('Detalles del producto no encontrados para el producto ID:', product.productId);
@@ -118,11 +117,10 @@ export class ViewsController {
                 _id: cart._id,
                 products: detailedProducts,
                 __v: cart.__v,
-                totalCost: totalCost // Include total cost in the cart object
+                totalCost: totalCost
             };
 
             const plainCart = JSON.parse(JSON.stringify(detailedCart));
-            console.log('Total cost:', totalCost);
             res.render('cart', { cart: detailedCart, totalCost: totalCost });
         } catch (error) {
             console.error('Error al obtener el carrito', error);

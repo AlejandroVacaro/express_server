@@ -18,6 +18,7 @@ import { addLogger } from './utils/loggers.js';
 import { swaggerSpecs } from './config/swagger.config.js';
 import swaggerUi from 'swagger-ui-express';
 import { usersRouter } from './routes/users.routes.js';
+import { initializeChatService } from './services/chat.service.js';
 
 // Inicialización de la aplicación express
 const app = express();
@@ -90,12 +91,16 @@ app.get('/loggerTest', (req, res) => {
 // Inicialización del servidor HTTP
 const httpServer = app.listen(port, () => logger.info(`Server started on port ${port}`));
 
+// Inicialización del servicio de chat
+initializeChatService(httpServer);
+
 //Conexión a la Base de Datos
 connectDB();
 
 // Configuración del motor de plantillas Handlebars
 app.engine('.hbs', handlebars.engine({ extname: '.hbs' }));
 app.set('view engine', '.hbs');
+
 // Definición del directorio de las vistas
 app.set('views', path.join(__dirname, '/views'));
 

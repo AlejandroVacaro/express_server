@@ -1,15 +1,16 @@
 <div class="home-container">
   <header>
     <nav>
-      <a href="/home">Inicio</a>
       <a href="/perfil">Perfil</a>
       <a href="/chat">Sala de chat</a>
-      <a href="/api/sessions/logout">Cerrar sesión</a>
       {{#if isAdmin}}
-        <a href="/admin-users">Administración de usuarios</a>
+      <a href="/admin-users">Administración de usuarios</a>
       {{/if}}
+      <a href="/api/sessions/logout">Cerrar sesión</a>
       <style>
-        #cart-link { display: none; }
+        #cart-link {
+          display: none;
+        }
       </style>
       <a href="/cart/{{cartId}}" id="cart-link">Ver mi carrito</a>
     </nav>
@@ -22,47 +23,58 @@
   <p class="error-message">{{error}}</p>
   <a id="cartUrl" style="display: none;">Ver mi carrito</a>
 
+
   {{#if payload}}
-    <h1>Listado de Productos</h1>
-    <ul class="product-list">
-      {{#each payload}}
-        <li class="product-item">
-          Nombre: {{this.title}}
-          Precio: ${{this.price}}
-            <button class="add-to-cart-btn" data-product-id="{{this._id}}">Agregar al carrito</button>
-        </li>
-      {{/each}}
-    </ul>
-    <div class="pagination">
-      {{#if hasPrevPage}}
-        <a href="{{prevLink}}">Anterior</a>
-      {{/if}}
-
-      {{page}}
-
-      {{#if hasNextPage}}
-        <a href="{{nextLink}}">Siguiente</a>
-      {{/if}}
-    </div>
+  <h1>Listado de Productos</h1>
+  {{#if isAdmin}}
+  <ul class="product-list admin-product-list">
   {{else}}
-    <h2>No hay productos</h2>
+  <ul class="product-list">
+  {{/if}}
+    {{#each payload}}
+    <li class="product-item">
+      Nombre: {{this.title}}
+      Precio: ${{this.price}}
+      <button class="add-to-cart-btn" data-product-id="{{this._id}}">Agregar al carrito</button>
+    </li>
+    {{/each}}
+  </ul>
+  <div class="pagination">
+    {{#if hasPrevPage}}
+    <a href="{{prevLink}}">Anterior</a>
+    {{/if}}
+
+    {{page}}
+
+    {{#if hasNextPage}}
+    <a href="{{nextLink}}">Siguiente</a>
+    {{/if}}
+  </div>
+  {{else}}
+  <h2>No hay productos</h2>
   {{/if}}
 
-<script type="module" src="/js/home.js"></script>
-<script src="/js/updateCartLink.js"></script>
-<script>
+  <script type="module" src="/js/home.js"></script>
+  <script src="/js/updateCartLink.js"></script>
+  <script>
     document.addEventListener('DOMContentLoaded', () => {
-        const cartLink = document.getElementById('cart-link');
-        const cartId = localStorage.getItem('cartId');
+      const cartLink = document.getElementById('cart-link');
+      const cartId = localStorage.getItem('cartId');
 
-        if (cartLink) {
-            if (cartId) {
-                cartLink.style.display = 'inline'; 
-                cartLink.setAttribute('href', `/cart/${cartId}`); 
-            } else {
-                cartLink.style.display = 'none'; 
-            }
+      if (cartLink) {
+        if (cartId) {
+          cartLink.style.display = 'inline';
+          cartLink.setAttribute('href', `/cart/${cartId}`);
+        } else {
+          cartLink.style.display = 'none';
         }
+      }
     });
-</script>
+  </script>
 </div>
+
+<style>
+  .admin-product-list .add-to-cart-btn {
+    display: none;
+  }
+</style>

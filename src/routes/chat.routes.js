@@ -5,10 +5,10 @@ import { checkUserAuthenticated, checkUserRole } from '../middlewares/auth.js';
 const router = Router();
 
 // Ruta para enviar un mensaje al chat, solo para usuarios con rol 'user'
-router.post('/message', checkUserAuthenticated, checkUserRole(['user']), ChatController.sendMessage);
+router.post('/message', checkUserAuthenticated, checkUserRole(['user', 'premium']), ChatController.sendMessage);
 
 // Ruta para obtener todos los mensajes del chat, solo para usuarios con rol 'user'
-router.get('/messages', checkUserAuthenticated, checkUserRole(['user']), ChatController.getMessages);
+router.get('/messages', checkUserAuthenticated, ChatController.getMessages);
 
 
 export default router;

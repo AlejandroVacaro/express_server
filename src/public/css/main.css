@@ -1,11 +1,11 @@
 /* Estilos para la Navbar */
-.nav {
+nav {
   background-color: #0056b3; /* Azul más oscuro */
   color: #f0f0f0; /* Gris más claro */
   font-family: Arial, sans-serif; /* Fuente Arial */
 }
 
-.nav a {
+nav a {
   color: #f0f0f0; /* Gris más claro */
   text-decoration: none;
   padding: 10px;
@@ -13,7 +13,7 @@
   font-size: 1.1em; /* Letras un poco más grandes */
 }
 
-.nav a:hover {
+nav a:hover {
   background-color: #f0f0f0; /* Gris más claro */
   color: #0056b3; /* Azul más oscuro */
 }
@@ -580,11 +580,10 @@
   color: #f0f0f0; /* Gris claro */
 }
 
-.nav {
-  /* Estilos para la barra de navegación, similares a los anteriores */
-}
-
 .cart-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
   padding: 20px;
   max-width: 600px;
   margin: 20px auto;
@@ -593,10 +592,22 @@
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
-.cart-title,
-.cart-description,
+.cart-title{
+  font-size: 2em;
+  text-align: center;
+  color: #f0f0f0;
+  margin-bottom: 20px;
+}
+
+.cart-description {
+  font-size: 1.2em;
+  text-align: center;
+}
+
 .cart-total {
   text-align: center;
+  font-size: 2em;
+  font-weight: bold;
 }
 
 .cart-list {
@@ -612,6 +623,7 @@
 }
 
 .finalize-purchase-button {
+  font-size: 1.3em;
   background-color: #f0f0f0; /* Gris claro */
   color: #0056b3; /* Azul oscuro */
   border: none;

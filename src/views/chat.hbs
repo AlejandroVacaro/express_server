@@ -3,16 +3,14 @@
     <nav>
       <a href="/home">Inicio</a>
       <a href="/perfil">Perfil</a>
-      <a href="/chat">Sala de chat</a>
       <a href="/api/sessions/logout">Cerrar sesión</a>
       {{#if isAdmin}}
         <a href="/admin-users">Administración de usuarios</a>
       {{/if}}
-      <a href="/cart/{{cartId}}" id="cart-link">Ver mi carrito</a>
     </nav>
   </header>
 
-  <h1 class="chat-title">Chat</h1>
+  <h1 class="chat-title"> Sala de Chat</h1>
 
   <div id="messageLogs" class="message-logs"></div>
   <input
