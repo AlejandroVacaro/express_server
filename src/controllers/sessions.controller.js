@@ -19,7 +19,12 @@ export class SessionsController {
 
     // Ruta para renderizar la vista de perfil
     static renderProfile = (req, res) => {
-        res.render("profile", { user: JSON.parse(JSON.stringify(req.user)) });
+        const isAdmin = req.user && req.user.role === 'admin';
+        const profileView = {
+            isAdmin: isAdmin,
+            user: JSON.parse(JSON.stringify(req.user))
+        }
+        res.render("profile", profileView);
     };
 
     // Ruta para intentos fallidos de login
