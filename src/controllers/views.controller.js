@@ -19,7 +19,12 @@ export class ViewsController {
 
     // Creamos controlador para renderizar la vista de perfil
     static renderProfile = (req, res) => {
-        res.render('profile', { user: JSON.parse(JSON.stringify(req.user)) });
+        const isAdmin = req.user && req.user.role === 'admin';
+        const profileView = {
+            isAdmin: isAdmin,
+            user: JSON.parse(JSON.stringify(req.user))
+        }
+        res.render('profile', profileView);
     };
 
     // Creamos controlador para renderizar la vista de home
@@ -81,7 +86,12 @@ export class ViewsController {
 
     // Creamos controlador para renderizar la vista de chat
     static renderChat = (req, res) => {
-        res.render('chat');
+        const isAdmin = req.user && req.user.role === 'admin';
+        const chatView = {
+            isAdmin: isAdmin,
+            user: JSON.parse(JSON.stringify(req.user))
+        }
+        res.render('chat', chatView);
     };
 
     // Creamos controlador para renderizar la vista de carrito
@@ -101,12 +111,12 @@ export class ViewsController {
 
                 if (productDetails) {
                     const productTotal = productDetails.price * product.quantity;
-                    totalCost += productTotal; 
+                    totalCost += productTotal;
 
                     detailedProducts.push({
                         ...productDetails._doc,
                         quantity: product.quantity,
-                        total: productTotal 
+                        total: productTotal
                     });
                 } else {
                     console.log('Detalles del producto no encontrados para el producto ID:', product.productId);
