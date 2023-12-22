@@ -80,8 +80,8 @@ nav a:hover {
 }
 
 .form-group button[type="submit"]:hover {
-  background-color: #f0f0f0;
-  color: #007bff; /* Azul */
+  background-color: #0066cc;
+  color: #f0f0f0; /* Gris más claro */
 }
 
 /* Estilos adicionales para los enlaces y botones */
@@ -516,18 +516,18 @@ nav a:hover {
   padding: 10px 20px;
   border-radius: 4px;
   cursor: pointer;
-  width: 90%;
+  width: 70%;
 }
 
-.form-group button:hover {
-  background-color: #0066cc;
-}
+
 .github-signup-button:hover {
   background-color: #0066cc; /* Azul más oscuro */
 }
 
 .github-signup-link {
-  display: block;
+  text-decoration: none;
+  display: flex;
+  justify-content: center;
   margin-top: 20px;
 }
 
